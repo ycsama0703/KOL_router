@@ -1,0 +1,66 @@
+{
+  "task": "new_encoder_cost_benchmark",
+  "threshold": 0.55,
+  "origin_window": {
+    "name": "first10",
+    "max_rank": 10
+  },
+  "sample": {
+    "requested_sample_size": 256,
+    "actual_sample_size": 256,
+    "eval_candidate_rows": 3270
+  },
+  "methods": {
+    "qwen3_embedding_4b_st_origin_text": {
+      "model": "Qwen/Qwen3-Embedding-4B",
+      "method": "qwen3_embedding_4b_st_origin_text",
+      "device": "cuda",
+      "feature_dim": 2560,
+      "input_tokens": {
+        "n": 256,
+        "mean": 59.31640625,
+        "median": 51.5,
+        "p90": 105.0,
+        "min": 5.0,
+        "max": 128.0
+      },
+      "single_ms_per_query": {
+        "n": 32,
+        "mean": 37.961543654091656,
+        "median": 33.05805125273764,
+        "p90": 33.45489148050547,
+        "min": 32.540518790483475,
+        "max": 169.60080387070775
+      },
+      "batch_ms_per_query": 11.862189130624756,
+      "batch_size": 4,
+      "n_batch_scored": 256
+    },
+    "e5_mistral_7b_instruct_origin_text": {
+      "model": "intfloat/e5-mistral-7b-instruct",
+      "method": "e5_mistral_7b_instruct_origin_text",
+      "device": "cuda",
+      "feature_dim": 4096,
+      "input_tokens": {
+        "n": 256,
+        "mean": 65.16796875,
+        "median": 58.0,
+        "p90": 113.0,
+        "min": 5.0,
+        "max": 128.0
+      },
+      "single_ms_per_query": {
+        "n": 32,
+        "mean": 30.56294785346836,
+        "median": 26.23228565789759,
+        "p90": 29.392707394436005,
+        "min": 23.83570419624448,
+        "max": 160.44107917696238
+      },
+      "batch_ms_per_query": 25.993863986514043,
+      "batch_size": 1,
+      "n_batch_scored": 256
+    }
+  },
+  "elapsed_sec": 54.06855845451355
+}

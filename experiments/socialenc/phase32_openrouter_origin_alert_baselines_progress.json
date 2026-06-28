@@ -1,0 +1,69 @@
+{
+  "task": "phase32_openrouter_origin_alert_baselines",
+  "models": {
+    "openai__gpt-4.1-mini": {
+      "model": "openai/gpt-4.1-mini",
+      "planned_items": 5783,
+      "attempted_items": 5783,
+      "success_items": 5783,
+      "failed_items": 0,
+      "status": "done",
+      "cached_before": 2,
+      "planned_batches": 579,
+      "completed_batches": 579,
+      "elapsed_sec": 2109.66135931015,
+      "eta_sec": 0.0,
+      "progress": 1.0
+    },
+    "anthropic__claude-sonnet-4.5": {
+      "model": "anthropic/claude-sonnet-4.5",
+      "planned_items": 5781,
+      "attempted_items": 5781,
+      "success_items": 5781,
+      "failed_items": 0,
+      "status": "done",
+      "cached_before": 4,
+      "planned_batches": 579,
+      "completed_batches": 579,
+      "elapsed_sec": 2876.981082677841,
+      "eta_sec": 0.0,
+      "progress": 1.0
+    },
+    "google__gemini-2.5-flash": {
+      "model": "google/gemini-2.5-flash",
+      "planned_items": 5781,
+      "attempted_items": 5781,
+      "success_items": 5561,
+      "failed_items": 220,
+      "status": "done",
+      "cached_before": 4,
+      "planned_batches": 579,
+      "completed_batches": 579,
+      "elapsed_sec": 1132.5293090343475,
+      "eta_sec": 0.0,
+      "progress": 1.0
+    },
+    "deepseek__deepseek-v3.2": {
+      "model": "deepseek/deepseek-v3.2",
+      "planned_items": 5777,
+      "attempted_items": 5777,
+      "success_items": 5773,
+      "failed_items": 4,
+      "status": "done",
+      "cached_before": 8,
+      "planned_batches": 578,
+      "completed_batches": 578,
+      "elapsed_sec": 4591.997069835663,
+      "eta_sec": 0.0,
+      "progress": 1.0
+    }
+  },
+  "current_model": "deepseek__deepseek-v3.2",
+  "total_planned_items": 23122,
+  "attempted_items": 23122,
+  "overall_progress": 1.0,
+  "overall_eta_sec": 0.0,
+  "started_at": 1782401604.9147348,
+  "updated_at": 1782412316.1124594,
+  "total_elapsed_sec": 10711.197721004486
+}

@@ -1,0 +1,402 @@
+{
+  "task": "origin_alert_cost_benchmark",
+  "threshold": 0.55,
+  "origin_window": {
+    "name": "first10",
+    "max_rank": 10
+  },
+  "sample": {
+    "requested_sample_size": 128,
+    "actual_sample_size": 128,
+    "eval_candidate_rows": 3270
+  },
+  "methods": {
+    "followers": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.0017541670482993748,
+        "median": 0.0017518620006740093,
+        "p90": 0.0017756108815471332,
+        "min": 0.0017105198154846828,
+        "max": 0.001797952378789584
+      },
+      "batch_ms_per_query": 0.0003927271366895487,
+      "feature_dim": 1,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "visibility": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.0018353958148509264,
+        "median": 0.001834516879171133,
+        "p90": 0.001844417614241441,
+        "min": 0.00181674025952816,
+        "max": 0.0018959461400906246
+      },
+      "batch_ms_per_query": 0.0004700083566907172,
+      "feature_dim": 2,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "rank_time": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.0019561262403537207,
+        "median": 0.0019573536701500416,
+        "p90": 0.0019698351000746093,
+        "min": 0.00192623275021712,
+        "max": 0.0019992499922712645
+      },
+      "batch_ms_per_query": 0.000552416980402389,
+      "feature_dim": 3,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "sentiment": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.0018111316239810549,
+        "median": 0.0018117126698295276,
+        "p90": 0.0018190359696745872,
+        "min": 0.001795923647781213,
+        "max": 0.0018245975176493328
+      },
+      "batch_ms_per_query": 0.0004741989566052022,
+      "feature_dim": 2,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "novelty": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.0018423949222778901,
+        "median": 0.0018382514826953411,
+        "p90": 0.0018715447125335534,
+        "min": 0.0018020626157522202,
+        "max": 0.0019064871594309807
+      },
+      "batch_ms_per_query": 0.0004728253649470086,
+      "feature_dim": 2,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "history": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.001912060967394306,
+        "median": 0.0019278726540505886,
+        "p90": 0.0019428196052710216,
+        "min": 0.0018690185000499089,
+        "max": 0.001968319217363993
+      },
+      "batch_ms_per_query": 0.0005528445520515864,
+      "feature_dim": 3,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "no_ol_strong": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.002718800982014121,
+        "median": 0.0027143730161090693,
+        "p90": 0.0027492151906092963,
+        "min": 0.0026894997184475264,
+        "max": 0.002822169723610083
+      },
+      "batch_ms_per_query": 0.0013181066969991662,
+      "feature_dim": 12,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "ol_only": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.001735103469400201,
+        "median": 0.0017355351398388545,
+        "p90": 0.0017461742584904034,
+        "min": 0.0017155194655060768,
+        "max": 0.001778646061817805
+      },
+      "batch_ms_per_query": 0.00039448841562261805,
+      "feature_dim": 1,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "ol_origin": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.003038891967056164,
+        "median": 0.0030360611466070013,
+        "p90": 0.0030624622789522014,
+        "min": 0.0029843362669150033,
+        "max": 0.003086347132921219
+      },
+      "batch_ms_per_query": 0.0015863131557125598,
+      "feature_dim": 15,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "symbol_onehot": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.001453810934132586,
+        "median": 0.0014526102071007092,
+        "p90": 0.0014712843112647533,
+        "min": 0.0014246472467978795,
+        "max": 0.0014826934784650803
+      },
+      "batch_ms_per_query": 0.00016975371787945429,
+      "feature_dim": 17,
+      "input_tokens": {
+        "n": 128,
+        "mean": 0.0,
+        "median": 0.0,
+        "p90": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "text_surface": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.0434840297990983,
+        "median": 0.04142233170568943,
+        "p90": 0.06478167527044813,
+        "min": 0.016076089814305305,
+        "max": 0.07454848693062861
+      },
+      "batch_ms_per_query": 0.04819312637361387,
+      "feature_dim": 20,
+      "input_words": {
+        "n": 128,
+        "mean": 28.8125,
+        "median": 28.0,
+        "p90": 50.0,
+        "min": 3.0,
+        "max": 57.0
+      }
+    },
+    "symbol_plus_surface": {
+      "single_ms_per_query": {
+        "n": 128,
+        "mean": 0.045019306574734706,
+        "median": 0.04308715385074417,
+        "p90": 0.06643394675726692,
+        "min": 0.01910493243485689,
+        "max": 0.07651553644488256
+      },
+      "batch_ms_per_query": 0.049889311121660285,
+      "feature_dim": 37,
+      "input_words": {
+        "n": 128,
+        "mean": 28.8125,
+        "median": 28.0,
+        "p90": 50.0,
+        "min": 3.0,
+        "max": 57.0
+      }
+    },
+    "bert_base_origin_text": {
+      "model": "bert-base-uncased",
+      "device": "cuda",
+      "feature_dim": 768,
+      "input_tokens": {
+        "n": 128,
+        "mean": 51.59375,
+        "median": 44.5,
+        "p90": 85.89999999999999,
+        "min": 8.0,
+        "max": 128.0
+      },
+      "single_ms_per_query": {
+        "n": 16,
+        "mean": 12.344231334282085,
+        "median": 5.530826048925519,
+        "p90": 33.754998818039894,
+        "min": 5.301141180098057,
+        "max": 57.491926942020655
+      },
+      "batch_ms_per_query": 0.644704243313754,
+      "batch_size": 32,
+      "n_batch_scored": 128
+    },
+    "finbert_encoder_origin_text": {
+      "model": "ProsusAI/finbert",
+      "device": "cuda",
+      "feature_dim": 768,
+      "input_tokens": {
+        "n": 128,
+        "mean": 51.59375,
+        "median": 44.5,
+        "p90": 85.89999999999999,
+        "min": 8.0,
+        "max": 128.0
+      },
+      "single_ms_per_query": {
+        "n": 16,
+        "mean": 5.463045119540766,
+        "median": 5.248320056125522,
+        "p90": 6.0866158455610275,
+        "min": 4.822236020117998,
+        "max": 8.15808679908514
+      },
+      "batch_ms_per_query": 0.5341188807506114,
+      "batch_size": 32,
+      "n_batch_scored": 128
+    },
+    "e5_base_origin_text": {
+      "model": "intfloat/e5-base-v2",
+      "device": "cuda",
+      "feature_dim": 768,
+      "input_tokens": {
+        "n": 128,
+        "mean": 53.5625,
+        "median": 46.5,
+        "p90": 87.89999999999999,
+        "min": 10.0,
+        "max": 128.0
+      },
+      "single_ms_per_query": {
+        "n": 16,
+        "mean": 5.417609500000253,
+        "median": 5.431519588455558,
+        "p90": 5.578737705945969,
+        "min": 5.197647027671337,
+        "max": 5.769562907516956
+      },
+      "batch_ms_per_query": 0.5323789227986708,
+      "batch_size": 32,
+      "n_batch_scored": 128
+    },
+    "bge_base_origin_text": {
+      "model": "BAAI/bge-base-en-v1.5",
+      "device": "cuda",
+      "feature_dim": 768,
+      "input_tokens": {
+        "n": 128,
+        "mean": 51.59375,
+        "median": 44.5,
+        "p90": 85.89999999999999,
+        "min": 8.0,
+        "max": 128.0
+      },
+      "single_ms_per_query": {
+        "n": 16,
+        "mean": 5.388230667449534,
+        "median": 5.132227437570691,
+        "p90": 5.936268484219909,
+        "min": 4.780503921210766,
+        "max": 8.083405904471874
+      },
+      "batch_ms_per_query": 0.4521358059719205,
+      "batch_size": 32,
+      "n_batch_scored": 128
+    },
+    "qwen2.5_7b_origin": {
+      "model": "qwen2.5:7b-instruct",
+      "input_tokens": {
+        "n": 3,
+        "mean": 329.0,
+        "median": 321.0,
+        "p90": 366.6,
+        "min": 288.0,
+        "max": 378.0
+      },
+      "token_source": "hf_tokenizer",
+      "hf_tokenizer_model": "Qwen/Qwen2.5-7B-Instruct",
+      "single_ms_per_query": {
+        "n": 3,
+        "mean": 734.3393305006126,
+        "median": 716.924122069031,
+        "p90": 781.2540923245251,
+        "min": 688.7572845444083,
+        "max": 797.3365848883986
+      },
+      "single_parse_success": "3/3",
+      "batch_ms_per_query": 190.4099670238793,
+      "batch_size": 10,
+      "batch_parse_success": "10/10"
+    },
+    "llama3.1_8b_origin": {
+      "model": "llama3.1:8b",
+      "input_tokens": {
+        "n": 3,
+        "mean": 309.6666666666667,
+        "median": 309.0,
+        "p90": 337.8,
+        "min": 275.0,
+        "max": 345.0
+      },
+      "token_source": "hf_tokenizer",
+      "hf_tokenizer_model": "NousResearch/Meta-Llama-3.1-8B-Instruct",
+      "single_ms_per_query": {
+        "n": 3,
+        "mean": 780.7180075906217,
+        "median": 817.8304405882955,
+        "p90": 866.2271114066243,
+        "min": 645.9973030723631,
+        "max": 878.3262791112065
+      },
+      "single_parse_success": "3/3",
+      "batch_ms_per_query": 172.48699800111353,
+      "batch_size": 10,
+      "batch_parse_success": "10/10"
+    }
+  },
+  "elapsed_sec": 66.3998954296112
+}

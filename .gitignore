@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.DS_Store
+.env
+*.log
+phase*_cache/
+phase18_origin_llm_cache/
+phase32_openrouter_cache/
+phase47_deepseek_cache/
+data/socialenc/windows.npz

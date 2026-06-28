@@ -1,0 +1,212 @@
+{
+  "task": "family_average_bootstrap_support",
+  "setting": "thr0.55_first10",
+  "target": "log_future_reach",
+  "note": "Approximate family-average support table. Deltas are OL-Origin minus the family-average baseline; JS is baseline JS minus OL-Origin JS, so positive is better.",
+  "rows": [
+    {
+      "family_average_baseline": "Scale",
+      "n_methods": 2,
+      "metrics": {
+        "ndcg3": {
+          "observed": 0.03163135650006193,
+          "ci05": -0.006008916278507644,
+          "ci95": 0.06927162927863151,
+          "se_approx": 0.02288366099075396,
+          "p_one_sided_positive_approx": 0.08344468573112873
+        },
+        "hit1": {
+          "observed": 0.016093021816709747,
+          "ci05": -0.056292328162533205,
+          "ci95": 0.08847837179595269,
+          "se_approx": 0.04400716805020519,
+          "p_one_sided_positive_approx": 0.35729786077420045
+        },
+        "mass3": {
+          "observed": 0.03160435040778439,
+          "ci05": -0.003614920498297744,
+          "ci95": 0.06682362131386653,
+          "se_approx": 0.021411796362304038,
+          "p_one_sided_positive_approx": 0.06996856743326685
+        },
+        "js": {
+          "observed": 0.029569205971920254,
+          "ci05": 0.012015740402822463,
+          "ci95": 0.04712267154101804,
+          "se_approx": 0.010671749316461011,
+          "p_one_sided_positive_approx": 0.002796000074835936
+        }
+      }
+    },
+    {
+      "family_average_baseline": "Context",
+      "n_methods": 5,
+      "metrics": {
+        "ndcg3": {
+          "observed": 0.0779076502203758,
+          "ci05": 0.0477047703985569,
+          "ci95": 0.10811053004219469,
+          "se_approx": 0.018362047131084913,
+          "p_one_sided_positive_approx": 1.1034308861845865e-05
+        },
+        "hit1": {
+          "observed": 0.10917405949677814,
+          "ci05": 0.052859995039820994,
+          "ci95": 0.16548812395373527,
+          "se_approx": 0.03423652021932683,
+          "p_one_sided_positive_approx": 0.000714276951693793
+        },
+        "mass3": {
+          "observed": 0.04602003143769787,
+          "ci05": 0.018234856017417086,
+          "ci95": 0.07380520685797864,
+          "se_approx": 0.016892187222626663,
+          "p_one_sided_positive_approx": 0.003221524280721977
+        },
+        "js": {
+          "observed": 0.05449936694057443,
+          "ci05": 0.04047603301684054,
+          "ci95": 0.06852270086430833,
+          "se_approx": 0.008525581665114095,
+          "p_one_sided_positive_approx": 8.162359677044151e-11
+        }
+      }
+    },
+    {
+      "family_average_baseline": "Surface Text",
+      "n_methods": 3,
+      "metrics": {
+        "ndcg3": {
+          "observed": 0.0369536826044643,
+          "ci05": -0.001860939967689372,
+          "ci95": 0.07576830517661798,
+          "se_approx": 0.02359761497081759,
+          "p_one_sided_positive_approx": 0.05867521356375549
+        },
+        "hit1": {
+          "observed": 0.06086302365906446,
+          "ci05": -0.007863970787805069,
+          "ci95": 0.12959001810593399,
+          "se_approx": 0.041783045810736545,
+          "p_one_sided_positive_approx": 0.07260733542344755
+        },
+        "mass3": {
+          "observed": 0.016690892330193424,
+          "ci05": -0.00955205945634311,
+          "ci95": 0.04293384411672996,
+          "se_approx": 0.015954581828156053,
+          "p_one_sided_positive_approx": 0.1477457969700312
+        },
+        "js": {
+          "observed": 0.03732328462602569,
+          "ci05": 0.011516870077659669,
+          "ci95": 0.0631296991743917,
+          "se_approx": 0.015689186031826393,
+          "p_one_sided_positive_approx": 0.008681772669957732
+        }
+      }
+    },
+    {
+      "family_average_baseline": "Text Encoder",
+      "n_methods": 4,
+      "metrics": {
+        "ndcg3": {
+          "observed": 0.010749365525347665,
+          "ci05": -0.013756813110739927,
+          "ci95": 0.035255544161435254,
+          "se_approx": 0.014898698725859692,
+          "p_one_sided_positive_approx": 0.2353019116560171
+        },
+        "hit1": {
+          "observed": 0.032209362025930326,
+          "ci05": -0.024794831226903083,
+          "ci95": 0.08921355527876373,
+          "se_approx": 0.034656088735678846,
+          "p_one_sided_positive_approx": 0.17634096506930896
+        },
+        "mass3": {
+          "observed": 0.003471394620375508,
+          "ci05": -0.015635478825550813,
+          "ci95": 0.022578268066301827,
+          "se_approx": 0.011616154247924473,
+          "p_one_sided_positive_approx": 0.38253030636623064
+        },
+        "js": {
+          "observed": 0.02856964043702105,
+          "ci05": 0.005291729854234418,
+          "ci95": 0.05184755101980769,
+          "se_approx": 0.014151964771436406,
+          "p_one_sided_positive_approx": 0.021755276811422752
+        }
+      }
+    },
+    {
+      "family_average_baseline": "Local LLM",
+      "n_methods": 2,
+      "metrics": {
+        "ndcg3": {
+          "observed": 0.13960816579097185,
+          "ci05": 0.10162724321707908,
+          "ci95": 0.17758908836486462,
+          "se_approx": 0.023090761361110046,
+          "p_one_sided_positive_approx": 7.421467884682897e-10
+        },
+        "hit1": {
+          "observed": 0.211702762520385,
+          "ci05": 0.13273270033427664,
+          "ci95": 0.29067282470649336,
+          "se_approx": 0.048010388822541834,
+          "p_one_sided_positive_approx": 5.180003127547295e-06
+        },
+        "mass3": {
+          "observed": 0.07879522175226485,
+          "ci05": 0.04019233066345121,
+          "ci95": 0.11739811284107848,
+          "se_approx": 0.0234688913689902,
+          "p_one_sided_positive_approx": 0.00039334955700187635
+        },
+        "js": {
+          "observed": 0.22089937183794406,
+          "ci05": 0.17902034704293493,
+          "ci95": 0.26277839663295316,
+          "se_approx": 0.025460639237928174,
+          "p_one_sided_positive_approx": 0.0
+        }
+      }
+    },
+    {
+      "family_average_baseline": "Commercial API",
+      "n_methods": 4,
+      "metrics": {
+        "ndcg3": {
+          "observed": 0.057558255121008504,
+          "ci05": 0.02004831337399704,
+          "ci95": 0.09506819686801997,
+          "se_approx": 0.0228044253497081,
+          "p_one_sided_positive_approx": 0.00580147926382546
+        },
+        "hit1": {
+          "observed": 0.09414054853289948,
+          "ci05": 0.02672217660395576,
+          "ci95": 0.1615589204618432,
+          "se_approx": 0.04098745981056997,
+          "p_one_sided_positive_approx": 0.01081470728798295
+        },
+        "mass3": {
+          "observed": 0.028723395743690015,
+          "ci05": 0.0021204273974572453,
+          "ci95": 0.05532636408992278,
+          "se_approx": 0.01617345635522475,
+          "p_one_sided_positive_approx": 0.037869835702189714
+        },
+        "js": {
+          "observed": 0.1284058994625144,
+          "ci05": 0.08636169969345989,
+          "ci95": 0.17045009923156892,
+          "se_approx": 0.025561058491859925,
+          "p_one_sided_positive_approx": 2.536951499987339e-07
+        }
+      }
+    }
+  ]
+}

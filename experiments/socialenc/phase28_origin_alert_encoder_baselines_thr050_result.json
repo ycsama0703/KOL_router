@@ -1,0 +1,2513 @@
+{
+  "task": "origin_alert_encoder_baselines",
+  "origin_window": {
+    "name": "first10",
+    "max_rank": 10
+  },
+  "thresholds": [
+    0.5
+  ],
+  "targets": [
+    "log_future_adopt",
+    "log_future_reach"
+  ],
+  "metrics": [
+    "ndcg3",
+    "hit1",
+    "mass3",
+    "js"
+  ],
+  "encoder_models": {
+    "bert_base": {
+      "model": "bert-base-uncased",
+      "prefix": "",
+      "pooling": "mean"
+    },
+    "finbert_encoder": {
+      "model": "ProsusAI/finbert",
+      "prefix": "",
+      "pooling": "mean"
+    },
+    "e5_base": {
+      "model": "intfloat/e5-base-v2",
+      "prefix": "passage: ",
+      "pooling": "mean"
+    },
+    "bge_base": {
+      "model": "BAAI/bge-base-en-v1.5",
+      "prefix": "",
+      "pooling": "cls"
+    }
+  },
+  "input_boundary": "origin tweet text only for encoder rows; no OL/KOL metadata/future text",
+  "linear_feature_sets": {
+    "followers": [
+      "origin_logfoll"
+    ],
+    "visibility": [
+      "origin_logfoll",
+      "origin_verified"
+    ],
+    "rank_time": [
+      "log_origin_rank",
+      "elapsed_hours",
+      "prior_frame_count"
+    ],
+    "sentiment": [
+      "origin_stance",
+      "origin_stance_abs"
+    ],
+    "novelty": [
+      "novelty_global",
+      "novelty_event"
+    ],
+    "history": [
+      "hist_log_origin_count",
+      "hist_mean_log_adopt",
+      "hist_success_rate"
+    ],
+    "no_ol_strong": [
+      "origin_logfoll",
+      "origin_verified",
+      "log_origin_rank",
+      "elapsed_hours",
+      "prior_frame_count",
+      "origin_stance",
+      "origin_stance_abs",
+      "novelty_global",
+      "novelty_event",
+      "hist_log_origin_count",
+      "hist_mean_log_adopt",
+      "hist_success_rate"
+    ],
+    "ol_only": [
+      "origin_ol"
+    ],
+    "ol_origin": [
+      "origin_ol",
+      "origin_logfoll",
+      "origin_verified",
+      "log_origin_rank",
+      "elapsed_hours",
+      "prior_frame_count",
+      "origin_stance",
+      "origin_stance_abs",
+      "novelty_global",
+      "novelty_event",
+      "hist_log_origin_count",
+      "hist_mean_log_adopt",
+      "hist_success_rate",
+      "ol_x_visibility",
+      "ol_x_novelty"
+    ]
+  },
+  "model_selection": {
+    "thr0.50_first10:log_future_adopt:bert_base_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.7039509099577592,
+        "1.0": 0.7043727728906094,
+        "10.0": 0.7048988028166601,
+        "100.0": 0.7405734642320696,
+        "1000.0": 0.754435353365837
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_adopt:finbert_encoder_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.7453650909801592,
+        "1.0": 0.7452481163052986,
+        "10.0": 0.7555332121958229,
+        "100.0": 0.7613270741664278,
+        "1000.0": 0.7623666706192178
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_adopt:e5_base_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.763224507818777,
+        "1.0": 0.7676029232971242,
+        "10.0": 0.7756682634928945,
+        "100.0": 0.7950584613251723,
+        "1000.0": 0.8129520268628863
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_adopt:bge_base_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.7784813594402918,
+        "1.0": 0.778065667643827,
+        "10.0": 0.7775704148590905,
+        "100.0": 0.7974361773924985,
+        "1000.0": 0.8001061144706761
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_reach:bert_base_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.7366751226030448,
+        "1.0": 0.7314250080800784,
+        "10.0": 0.7339532320825268,
+        "100.0": 0.777339147979541,
+        "1000.0": 0.7777739426572764
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_reach:finbert_encoder_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.746585226489029,
+        "1.0": 0.7466801293752234,
+        "10.0": 0.7490837137921625,
+        "100.0": 0.7637850703310194,
+        "1000.0": 0.7669378735058106
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_reach:e5_base_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.752039501075232,
+        "1.0": 0.7670931566935848,
+        "10.0": 0.7683093014813849,
+        "100.0": 0.7864107381541176,
+        "1000.0": 0.7980578728324671
+      },
+      "dimension": 768
+    },
+    "thr0.50_first10:log_future_reach:bge_base_origin_text": {
+      "selected_alpha": 1000.0,
+      "inner_symbol_balanced_ndcg3": {
+        "0.1": 0.7820256023253159,
+        "1.0": 0.7832418602940604,
+        "10.0": 0.7867428670775719,
+        "100.0": 0.7940497170010002,
+        "1000.0": 0.8056294532345217
+      },
+      "dimension": 768
+    }
+  },
+  "by_setting": {
+    "thr0.50_first10": {
+      "n_rows": 10537,
+      "n_train_rows": 5634,
+      "n_val_rows": 4903,
+      "n_events": 2831,
+      "targets": {
+        "log_future_adopt": {
+          "means": {
+            "followers": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.6136834771133696,
+                "ap": 0.20957761648645135
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7283615539887314,
+                "hit1": 0.4845360824742268,
+                "mass3": 0.8698584405920669,
+                "js": 0.2951110532951977
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7735541000241026,
+                "hit1": 0.5544303446855187,
+                "mass3": 0.909768405068496,
+                "js": 0.27447784170290207
+              }
+            },
+            "visibility": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.6168619022295754,
+                "ap": 0.21226837963369755
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7307185232601358,
+                "hit1": 0.4845360824742268,
+                "mass3": 0.8735100818325006,
+                "js": 0.2951805360893814
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7764529215692724,
+                "hit1": 0.5544303446855187,
+                "mass3": 0.9121058737227858,
+                "js": 0.27453316435089875
+              }
+            },
+            "rank_time": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.6564763269406084,
+                "ap": 0.18429451610777822
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7025685719757813,
+                "hit1": 0.3974799541809851,
+                "mass3": 0.8873422834808433,
+                "js": 0.2911631927211893
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.749143757628302,
+                "hit1": 0.4930096218899055,
+                "mass3": 0.9095918635465563,
+                "js": 0.26960975322352154
+              }
+            },
+            "sentiment": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.5297337677685113,
+                "ap": 0.1502902625034755
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.6867834043284059,
+                "hit1": 0.3974799541809851,
+                "mass3": 0.8686177335486035,
+                "js": 0.29874242622148134
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7332195918955913,
+                "hit1": 0.48812457289043865,
+                "mass3": 0.8962582330078548,
+                "js": 0.27933051710944823
+              }
+            },
+            "novelty": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.5510494746823333,
+                "ap": 0.13553311414458613
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.6562533649790254,
+                "hit1": 0.32531500572737687,
+                "mass3": 0.8578915679738998,
+                "js": 0.2971218964266486
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7083412782629289,
+                "hit1": 0.4052448562269102,
+                "mass3": 0.9033323162240623,
+                "js": 0.27793625257919435
+              }
+            },
+            "history": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.6430676427389674,
+                "ap": 0.21458120305068545
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7251662094190728,
+                "hit1": 0.4742268041237113,
+                "mass3": 0.8772689706665568,
+                "js": 0.29270073185362433
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7250471179737512,
+                "hit1": 0.4494498868113502,
+                "mass3": 0.8996927341068726,
+                "js": 0.2769952043985028
+              }
+            },
+            "no_ol_strong": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.7018873240031063,
+                "ap": 0.254467563008209
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7492589381432514,
+                "hit1": 0.4868270332187858,
+                "mass3": 0.9018312474093636,
+                "js": 0.28114279344788967
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7787622098061069,
+                "hit1": 0.5547703311635499,
+                "mass3": 0.9204363320689596,
+                "js": 0.26157579238562656
+              }
+            },
+            "ol_only": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.5622536254515987,
+                "ap": 0.1524903305682971
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.656339277019739,
+                "hit1": 0.3241695303550974,
+                "mass3": 0.8580670116489508,
+                "js": 0.2978522322513202
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.6833735403571641,
+                "hit1": 0.3480030014587112,
+                "mass3": 0.8948824672190274,
+                "js": 0.27951708481670556
+              }
+            },
+            "ol_origin": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.7194989715928914,
+                "ap": 0.28456331650763567
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7633710360487379,
+                "hit1": 0.5166093928980527,
+                "mass3": 0.9095372191108212,
+                "js": 0.27905747026168254
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7873848150516387,
+                "hit1": 0.5781736075163219,
+                "mass3": 0.9193026777445432,
+                "js": 0.26008024234084914
+              }
+            },
+            "bert_base_origin_text": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.7327245894812664,
+                "ap": 0.3341514909078219
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.8021392293140472,
+                "hit1": 0.5807560137457045,
+                "mass3": 0.9288246406066715,
+                "js": 0.27500923040721637
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.8045425379917353,
+                "hit1": 0.5439474957289132,
+                "mass3": 0.9553941733455148,
+                "js": 0.2613211419855823
+              }
+            },
+            "finbert_encoder_origin_text": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.7311826822433062,
+                "ap": 0.36908078384863857
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7728334544486082,
+                "hit1": 0.5567010309278351,
+                "mass3": 0.8993709234934563,
+                "js": 0.2774286165032966
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7955718463079694,
+                "hit1": 0.5508636239739702,
+                "mass3": 0.9371258030647771,
+                "js": 0.25883217603757214
+              }
+            },
+            "e5_base_origin_text": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.7480771882139762,
+                "ap": 0.3790208695135315
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7771397661121752,
+                "hit1": 0.5532646048109966,
+                "mass3": 0.9076785380823277,
+                "js": 0.2736832967153219
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.8088855897452053,
+                "hit1": 0.5732449976001728,
+                "mass3": 0.9413890077317554,
+                "js": 0.2589019842435192
+              }
+            },
+            "bge_base_origin_text": {
+              "global_top10": {
+                "train_q90": 1.0986122886681096,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.13705894350397715,
+                "auc": 0.73652308358938,
+                "ap": 0.3672489367912634
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.8028984195632649,
+                "hit1": 0.5945017182130584,
+                "mass3": 0.9200420163298041,
+                "js": 0.27150307841425847
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.8181865084446676,
+                "hit1": 0.6260914090453349,
+                "mass3": 0.9356303438116127,
+                "js": 0.25446228015866657
+              }
+            }
+          },
+          "comparisons": {
+            "ol_origin_vs_followers": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03500948206000643,
+                  "ci05": 0.016468336207850598,
+                  "ci95": 0.05330475391530473,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.013830715027536054,
+                  "ci05": -0.030995928678248227,
+                  "ci95": 0.05657965472809886,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.032073310423825885,
+                  "ci05": -0.004581901489117984,
+                  "ci95": 0.06643757159221077,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.02374326283080313,
+                  "ci05": -0.08817790814674852,
+                  "ci95": 0.14219928438065021,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03967877851875429,
+                  "ci05": 0.022634598290061043,
+                  "ci95": 0.05729776158081284,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.009534272676047196,
+                  "ci05": -0.03032261870112625,
+                  "ci95": 0.038350262116377064,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.016053583033515194,
+                  "ci05": 0.014288750395177552,
+                  "ci95": 0.017881603179607207,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.014397599362052902,
+                  "ci05": 0.010120647569553536,
+                  "ci95": 0.01931226207639432,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_visibility": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03265251278860207,
+                  "ci05": 0.014110986694582646,
+                  "ci95": 0.051730130163801104,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.010931893482366253,
+                  "ci05": -0.035875513121181896,
+                  "ci95": 0.05710907793155421,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.032073310423825885,
+                  "ci05": -5.727376861397155e-05,
+                  "ci95": 0.06758304696449026,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.02374326283080313,
+                  "ci05": -0.0901017754600851,
+                  "ci95": 0.12027894202924794,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.0360271372783207,
+                  "ci05": 0.015067756472191062,
+                  "ci95": 0.05710096482614242,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.0071968040217573696,
+                  "ci05": -0.026167470245110812,
+                  "ci95": 0.033653057874840395,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.016123065827698832,
+                  "ci05": 0.014299440462967628,
+                  "ci95": 0.01814936058611118,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.014452922010049593,
+                  "ci05": 0.009421479173690813,
+                  "ci95": 0.019049115790583316,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_rank_time": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.060802464072956676,
+                  "ci05": 0.048867847511742404,
+                  "ci95": 0.07285900356873704,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.03824105742333672,
+                  "ci05": 0.0029125240736151653,
+                  "ci95": 0.06663776420093263,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.11912943871706758,
+                  "ci05": 0.09278350515463918,
+                  "ci95": 0.145475372279496,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.08516398562641628,
+                  "ci05": 0.017788921333457514,
+                  "ci95": 0.14948453863525013,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.02219493562997791,
+                  "ci05": 0.008947408636925327,
+                  "ci95": 0.03548635466695996,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.009710814197986969,
+                  "ci05": -0.016825670023086794,
+                  "ci95": 0.03613358744620714,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.012105722459506764,
+                  "ci05": 0.010771989535905394,
+                  "ci95": 0.013452312406577228,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.009529510882672398,
+                  "ci05": 0.005212467129314622,
+                  "ci95": 0.013762627099319613,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_sentiment": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.07658763172033183,
+                  "ci05": 0.05834952068713867,
+                  "ci95": 0.0940594412201729,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.05416522315604744,
+                  "ci05": 0.0181447932658664,
+                  "ci95": 0.09234685280912705,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.11912943871706758,
+                  "ci05": 0.08705612829324169,
+                  "ci95": 0.15578465063001146,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.09004903462588316,
+                  "ci05": 0.008014486794853717,
+                  "ci95": 0.16780372167061097,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.04091948556221771,
+                  "ci05": 0.024369409008238314,
+                  "ci95": 0.05874569488417025,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.023044444736688426,
+                  "ci05": -0.008633047223165819,
+                  "ci95": 0.05089257885732636,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.019684955959798783,
+                  "ci05": 0.017672292402918975,
+                  "ci95": 0.021703378311142683,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.01925027476859907,
+                  "ci05": 0.014507401920193045,
+                  "ci95": 0.02387510319874783,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_novelty": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.10711767106971247,
+                  "ci05": 0.09051112034451972,
+                  "ci95": 0.1241673288852223,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.07904353678870983,
+                  "ci05": 0.02900636101948262,
+                  "ci95": 0.12783944171514822,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.19129438717067582,
+                  "ci05": 0.16151202749140894,
+                  "ci95": 0.21769759450171816,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.17292875128941163,
+                  "ci05": 0.0795900103904629,
+                  "ci95": 0.2682825555413758,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.05164565113692146,
+                  "ci05": 0.03463787063260607,
+                  "ci95": 0.06842234521210866,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.015970361520480883,
+                  "ci05": -0.029599760708282383,
+                  "ci95": 0.061255140309005945,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.01806442616496607,
+                  "ci05": 0.016353243422104903,
+                  "ci95": 0.019711960183534646,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.017856010238345224,
+                  "ci05": 0.0144409256916399,
+                  "ci95": 0.021595457857519904,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_history": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.038204826629665144,
+                  "ci05": 0.019253521782630772,
+                  "ci95": 0.05582195145033867,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.062337697077887604,
+                  "ci05": 0.012243397158810334,
+                  "ci95": 0.11102766357014457,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.042382588774341354,
+                  "ci05": 0.009163802978235968,
+                  "ci95": 0.07560137457044673,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.1287237207049716,
+                  "ci05": -0.00607861007279746,
+                  "ci95": 0.2545364306892217,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03226824844426442,
+                  "ci05": 0.013295533473658068,
+                  "ci95": 0.05042243136084321,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.019609943637670595,
+                  "ci05": -0.019228054326120406,
+                  "ci95": 0.06208506696504464,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.013643261591941739,
+                  "ci05": 0.011963509897595086,
+                  "ci95": 0.015341628713349962,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.016914962057653637,
+                  "ci05": 0.011629600215166801,
+                  "ci95": 0.02232708032445576,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_no_ol_strong": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.01411209790548641,
+                  "ci05": 0.006645800777898579,
+                  "ci95": 0.021426289777597106,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.008622605245531849,
+                  "ci05": -0.02031071871563662,
+                  "ci95": 0.03792983364927737,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.029782359679266894,
+                  "ci05": 0.012600229095074456,
+                  "ci95": 0.045819014891179836,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.023403276352771993,
+                  "ci05": -0.03940257653799567,
+                  "ci95": 0.07611175957950424,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.007705971701457496,
+                  "ci05": -0.0022144184753400773,
+                  "ci95": 0.017016185825002278,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.0011336543244164301,
+                  "ci05": -0.031567673351746435,
+                  "ci95": 0.027888370162284477,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.0020853231862071027,
+                  "ci05": 0.0014890387735347096,
+                  "ci95": 0.0026427574685085205,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.0014955500447773992,
+                  "ci05": -0.001177392794592272,
+                  "ci95": 0.004503283842031962,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_ol_only": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.10703175902899892,
+                  "ci05": 0.08755565055823485,
+                  "ci95": 0.12546516018026976,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.10401127469447455,
+                  "ci05": 0.053860025964261565,
+                  "ci95": 0.15817802780598195,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.19243986254295534,
+                  "ci05": 0.16030927835051548,
+                  "ci95": 0.2256586483390607,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.23017060605761058,
+                  "ci05": 0.11453133158461778,
+                  "ci95": 0.3497722900568642,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.05147020746187039,
+                  "ci05": 0.0319671135594041,
+                  "ci95": 0.07144909885713571,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.024420210525515747,
+                  "ci05": -0.016953204200588965,
+                  "ci95": 0.06089696838617336,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.018794761989637643,
+                  "ci05": 0.016757906782919527,
+                  "ci95": 0.020824183052366538,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.01943684247585645,
+                  "ci05": 0.014795461767838051,
+                  "ci95": 0.02440381525949086,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_bert_base_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.038768193265309364,
+                  "ci05": -0.056366673317473005,
+                  "ci95": -0.017019221148634998,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.017157722940096487,
+                  "ci05": -0.0682282876055518,
+                  "ci95": 0.03245994361324047,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.06414662084765177,
+                  "ci05": -0.10080183276059565,
+                  "ci95": -0.02972508591065297,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.03422611178740867,
+                  "ci05": -0.0651268856194128,
+                  "ci95": 0.15355250396929157,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": -0.019287421495850176,
+                  "ci05": -0.03929709354785445,
+                  "ci95": -0.0014801641588839812,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.03609149560097159,
+                  "ci05": -0.0742342284827177,
+                  "ci95": -0.0023684024307453395,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.004048239854466225,
+                  "ci05": -0.006597746348191591,
+                  "ci95": -0.0016908276062792718,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.0012408996447331622,
+                  "ci05": -0.00596594591578304,
+                  "ci95": 0.009876736611657227,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_finbert_encoder_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.009462418399870326,
+                  "ci05": -0.03163177107146638,
+                  "ci95": 0.011111110952347363,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.008187031256330704,
+                  "ci05": -0.060393139360850036,
+                  "ci95": 0.04089342226709571,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.04009163802978236,
+                  "ci05": -0.07331042382588775,
+                  "ci95": -0.003436426116838488,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.027309983542351618,
+                  "ci05": -0.08529511474307981,
+                  "ci95": 0.15772566840864632,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.010166295617364908,
+                  "ci05": -0.008335045874953054,
+                  "ci95": 0.03156030622029022,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.01782312532023394,
+                  "ci05": -0.060808853604102917,
+                  "ci95": 0.01642888212857574,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.001628853758385998,
+                  "ci05": -0.003934877992946172,
+                  "ci95": 0.000951630829413073,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.0012480663032769829,
+                  "ci05": -0.007835031288217185,
+                  "ci95": 0.00528671061245631,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_e5_base_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.013768730063437198,
+                  "ci05": -0.0323458552619836,
+                  "ci95": 0.006520126180618872,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.021500774693566545,
+                  "ci05": -0.08009045576377792,
+                  "ci95": 0.026178152455877304,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.03665521191294387,
+                  "ci05": -0.07674684994272624,
+                  "ci95": 0.001145475372279496,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.004928609916149036,
+                  "ci05": -0.0981233890917672,
+                  "ci95": 0.11619028050383545,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.0018586810284935223,
+                  "ci05": -0.014796344899660675,
+                  "ci95": 0.019731943569069325,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.022086329987212182,
+                  "ci05": -0.07063415068484744,
+                  "ci95": 0.012829972195624872,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.005374173546360667,
+                  "ci05": -0.007832941501278397,
+                  "ci95": -0.0026844524895905035,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.0011782580973299906,
+                  "ci05": -0.008764235859875602,
+                  "ci95": 0.008028173546897699,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_bge_base_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.03952738351452695,
+                  "ci05": -0.059368201558835786,
+                  "ci95": -0.023438003603811642,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.03080169339302883,
+                  "ci05": -0.08467494321516664,
+                  "ci95": 0.019926177961261688,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.07789232531500573,
+                  "ci05": -0.1145475372279496,
+                  "ci95": -0.042382588774341354,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.04791780152901306,
+                  "ci05": -0.16744447133837156,
+                  "ci95": 0.06659500605699509,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": -0.01050479721898295,
+                  "ci05": -0.02784487219312228,
+                  "ci95": 0.00742778733473488,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.016327666067069486,
+                  "ci05": -0.05463167287924154,
+                  "ci95": 0.018738806213923712,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.007554391847424033,
+                  "ci05": -0.010094664196642272,
+                  "ci95": -0.004899686699317832,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.005617962182182553,
+                  "ci05": -0.013152268756930003,
+                  "ci95": 0.0026456956627823104,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            }
+          }
+        },
+        "log_future_reach": {
+          "means": {
+            "followers": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.59424228635176,
+                "ap": 0.13265873995745928
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7364331885406765,
+                "hit1": 0.4650630011454754,
+                "mass3": 0.8694902548451814,
+                "js": 0.2721439987591991
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.780769010999155,
+                "hit1": 0.5204717618703443,
+                "mass3": 0.9096486514369885,
+                "js": 0.24253486034362373
+              }
+            },
+            "visibility": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.5973130669641546,
+                "ap": 0.13293666252181913
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7389628068590357,
+                "hit1": 0.4650630011454754,
+                "mass3": 0.8734866581912256,
+                "js": 0.2718089021683326
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7837717179620172,
+                "hit1": 0.5204717618703443,
+                "mass3": 0.9122246717642224,
+                "js": 0.24175416544161216
+              }
+            },
+            "rank_time": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.6526098699468632,
+                "ap": 0.13341354836200783
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7078095333599502,
+                "hit1": 0.3699885452462772,
+                "mass3": 0.8863761647000407,
+                "js": 0.31749319716084223
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7529334683061368,
+                "hit1": 0.46715476965242864,
+                "mass3": 0.9096504819205713,
+                "js": 0.2752997606767613
+              }
+            },
+            "sentiment": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.5275616749356584,
+                "ap": 0.10820047899234492
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.6929143149178058,
+                "hit1": 0.36769759450171824,
+                "mass3": 0.8679966645623131,
+                "js": 0.2975999983364986
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7390115217775282,
+                "hit1": 0.4458032031666076,
+                "mass3": 0.8966156527932241,
+                "js": 0.27671853264755303
+              }
+            },
+            "novelty": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.5451450253941227,
+                "ap": 0.09216353185391461
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.6629614451270649,
+                "hit1": 0.30698739977090495,
+                "mass3": 0.8570206570184101,
+                "js": 0.33142095372920555
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7125878136548487,
+                "hit1": 0.361291856893802,
+                "mass3": 0.9032178465738083,
+                "js": 0.3076755789163535
+              }
+            },
+            "history": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.6456472810185049,
+                "ap": 0.16587948654964857
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7290738594176296,
+                "hit1": 0.44902634593356244,
+                "mass3": 0.8696713573686201,
+                "js": 0.2762499505692109
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7248999386390302,
+                "hit1": 0.4171682835290091,
+                "mass3": 0.8920272630340352,
+                "js": 0.2821997913534381
+              }
+            },
+            "no_ol_strong": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.6986688880407872,
+                "ap": 0.1673703776389338
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7546602946257419,
+                "hit1": 0.46964490263459335,
+                "mass3": 0.8985355176101067,
+                "js": 0.2758966188235203
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7875131155939791,
+                "hit1": 0.5223537580796009,
+                "mass3": 0.9204375180024825,
+                "js": 0.24933341272182294
+              }
+            },
+            "ol_only": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.5722423646380725,
+                "ap": 0.11755472644442705
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.6627346365707265,
+                "hit1": 0.3035509736540664,
+                "mass3": 0.8577156671391959,
+                "js": 0.3107470064374665
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.6871359655722131,
+                "hit1": 0.3114337590161846,
+                "mass3": 0.8945986787623683,
+                "js": 0.2982546104042986
+              }
+            },
+            "ol_origin": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.7044009139926998,
+                "ap": 0.1718966974868791
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7645447916169887,
+                "hit1": 0.4833906071019473,
+                "mass3": 0.9030315847664301,
+                "js": 0.26907483605937027
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7950384925904981,
+                "hit1": 0.5436650373208027,
+                "mass3": 0.9193977252426866,
+                "js": 0.24196525567493163
+              }
+            },
+            "bert_base_origin_text": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.7170754680053626,
+                "ap": 0.2067400180399963
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.8064552322932163,
+                "hit1": 0.5589919816723941,
+                "mass3": 0.9193670261010198,
+                "js": 0.23634402722346118
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.8000175675862098,
+                "hit1": 0.5095352451525553,
+                "mass3": 0.9320216725524731,
+                "js": 0.24993242931573187
+              }
+            },
+            "finbert_encoder_origin_text": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.7012645685934885,
+                "ap": 0.21097793650664065
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7782785875434419,
+                "hit1": 0.5223367697594502,
+                "mass3": 0.9043576134375705,
+                "js": 0.25351123026354183
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7818035618505007,
+                "hit1": 0.508939714866932,
+                "mass3": 0.9270395487149456,
+                "js": 0.2515535537140532
+              }
+            },
+            "e5_base_origin_text": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.7040378612179393,
+                "ap": 0.20303277959327828
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7660120290963294,
+                "hit1": 0.47766323024054985,
+                "mass3": 0.9059248829029848,
+                "js": 0.27243032154320007
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.7872988732976481,
+                "hit1": 0.4974406510200806,
+                "mass3": 0.9253904042005413,
+                "js": 0.26775230342195455
+              }
+            },
+            "bge_base_origin_text": {
+              "global_top10": {
+                "train_q90": 14.14445694894943,
+                "n_train": 5634,
+                "n_val": 4903,
+                "val_positive_rate": 0.09382011013665104,
+                "auc": 0.6969544177944789,
+                "ap": 0.1940272274823666
+              },
+              "n_events": 873,
+              "n_symbols": 16,
+              "pooled": {
+                "ndcg3": 0.7997599157784705,
+                "hit1": 0.5280641466208477,
+                "mass3": 0.9293925282244632,
+                "js": 0.24859925418041673
+              },
+              "symbol_balanced": {
+                "ndcg3": 0.8189909522805983,
+                "hit1": 0.5562218091484129,
+                "mass3": 0.9418817440658056,
+                "js": 0.2276124314191623
+              }
+            }
+          },
+          "comparisons": {
+            "ol_origin_vs_followers": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.028111603076312257,
+                  "ci05": 0.009344125382296866,
+                  "ci95": 0.04649234109729038,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.014269481591343136,
+                  "ci05": -0.030303428653060804,
+                  "ci95": 0.05796386432239279,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.018327605956471937,
+                  "ci05": -0.017239404352806412,
+                  "ci95": 0.050458190148911744,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.023193275450458604,
+                  "ci05": -0.08340496068056846,
+                  "ci95": 0.1313113072736179,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.033541329921248746,
+                  "ci05": 0.015881304303526616,
+                  "ci95": 0.05370291277756771,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.009749073805698205,
+                  "ci05": -0.02361169135745335,
+                  "ci95": 0.04187445187717751,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.0030691626998288093,
+                  "ci05": -0.009057734478459452,
+                  "ci95": 0.01469579316845996,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.0005696046686920839,
+                  "ci05": -0.033014024998572374,
+                  "ci95": 0.03735414543503044,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_visibility": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.025581984757952935,
+                  "ci05": 0.0067587928390389195,
+                  "ci95": 0.04404854085372716,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.01126677462848089,
+                  "ci05": -0.03165904144361381,
+                  "ci95": 0.05402101659376252,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.018327605956471937,
+                  "ci05": -0.018327605956471937,
+                  "ci95": 0.052691867124856816,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.023193275450458604,
+                  "ci05": -0.07602762919925748,
+                  "ci95": 0.13052417483928186,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.029544926575204335,
+                  "ci05": 0.010196408812823415,
+                  "ci95": 0.04878131930716845,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.0071730534784642495,
+                  "ci05": -0.026067020123496903,
+                  "ci95": 0.0365300072343021,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.0027340661089623242,
+                  "ci05": -0.008473590077848423,
+                  "ci95": 0.013512445538640736,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.0002110902333195006,
+                  "ci05": -0.035758654649048524,
+                  "ci95": 0.03197964202792775,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_rank_time": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.056735258257038595,
+                  "ci05": 0.04289555816405644,
+                  "ci95": 0.07060507335671772,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.04210502428436129,
+                  "ci05": 0.006922706845647,
+                  "ci95": 0.07075903184648585,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.1134020618556701,
+                  "ci05": 0.08476517754868271,
+                  "ci95": 0.13974799541809851,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.07651026766837421,
+                  "ci05": 0.02138969403901721,
+                  "ci95": 0.14054057363253225,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.016655420066389367,
+                  "ci05": 0.0033871254000653497,
+                  "ci95": 0.031120010675712,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.009747243322115377,
+                  "ci05": -0.020250797040225574,
+                  "ci95": 0.040633125976988295,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.04841836110147196,
+                  "ci05": 0.0387676216708229,
+                  "ci95": 0.057876821347565964,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.033334505001829634,
+                  "ci05": 0.00693509354243466,
+                  "ci95": 0.05637101205242246,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_sentiment": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.07163047669918308,
+                  "ci05": 0.054501238912465846,
+                  "ci95": 0.08938270388037185,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.056026970812970034,
+                  "ci05": 0.01687605826233421,
+                  "ci95": 0.1021544509233563,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.1156930126002291,
+                  "ci05": 0.0836197021764032,
+                  "ci95": 0.14891179839633448,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.09786183415419522,
+                  "ci05": 0.023698591808026817,
+                  "ci95": 0.16792807969928467,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03503492020411702,
+                  "ci05": 0.01729430567743411,
+                  "ci95": 0.05116122665308749,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.022782072449462537,
+                  "ci05": -0.0053756876748375345,
+                  "ci95": 0.05402791126915396,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.028525162277128282,
+                  "ci05": 0.016929234982941944,
+                  "ci95": 0.03918788062702051,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.034753276972621414,
+                  "ci05": 7.798009295993844e-06,
+                  "ci95": 0.06349905824395914,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_novelty": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.10158334648992391,
+                  "ci05": 0.08677186807048283,
+                  "ci95": 0.11739237778715347,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.08245067893564934,
+                  "ci05": 0.034593153422591706,
+                  "ci95": 0.12791296593188062,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.1764032073310424,
+                  "ci05": 0.145475372279496,
+                  "ci95": 0.2050973654066437,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.1823731804270008,
+                  "ci05": 0.06907975797965901,
+                  "ci95": 0.2962363993982782,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.04601092774801991,
+                  "ci05": 0.02973272545064166,
+                  "ci95": 0.061965247662924904,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.016179878668878312,
+                  "ci05": -0.03556955800403915,
+                  "ci95": 0.05861407954327265,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.062346117669835215,
+                  "ci05": 0.05209311324593537,
+                  "ci95": 0.07402909373280861,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.06571032324142187,
+                  "ci05": 0.0388024905907023,
+                  "ci95": 0.09277678810900947,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_history": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03547093219935916,
+                  "ci05": 0.017175240740260455,
+                  "ci95": 0.050470658037337045,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.07013855395146787,
+                  "ci05": 0.02180242502328342,
+                  "ci95": 0.11874406670312694,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.03436426116838488,
+                  "ci05": 0.001145475372279496,
+                  "ci95": 0.06529209621993128,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.12649675379179373,
+                  "ci05": 0.002520290671953412,
+                  "ci95": 0.24790779717977635,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.03336022739780981,
+                  "ci05": 0.01458701511688487,
+                  "ci95": 0.053490679962395815,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.027370462208651393,
+                  "ci05": -0.014130964499204295,
+                  "ci95": 0.06527533997638603,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.00717511450984063,
+                  "ci05": -0.004333290415234606,
+                  "ci95": 0.01827047197200979,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.04023453567850646,
+                  "ci05": -0.0013327587774363589,
+                  "ci95": 0.07905579610321414,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_no_ol_strong": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.009884496991246878,
+                  "ci05": 0.0019344029955622897,
+                  "ci95": 0.01691724566698055,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.007525376996519105,
+                  "ci05": -0.017348504781327413,
+                  "ci95": 0.03630098636638536,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.013745704467353952,
+                  "ci05": -0.003436426116838488,
+                  "ci95": 0.029839633447880817,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.02131127924120196,
+                  "ci05": -0.023951308668434746,
+                  "ci95": 0.07216732353724656,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.004496067156323335,
+                  "ci05": -0.004332310380955292,
+                  "ci95": 0.01310951493337586,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.0010397927597958307,
+                  "ci05": -0.03063283761728209,
+                  "ci95": 0.02670655474218898,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.006821782764150056,
+                  "ci05": 0.0025326283344950643,
+                  "ci95": 0.010823945383785507,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.007368157046891317,
+                  "ci05": -0.01224101093624269,
+                  "ci95": 0.02655840239678212,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_ol_only": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": 0.10181015504626222,
+                  "ci05": 0.08257899458891761,
+                  "ci95": 0.11984363090915605,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.10790252701828508,
+                  "ci05": 0.057946450767580884,
+                  "ci95": 0.15712870838492707,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.17983963344788087,
+                  "ci05": 0.14421534936998853,
+                  "ci95": 0.21655211912943867,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.23223127830461823,
+                  "ci05": 0.11771278638925088,
+                  "ci95": 0.35207713602559154,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": 0.045315917627234234,
+                  "ci05": 0.02509147138578354,
+                  "ci95": 0.0663153180350605,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.024799046480318315,
+                  "ci05": -0.014243504215181136,
+                  "ci95": 0.06184198563210673,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.04167217037809625,
+                  "ci05": 0.028409324195541135,
+                  "ci95": 0.05457272333466711,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.05628935472936696,
+                  "ci05": 0.019691060866143285,
+                  "ci95": 0.08996912198781136,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_bert_base_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.041910440676227546,
+                  "ci05": -0.05997430124924924,
+                  "ci95": -0.02135631010296219,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.004979074995711765,
+                  "ci05": -0.05622489059064739,
+                  "ci95": 0.04757593850021998,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.07560137457044673,
+                  "ci05": -0.10996563573883161,
+                  "ci95": -0.038946162657502864,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.034129792168247554,
+                  "ci05": -0.09495702447829539,
+                  "ci95": 0.16323735320951618,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": -0.016335441334589893,
+                  "ci05": -0.035210173715979114,
+                  "ci95": 0.0016933070134260025,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.012623947309786445,
+                  "ci05": -0.052597977357979726,
+                  "ci95": 0.02711094108040886,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.032730808835909085,
+                  "ci05": -0.04838842782823601,
+                  "ci95": -0.017648791359468126,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.007967173640800226,
+                  "ci05": -0.03762857239632993,
+                  "ci95": 0.06284382417974647,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_finbert_encoder_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.013733795926453218,
+                  "ci05": -0.031768926397792524,
+                  "ci95": 0.006030612705768951,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.013234930739997436,
+                  "ci05": -0.03719157602913908,
+                  "ci95": 0.06717355643073107,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.038946162657502864,
+                  "ci05": -0.07445589919816724,
+                  "ci95": -0.003436426116838488,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.03472532245387078,
+                  "ci05": -0.09803371870194286,
+                  "ci95": 0.1887958036534554,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": -0.0013260286711403836,
+                  "ci05": -0.020294077227388924,
+                  "ci95": 0.017942965061455037,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.007641823472258936,
+                  "ci05": -0.042357671405110126,
+                  "ci95": 0.02055710380064776,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.015563605795828406,
+                  "ci05": -0.029855147213856546,
+                  "ci95": -0.0005701409575121747,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.009588298039121498,
+                  "ci05": -0.037360575199299216,
+                  "ci95": 0.0599857033128357,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_e5_base_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.0014672374793406058,
+                  "ci05": -0.019675148966972776,
+                  "ci95": 0.018239733268989408,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.007739619292850023,
+                  "ci05": -0.0459347555218937,
+                  "ci95": 0.06292961414850994,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": 0.0057273768613974796,
+                  "ci05": -0.030927835051546393,
+                  "ci95": 0.043528064146620846,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.046224386300722176,
+                  "ci05": -0.08061193133562196,
+                  "ci95": 0.15743243966135986,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": -0.002893298136554811,
+                  "ci05": -0.0218074077636852,
+                  "ci95": 0.014570419162885123,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.0059926789578547,
+                  "ci05": -0.05106454506488932,
+                  "ci95": 0.03398713540656251,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": 0.0033554854838297545,
+                  "ci05": -0.011667158188631411,
+                  "ci95": 0.01838892305624332,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": 0.02578704774702292,
+                  "ci05": -0.022865672691768306,
+                  "ci95": 0.08371134017086096,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            },
+            "ol_origin_vs_bge_base_origin_text": {
+              "ndcg3": {
+                "pooled_bootstrap": {
+                  "observed": -0.03521512416148179,
+                  "ci05": -0.0531186678196398,
+                  "ci95": -0.01866790897509591,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.023952459690100163,
+                  "ci05": -0.07394032115905995,
+                  "ci95": 0.027230591146115313,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "hit1": {
+                "pooled_bootstrap": {
+                  "observed": -0.044673539518900345,
+                  "ci05": -0.0802405498281787,
+                  "ci95": -0.009163802978235968,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.012556771827610093,
+                  "ci05": -0.13974056356922196,
+                  "ci95": 0.12311534804846884,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "mass3": {
+                "pooled_bootstrap": {
+                  "observed": -0.02636094345803316,
+                  "ci05": -0.041607987313637476,
+                  "ci95": -0.008420566842539888,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.022484018823118835,
+                  "ci05": -0.06638439848869454,
+                  "ci95": 0.012118631566316663,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              },
+              "js": {
+                "pooled_bootstrap": {
+                  "observed": -0.02047558187895353,
+                  "ci05": -0.033525934174337295,
+                  "ci95": -0.005819679522381047,
+                  "n_events": 873
+                },
+                "symbol_balanced_bootstrap": {
+                  "observed": -0.014352824255769362,
+                  "ci05": -0.06313473306368234,
+                  "ci95": 0.03429594152353577,
+                  "n_symbols": 16,
+                  "n_events": 873
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "main_region_mean": {
+    "followers": {
+      "log_future_adopt": {
+        "ndcg3": 0.7735541000241026,
+        "hit1": 0.5544303446855187,
+        "mass3": 0.909768405068496,
+        "js": 0.27447784170290207
+      },
+      "log_future_reach": {
+        "ndcg3": 0.780769010999155,
+        "hit1": 0.5204717618703443,
+        "mass3": 0.9096486514369885,
+        "js": 0.24253486034362373
+      }
+    },
+    "visibility": {
+      "log_future_adopt": {
+        "ndcg3": 0.7764529215692724,
+        "hit1": 0.5544303446855187,
+        "mass3": 0.9121058737227858,
+        "js": 0.27453316435089875
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7837717179620172,
+        "hit1": 0.5204717618703443,
+        "mass3": 0.9122246717642224,
+        "js": 0.24175416544161216
+      }
+    },
+    "rank_time": {
+      "log_future_adopt": {
+        "ndcg3": 0.749143757628302,
+        "hit1": 0.4930096218899055,
+        "mass3": 0.9095918635465563,
+        "js": 0.26960975322352154
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7529334683061368,
+        "hit1": 0.46715476965242864,
+        "mass3": 0.9096504819205713,
+        "js": 0.2752997606767613
+      }
+    },
+    "sentiment": {
+      "log_future_adopt": {
+        "ndcg3": 0.7332195918955913,
+        "hit1": 0.48812457289043865,
+        "mass3": 0.8962582330078548,
+        "js": 0.27933051710944823
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7390115217775282,
+        "hit1": 0.4458032031666076,
+        "mass3": 0.8966156527932241,
+        "js": 0.27671853264755303
+      }
+    },
+    "novelty": {
+      "log_future_adopt": {
+        "ndcg3": 0.7083412782629289,
+        "hit1": 0.4052448562269102,
+        "mass3": 0.9033323162240623,
+        "js": 0.27793625257919435
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7125878136548487,
+        "hit1": 0.361291856893802,
+        "mass3": 0.9032178465738083,
+        "js": 0.3076755789163535
+      }
+    },
+    "history": {
+      "log_future_adopt": {
+        "ndcg3": 0.7250471179737512,
+        "hit1": 0.4494498868113502,
+        "mass3": 0.8996927341068726,
+        "js": 0.2769952043985028
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7248999386390302,
+        "hit1": 0.4171682835290091,
+        "mass3": 0.8920272630340352,
+        "js": 0.2821997913534381
+      }
+    },
+    "no_ol_strong": {
+      "log_future_adopt": {
+        "ndcg3": 0.7787622098061069,
+        "hit1": 0.5547703311635499,
+        "mass3": 0.9204363320689596,
+        "js": 0.26157579238562656
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7875131155939791,
+        "hit1": 0.5223537580796009,
+        "mass3": 0.9204375180024825,
+        "js": 0.24933341272182294
+      }
+    },
+    "ol_only": {
+      "log_future_adopt": {
+        "ndcg3": 0.6833735403571641,
+        "hit1": 0.3480030014587112,
+        "mass3": 0.8948824672190274,
+        "js": 0.27951708481670556
+      },
+      "log_future_reach": {
+        "ndcg3": 0.6871359655722131,
+        "hit1": 0.3114337590161846,
+        "mass3": 0.8945986787623683,
+        "js": 0.2982546104042986
+      }
+    },
+    "ol_origin": {
+      "log_future_adopt": {
+        "ndcg3": 0.7873848150516387,
+        "hit1": 0.5781736075163219,
+        "mass3": 0.9193026777445432,
+        "js": 0.26008024234084914
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7950384925904981,
+        "hit1": 0.5436650373208027,
+        "mass3": 0.9193977252426866,
+        "js": 0.24196525567493163
+      }
+    },
+    "bert_base_origin_text": {
+      "log_future_adopt": {
+        "ndcg3": 0.8045425379917353,
+        "hit1": 0.5439474957289132,
+        "mass3": 0.9553941733455148,
+        "js": 0.2613211419855823
+      },
+      "log_future_reach": {
+        "ndcg3": 0.8000175675862098,
+        "hit1": 0.5095352451525553,
+        "mass3": 0.9320216725524731,
+        "js": 0.24993242931573187
+      }
+    },
+    "finbert_encoder_origin_text": {
+      "log_future_adopt": {
+        "ndcg3": 0.7955718463079694,
+        "hit1": 0.5508636239739702,
+        "mass3": 0.9371258030647771,
+        "js": 0.25883217603757214
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7818035618505007,
+        "hit1": 0.508939714866932,
+        "mass3": 0.9270395487149456,
+        "js": 0.2515535537140532
+      }
+    },
+    "e5_base_origin_text": {
+      "log_future_adopt": {
+        "ndcg3": 0.8088855897452053,
+        "hit1": 0.5732449976001728,
+        "mass3": 0.9413890077317554,
+        "js": 0.2589019842435192
+      },
+      "log_future_reach": {
+        "ndcg3": 0.7872988732976481,
+        "hit1": 0.4974406510200806,
+        "mass3": 0.9253904042005413,
+        "js": 0.26775230342195455
+      }
+    },
+    "bge_base_origin_text": {
+      "log_future_adopt": {
+        "ndcg3": 0.8181865084446676,
+        "hit1": 0.6260914090453349,
+        "mass3": 0.9356303438116127,
+        "js": 0.25446228015866657
+      },
+      "log_future_reach": {
+        "ndcg3": 0.8189909522805983,
+        "hit1": 0.5562218091484129,
+        "mass3": 0.9418817440658056,
+        "js": 0.2276124314191623
+      }
+    }
+  },
+  "elapsed_sec": 77.01948714256287
+}

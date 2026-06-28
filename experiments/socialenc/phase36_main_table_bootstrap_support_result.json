@@ -1,0 +1,729 @@
+{
+  "task": "main_table_bootstrap_support",
+  "setting": "thr0.55_first10",
+  "target": "log_future_reach",
+  "note": "All deltas are OL-Origin minus baseline; JS is baseline JS minus OL-Origin JS, so positive is better. p-values are approximate one-sided diagnostics inferred from stored bootstrap CIs except surface rows, where bootstrap was computed here.",
+  "rows": [
+    {
+      "family": "Context",
+      "baseline": "No-OL Strong",
+      "ndcg3": {
+        "observed": 0.0431385015543856,
+        "ci05": 0.018533505993291274,
+        "ci95": 0.06831206397301612,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.015131607203244916,
+        "z_approx": 2.850886953048498,
+        "p_one_sided_positive_approx": 0.002179873332413207,
+        "p_two_sided_approx": 0.004359746664826414
+      },
+      "hit1": {
+        "observed": 0.07207537421136442,
+        "ci05": 0.013072955634169747,
+        "ci95": 0.1526132059803094,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.0424172242623071,
+        "z_approx": 1.6992006305186786,
+        "p_one_sided_positive_approx": 0.04464069381795899,
+        "p_two_sided_approx": 0.08928138763591797
+      },
+      "mass3": {
+        "observed": 0.010714862295159206,
+        "ci05": -0.00738892770970363,
+        "ci95": 0.032899553269213046,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.012246828629239877,
+        "z_approx": 0.8749091392997017,
+        "p_one_sided_positive_approx": 0.190811672942798,
+        "p_two_sided_approx": 0.381623345885596
+      },
+      "js": {
+        "observed": 0.03865087641373911,
+        "ci05": 0.02127659256503654,
+        "ci95": 0.058721116829489044,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.011382327172129957,
+        "z_approx": 3.395691920398949,
+        "p_one_sided_positive_approx": 0.00034227681589360515,
+        "p_two_sided_approx": 0.0006845536317872103
+      }
+    },
+    {
+      "family": "Scale",
+      "baseline": "Follower",
+      "ndcg3": {
+        "observed": 0.03154866115195665,
+        "ci05": -0.021846390855958353,
+        "ci95": 0.08657694073605547,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.032958352589999976,
+        "z_approx": 0.9572280976667794,
+        "p_one_sided_positive_approx": 0.16922606900932502,
+        "p_two_sided_approx": 0.33845213801865004
+      },
+      "hit1": {
+        "observed": 0.016093021816709747,
+        "ci05": -0.08635195077116914,
+        "ci95": 0.1195267847640836,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.0625826919070066,
+        "z_approx": 0.25714812396729153,
+        "p_one_sided_positive_approx": 0.39853221435309605,
+        "p_two_sided_approx": 0.7970644287061921
+      },
+      "mass3": {
+        "observed": 0.03150774656804787,
+        "ci05": -0.01742396781186179,
+        "ci95": 0.08372981375753898,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.030748566289413998,
+        "z_approx": 1.0246899407109995,
+        "p_one_sided_positive_approx": 0.1527547554844142,
+        "p_two_sided_approx": 0.3055095109688284
+      },
+      "js": {
+        "observed": 0.029612510848790477,
+        "ci05": 0.004997101534173687,
+        "ci95": 0.05363379333446468,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.014784504530787015,
+        "z_approx": 2.0029423906040176,
+        "p_one_sided_positive_approx": 0.022591736183822042,
+        "p_two_sided_approx": 0.045183472367644084
+      }
+    },
+    {
+      "family": "Surface Text",
+      "baseline": "Symbol one-hot",
+      "ndcg3": {
+        "observed": 0.07668772496335072,
+        "ci05": 0.04098493802623894,
+        "ci95": 0.11859731652183929,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.023592487873661153,
+        "z_approx": 3.25051454403694,
+        "p_one_sided_positive_approx": 0.0005759818803247052,
+        "p_two_sided_approx": 0.0011519637606494104
+      },
+      "hit1": {
+        "observed": 0.12105061382276344,
+        "ci05": 0.0543636278545817,
+        "ci95": 0.19682565704964297,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.0433053819685757,
+        "z_approx": 2.7952787464293265,
+        "p_one_sided_positive_approx": 0.00259274914851626,
+        "p_two_sided_approx": 0.00518549829703252
+      },
+      "mass3": {
+        "observed": 0.028820497708572666,
+        "ci05": -0.011154890386309882,
+        "ci95": 0.07383390818497562,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.025834760363693116,
+        "z_approx": 1.1155705453755846,
+        "p_one_sided_positive_approx": 0.13230300298014375,
+        "p_two_sided_approx": 0.2646060059602875
+      },
+      "js": {
+        "observed": 0.05631143566337456,
+        "ci05": 0.02970501678457869,
+        "ci95": 0.08221280592629306,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.01596123456864393,
+        "z_approx": 3.5280125369499404,
+        "p_one_sided_positive_approx": 0.00020934616298307063,
+        "p_two_sided_approx": 0.00041869232596614125
+      }
+    },
+    {
+      "family": "Surface Text",
+      "baseline": "Text surface",
+      "ndcg3": {
+        "observed": 0.014335553995095002,
+        "ci05": -0.04363226233127714,
+        "ci95": 0.060967546624446985,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.03179608423564917,
+        "z_approx": 0.4508591022985859,
+        "p_one_sided_positive_approx": 0.32604555064624763,
+        "p_two_sided_approx": 0.6520911012924953
+      },
+      "hit1": {
+        "observed": 0.030110796266029267,
+        "ci05": -0.07644350665943486,
+        "ci95": 0.13546142335317685,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.06441452495847629,
+        "z_approx": 0.46745351743942337,
+        "p_one_sided_positive_approx": 0.3200877204433177,
+        "p_two_sided_approx": 0.6401754408866354
+      },
+      "mass3": {
+        "observed": 0.005730855695313394,
+        "ci05": -0.03548144159145299,
+        "ci95": 0.045128948602424605,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.024503818720720685,
+        "z_approx": 0.23387602400385546,
+        "p_one_sided_positive_approx": 0.40754061356852844,
+        "p_two_sided_approx": 0.8150812271370569
+      },
+      "js": {
+        "observed": 0.030197690147071445,
+        "ci05": -0.013205799573610837,
+        "ci95": 0.07802694601198679,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.027732785486416188,
+        "z_approx": 1.0888805295761796,
+        "p_one_sided_positive_approx": 0.13810328669245575,
+        "p_two_sided_approx": 0.2762065733849115
+      }
+    },
+    {
+      "family": "Surface Text",
+      "baseline": "Symbol + surface",
+      "ndcg3": {
+        "observed": 0.019837768854947174,
+        "ci05": -0.03000263508368,
+        "ci95": 0.07713793674470751,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.03256842130900091,
+        "z_approx": 0.6091105450501104,
+        "p_one_sided_positive_approx": 0.27122558421571474,
+        "p_two_sided_approx": 0.5424511684314295
+      },
+      "hit1": {
+        "observed": 0.03142766088840066,
+        "ci05": -0.0890951322478696,
+        "ci95": 0.12544657706626558,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.06521604895377867,
+        "z_approx": 0.481900719110947,
+        "p_one_sided_positive_approx": 0.31493823762421225,
+        "p_two_sided_approx": 0.6298764752484245
+      },
+      "mass3": {
+        "observed": 0.015521323586694216,
+        "ci05": -0.029625712966078993,
+        "ci95": 0.06073342156704319,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.027467226582523152,
+        "z_approx": 0.5650852131015704,
+        "p_one_sided_positive_approx": 0.2860079028390323,
+        "p_two_sided_approx": 0.5720158056780646
+      },
+      "js": {
+        "observed": 0.025460728067631062,
+        "ci05": -0.01540504718392987,
+        "ci95": 0.06778243267790414,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.025287198355762347,
+        "z_approx": 1.0068623542010209,
+        "p_one_sided_positive_approx": 0.15700046250008126,
+        "p_two_sided_approx": 0.3140009250001625
+      }
+    },
+    {
+      "family": "Text Encoder",
+      "baseline": "BERT-origin text",
+      "ndcg3": {
+        "observed": 0.010563737735866663,
+        "ci05": -0.037917486825857036,
+        "ci95": 0.06009989208289296,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.029795167576829554,
+        "z_approx": 0.35454533721373116,
+        "p_one_sided_positive_approx": 0.36146511674563786,
+        "p_two_sided_approx": 0.7229302334912757
+      },
+      "hit1": {
+        "observed": 0.053069021246131186,
+        "ci05": -0.059094599854220324,
+        "ci95": 0.1837576743491085,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.07382184962361203,
+        "z_approx": 0.7188795934633014,
+        "p_one_sided_positive_approx": 0.23610755543066775,
+        "p_two_sided_approx": 0.4722151108613355
+      },
+      "mass3": {
+        "observed": 0.00017695952184537678,
+        "ci05": -0.03402119449615688,
+        "ci95": 0.03415417524282588,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.020723840900462726,
+        "z_approx": 0.008538934587237909,
+        "p_one_sided_positive_approx": 0.4965934993602118,
+        "p_two_sided_approx": 0.9931869987204236
+      },
+      "js": {
+        "observed": 0.035307310161861755,
+        "ci05": -0.01133359047809485,
+        "ci95": 0.08379864400890306,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.0289181459457014,
+        "z_approx": 1.2209396213767325,
+        "p_one_sided_positive_approx": 0.11105444071258752,
+        "p_two_sided_approx": 0.22210888142517504
+      }
+    },
+    {
+      "family": "Text Encoder",
+      "baseline": "FinBERT-origin text",
+      "ndcg3": {
+        "observed": 0.013295358482507525,
+        "ci05": -0.029425462924885206,
+        "ci95": 0.060138207159154425,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.027225422559341815,
+        "z_approx": 0.48834351252136987,
+        "p_one_sided_positive_approx": 0.3126532728317899,
+        "p_two_sided_approx": 0.6253065456635798
+      },
+      "hit1": {
+        "observed": 0.04600468406664675,
+        "ci05": -0.04303051226282492,
+        "ci95": 0.14349879629737866,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.056700883745477104,
+        "z_approx": 0.8113574432658898,
+        "p_one_sided_positive_approx": 0.20858021539465177,
+        "p_two_sided_approx": 0.41716043078930354
+      },
+      "mass3": {
+        "observed": 0.005708814942697077,
+        "ci05": -0.02911736937275125,
+        "ci95": 0.04189738898210714,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.02158695375419977,
+        "z_approx": 0.2644567180576101,
+        "p_one_sided_positive_approx": 0.3957140059373465,
+        "p_two_sided_approx": 0.791428011874693
+      },
+      "js": {
+        "observed": 0.03282760558797918,
+        "ci05": -0.010276037348399663,
+        "ci95": 0.0820869416563272,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.028076352050823494,
+        "z_approx": 1.1692261704282316,
+        "p_one_sided_positive_approx": 0.12115625990249224,
+        "p_two_sided_approx": 0.24231251980498447
+      }
+    },
+    {
+      "family": "Text Encoder",
+      "baseline": "E5-origin text",
+      "ndcg3": {
+        "observed": 0.006332349109365122,
+        "ci05": -0.048844712661108236,
+        "ci95": 0.05913312196251859,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.03282293112723655,
+        "z_approx": 0.1929245467084603,
+        "p_one_sided_positive_approx": 0.4235090303306758,
+        "p_two_sided_approx": 0.8470180606613515
+      },
+      "hit1": {
+        "observed": 0.011997525314539167,
+        "ci05": -0.09591635719788728,
+        "ci95": 0.14740378269835316,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.0739640706958234,
+        "z_approx": 0.16220747724768808,
+        "p_one_sided_positive_approx": 0.4355712358939431,
+        "p_two_sided_approx": 0.8711424717878862
+      },
+      "mass3": {
+        "observed": -0.004807745316097713,
+        "ci05": -0.0404671786495007,
+        "ci95": 0.032909249935328413,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.022304850529716445,
+        "z_approx": -0.21554707617037916,
+        "p_one_sided_positive_approx": 0.5853295934848526,
+        "p_two_sided_approx": 0.8293408130302949
+      },
+      "js": {
+        "observed": 0.022162351482804026,
+        "ci05": -0.01925549688578753,
+        "ci95": 0.06669499682770484,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.026127094929653625,
+        "z_approx": 0.8482516537898858,
+        "p_one_sided_positive_approx": 0.19814891800709,
+        "p_two_sided_approx": 0.39629783601418
+      }
+    },
+    {
+      "family": "Text Encoder",
+      "baseline": "BGE-origin text",
+      "ndcg3": {
+        "observed": 0.01280601677365135,
+        "ci05": -0.03287846534439774,
+        "ci95": 0.061034624470209846,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.02854755227936713,
+        "z_approx": 0.4485854565859559,
+        "p_one_sided_positive_approx": 0.326865363505369,
+        "p_two_sided_approx": 0.653730727010738
+      },
+      "hit1": {
+        "observed": 0.0177662174764042,
+        "ci05": -0.08221010387827092,
+        "ci95": 0.12161409598281642,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.061958157407248964,
+        "z_approx": 0.2867454136769664,
+        "p_one_sided_positive_approx": 0.3871536309763077,
+        "p_two_sided_approx": 0.7743072619526155
+      },
+      "mass3": {
+        "observed": 0.01280754933305729,
+        "ci05": -0.02564905029226839,
+        "ci95": 0.054555930344860185,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.02438058296584674,
+        "z_approx": 0.5253176001163958,
+        "p_one_sided_positive_approx": 0.2996812121882684,
+        "p_two_sided_approx": 0.5993624243765368
+      },
+      "js": {
+        "observed": 0.02398129451543924,
+        "ci05": -0.02266113841652177,
+        "ci95": 0.0687223568343563,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.02777861013087402,
+        "z_approx": 0.8633007339984111,
+        "p_one_sided_positive_approx": 0.19398607037212345,
+        "p_two_sided_approx": 0.3879721407442469
+      }
+    },
+    {
+      "family": "Local LLM",
+      "baseline": "Llama3.1-8B",
+      "ndcg3": {
+        "observed": 0.13620968092811647,
+        "ci05": 0.0821992926842771,
+        "ci95": 0.18578639844753297,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.031488244323369205,
+        "z_approx": 4.325731200803329,
+        "p_one_sided_positive_approx": 7.601335911933127e-06,
+        "p_two_sided_approx": 1.5202671823866254e-05
+      },
+      "hit1": {
+        "observed": 0.20259794347680782,
+        "ci05": 0.11017315722780852,
+        "ci95": 0.3038468270169522,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.05887261535486695,
+        "z_approx": 3.4412934138496567,
+        "p_one_sided_positive_approx": 0.0002894701840019387,
+        "p_two_sided_approx": 0.0005789403680038774
+      },
+      "mass3": {
+        "observed": 0.07412386778236335,
+        "ci05": 0.013798005442419757,
+        "ci95": 0.13920351662439812,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.038120568641235746,
+        "z_approx": 1.944458606584954,
+        "p_one_sided_positive_approx": 0.025920086201240422,
+        "p_two_sided_approx": 0.051840172402480844
+      },
+      "js": {
+        "observed": 0.2118707265857277,
+        "ci05": 0.16106020317157277,
+        "ci95": 0.2608494139058467,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.030333766208492544,
+        "z_approx": 6.984649552893641,
+        "p_one_sided_positive_approx": 1.4278578319704138e-12,
+        "p_two_sided_approx": 2.8557156639408277e-12
+      }
+    },
+    {
+      "family": "Local LLM",
+      "baseline": "Qwen2.5-7B",
+      "ndcg3": {
+        "observed": 0.14300665065382723,
+        "ci05": 0.08790225740916735,
+        "ci95": 0.19790468231220634,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.03343836287333194,
+        "z_approx": 4.276724048828334,
+        "p_one_sided_positive_approx": 9.483183245784232e-06,
+        "p_two_sided_approx": 1.8966366491568465e-05
+      },
+      "hit1": {
+        "observed": 0.22080758156396219,
+        "ci05": 0.11061163708395791,
+        "ci95": 0.35653148966837267,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.07475432724071504,
+        "z_approx": 2.953776586777963,
+        "p_one_sided_positive_approx": 0.0015695558502989426,
+        "p_two_sided_approx": 0.0031391117005978852
+      },
+      "mass3": {
+        "observed": 0.08346657572216634,
+        "ci05": 0.04034157649016382,
+        "ci95": 0.12777198197320394,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.026576956165115222,
+        "z_approx": 3.14056189142247,
+        "p_one_sided_positive_approx": 0.0008431203688076261,
+        "p_two_sided_approx": 0.0016862407376152522
+      },
+      "js": {
+        "observed": 0.2299280170901604,
+        "ci05": 0.1683204219810183,
+        "ci95": 0.29614603305582193,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.038856226773111784,
+        "z_approx": 5.917404652612046,
+        "p_one_sided_positive_approx": 1.635306778879908e-09,
+        "p_two_sided_approx": 3.270613557759816e-09
+      }
+    },
+    {
+      "family": "Commercial API",
+      "baseline": "GPT-4.1-mini",
+      "ndcg3": {
+        "observed": 0.11072441642083364,
+        "ci05": 0.04795575482212589,
+        "ci95": 0.18994838114456952,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.04316269362691225,
+        "z_approx": 2.5652805030637884,
+        "p_one_sided_positive_approx": 0.005154621260486492,
+        "p_two_sided_approx": 0.010309242520972983
+      },
+      "hit1": {
+        "observed": 0.17105165526147456,
+        "ci05": 0.0476627940677205,
+        "ci95": 0.301591900104516,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.07718896741815894,
+        "z_approx": 2.2160117045591434,
+        "p_one_sided_positive_approx": 0.01334535027504824,
+        "p_two_sided_approx": 0.02669070055009648
+      },
+      "mass3": {
+        "observed": 0.06007673116736159,
+        "ci05": 0.013728956130827632,
+        "ci95": 0.11726382599780592,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.031472365738362706,
+        "z_approx": 1.9088724269028203,
+        "p_one_sided_positive_approx": 0.028139275390688834,
+        "p_two_sided_approx": 0.05627855078137767
+      },
+      "js": {
+        "observed": 0.18592624561512444,
+        "ci05": 0.12399691493445128,
+        "ci95": 0.2491190509435527,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.03803442870506339,
+        "z_approx": 4.888366986050529,
+        "p_one_sided_positive_approx": 5.083792995463909e-07,
+        "p_two_sided_approx": 1.0167585990927819e-06
+      }
+    },
+    {
+      "family": "Commercial API",
+      "baseline": "Claude Sonnet 4.5",
+      "ndcg3": {
+        "observed": 0.022015174753308435,
+        "ci05": -0.01683137124945015,
+        "ci95": 0.05942565821014713,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.023180491020629607,
+        "z_approx": 0.9497285770916547,
+        "p_one_sided_positive_approx": 0.17112509264679732,
+        "p_two_sided_approx": 0.34225018529359463
+      },
+      "hit1": {
+        "observed": 0.051413334626638704,
+        "ci05": -0.047803541412822566,
+        "ci95": 0.16530783613567143,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.06478125896936766,
+        "z_approx": 0.7936451906708066,
+        "p_one_sided_positive_approx": 0.21370100818298665,
+        "p_two_sided_approx": 0.4274020163659733
+      },
+      "mass3": {
+        "observed": 0.003746680134666827,
+        "ci05": -0.021891956098137866,
+        "ci95": 0.029630019179460614,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.015661568431802633,
+        "z_approx": 0.23922764510984468,
+        "p_one_sided_positive_approx": 0.40546453360943646,
+        "p_two_sided_approx": 0.8109290672188729
+      },
+      "js": {
+        "observed": 0.0806775321302384,
+        "ci05": 0.024670540862985438,
+        "ci95": 0.13845741652160087,
+        "n_symbols": 16,
+        "n_events": 785,
+        "se_approx": 0.03458875421927512,
+        "z_approx": 2.332478690003805,
+        "p_one_sided_positive_approx": 0.009837761348386653,
+        "p_two_sided_approx": 0.019675522696773307
+      }
+    },
+    {
+      "family": "Commercial API",
+      "baseline": "Gemini 2.5 Flash",
+      "ndcg3": {
+        "observed": 0.04185879319468725,
+        "ci05": -0.0009839277472023272,
+        "ci95": 0.08255361965209536,
+        "n_symbols": 16,
+        "n_events": 759,
+        "se_approx": 0.025393611331278133,
+        "z_approx": 1.6483985931976686,
+        "p_one_sided_positive_approx": 0.04963545226353738,
+        "p_two_sided_approx": 0.09927090452707477
+      },
+      "hit1": {
+        "observed": 0.09440730171140987,
+        "ci05": -0.007603954005610122,
+        "ci95": 0.20107199506413254,
+        "n_symbols": 16,
+        "n_events": 759,
+        "se_approx": 0.06343298444631122,
+        "z_approx": 1.4882998574868391,
+        "p_one_sided_positive_approx": 0.06833591627037738,
+        "p_two_sided_approx": 0.13667183254075477
+      },
+      "mass3": {
+        "observed": 0.018216928131981905,
+        "ci05": -0.01979203539186444,
+        "ci95": 0.054446887440077224,
+        "n_symbols": 16,
+        "n_events": 759,
+        "se_approx": 0.02256703016472478,
+        "z_approx": 0.8072363974794231,
+        "p_one_sided_positive_approx": 0.20976514981644034,
+        "p_two_sided_approx": 0.4195302996328807
+      },
+      "js": {
+        "observed": 0.13148154620881627,
+        "ci05": 0.08176149841215102,
+        "ci95": 0.18685443583327094,
+        "n_symbols": 16,
+        "n_events": 759,
+        "se_approx": 0.031945984645422934,
+        "z_approx": 4.115745614610577,
+        "p_one_sided_positive_approx": 1.9296488687370328e-05,
+        "p_two_sided_approx": 3.8592977374740656e-05
+      }
+    },
+    {
+      "family": "Commercial API",
+      "baseline": "DeepSeek v3.2",
+      "ndcg3": {
+        "observed": 0.0556346361152047,
+        "ci05": 0.002608631348505736,
+        "ci95": 0.10321966800087859,
+        "n_symbols": 16,
+        "n_events": 784,
+        "se_approx": 0.030583583549267743,
+        "z_approx": 1.8191012843730914,
+        "p_one_sided_positive_approx": 0.03444798958227835,
+        "p_two_sided_approx": 0.0688959791645567
+      },
+      "hit1": {
+        "observed": 0.05968990253207479,
+        "ci05": -0.03934029576342226,
+        "ci95": 0.1627346886651812,
+        "n_symbols": 16,
+        "n_events": 784,
+        "se_approx": 0.06142643367091692,
+        "z_approx": 0.9717299046181755,
+        "p_one_sided_positive_approx": 0.16559246773717362,
+        "p_two_sided_approx": 0.33118493547434724
+      },
+      "mass3": {
+        "observed": 0.03285324354074974,
+        "ci05": -0.012585476430416215,
+        "ci95": 0.07481903022004965,
+        "n_symbols": 16,
+        "n_events": 784,
+        "se_approx": 0.026569083479014193,
+        "z_approx": 1.2365215219674077,
+        "p_one_sided_positive_approx": 0.1081323854168359,
+        "p_two_sided_approx": 0.2162647708336718
+      },
+      "js": {
+        "observed": 0.11553827389587853,
+        "ci05": 0.06163621869091733,
+        "ci95": 0.16714893644536613,
+        "n_symbols": 16,
+        "n_events": 784,
+        "se_approx": 0.032073588806197685,
+        "z_approx": 3.6022870591130323,
+        "p_one_sided_positive_approx": 0.00015771488085469798,
+        "p_two_sided_approx": 0.00031542976170939596
+      }
+    }
+  ],
+  "elapsed_sec": 77.8721284866333
+}
