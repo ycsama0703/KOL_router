@@ -170,6 +170,155 @@ proxy for account size, posting hour, activity level, or ex-post popularity.
 The current main experiment then asks whether this discovered role helps route
 newly originated semantic frames before popularity is observable.
 
+### 2.2 From Data Inefficiency To The Router
+
+The conceptual starting point is not that social media contains too little
+information. The problem is that a large agent often receives the information in
+the wrong form. If a high-volume stream is passed directly into an LLM, the
+model must jointly decide:
+
+```text
+which posts are redundant,
+which narratives are newly originated,
+which actors are historically informative as originators,
+which signals deserve immediate downstream attention.
+```
+
+This is a hard use of context. It asks the LLM to solve a routing problem before
+it can solve a reasoning problem. The listwise small experiment makes this
+failure mode concrete: giving the LLM the full K=30 candidate pool is not the
+best selector for any tested backend once a cheap structural router is available.
+The correct interpretation is not "more data always hurts." Some LLM backends
+improve from K=10 to K=30. The sharper claim is:
+
+```text
+More social-media candidates are not automatically usable information. Without
+an entry-layer selector, the LLM often fails to convert the larger candidate set
+into better choices.
+```
+
+This motivates a measurement question before a modeling question:
+
+```text
+What structure in the KOL stream tells us which social-media items deserve to
+enter the agent's expensive reasoning pipeline?
+```
+
+The key move is to stop treating the stream as an unordered text pile. A KOL
+post has at least four components:
+
+```text
+text       = the semantic content of the post
+frame      = the narrative cluster it belongs to
+time       = when it appears relative to other posts in the same event
+actor      = which KOL originated or amplified the frame
+```
+
+Once the stream is represented this way, the relevant empirical object is no
+longer simply "tweet text quality." It is the conditional role of an actor at
+the moment a narrative first appears:
+
+```text
+Does this KOL tend to originate narratives before other KOLs attach to them?
+```
+
+The data reveal that this actor role is stable and not reducible to common
+shortcuts. The residualized originator trait survives controls and falsification
+checks:
+
+```text
+not follower count
+not posting frequency
+not timezone or median posting hour
+not just reacting faster on high-volatility news days
+not bot/retweet artifacts
+stable across time bins and across asset groups
+```
+
+This discovery changes the model design. If originator structure exists, the
+router should not ask a large model to reread every post and infer the whole
+social graph from scratch. It should expose the discovered structure directly as
+a point-in-time selector.
+
+Formally, for an originated frame candidate `i`, the online information set is:
+
+```text
+I_i = {
+  origin text and semantic novelty,
+  origin time and within-event rank,
+  originator identity k(i),
+  pre-estimated originator role o_k(i),
+  basic originator visibility/context
+}
+```
+
+The target is not immediate return prediction. The target is whether the frame
+will later receive follower-weighted KOL reach:
+
+```text
+y_i = future follower-weighted reach of the originated frame
+```
+
+The agent-facing decision is a budgeted selection problem:
+
+```text
+choose a small set of originated frames to pass into memory, retrieval,
+LLM reasoning, or strategy research before popularity is observable
+```
+
+The discovered structure implies a simple scoring form:
+
+```text
+score_i =
+  context_i
+  + originator_role_i
+  + originator_role_i x current visibility_i
+  + originator_role_i x semantic novelty_i
+```
+
+The interaction terms are important. The empirical claim is not that a "good
+KOL" is always useful. The claim is conditional: a stable originator role is
+most useful when the current originated frame is visible and/or novel enough to
+matter. This is why the final router is not an isolated KOL leaderboard. It is
+an origin-time routing model.
+
+This chain gives the paper its scientific logic:
+
+```text
+Observation:
+  Large social-media streams are expensive and inefficient for direct LLM
+  consumption.
+
+Diagnosis:
+  The LLM is being asked to perform unstructured first-stage routing over many
+  noisy, redundant, and weakly ordered candidates.
+
+Structural discovery:
+  KOL streams contain a stable originator role that is measurable before the
+  validation period and is not reducible to follower scale, activity, timezone,
+  or ex-post popularity.
+
+Model implication:
+  Use the discovered role as a point-in-time, low-latency selector over newly
+  originated semantic frames.
+
+Model design:
+  Fit a lightweight OL-Origin router combining origin-time controls,
+  residualized originator role, and role-context interactions.
+
+Empirical validation:
+  Main experiment tests early reach alert quality; latency analysis tests
+  operational cost; ablation tests whether the discovered structure is doing
+  real work; the listwise small experiment tests whether the router improves
+  downstream LLM attention allocation in a realistic large-candidate setting.
+```
+
+This is why the paper's contribution is not simply another predictive feature.
+The contribution is a data-derived entry-layer mechanism: the structure of the
+KOL stream tells the agent what should be read deeply, rather than asking the
+LLM to discover that routing structure from an overloaded context window every
+time.
+
 ## 3. Method Definition
 
 The method can be defined as:
