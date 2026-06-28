@@ -12,6 +12,7 @@ document.
 docs/
   KOL_NARRATIVE_AGENT_RESEARCH_LOG.md   main paper working document
   KOL_ROUTER_THEORETICAL_FRAMING.md      theoretical framing and equations
+  KOL_ORIGINATOR_STRUCTURE_DISCOVERY.md  empirical KOL structure discovery
   KOL_ORIGINATION_STRUCTURE.md          supporting mechanism notes
   FINDATA_CATALOG.md                    data source catalog
   FINDATA_VERIFICATION.md               data verification notes

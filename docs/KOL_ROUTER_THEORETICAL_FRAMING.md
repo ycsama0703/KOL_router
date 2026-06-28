@@ -322,6 +322,14 @@ O_k is not an ex-post popularity label
 These are tested through residualization, shuffling, follower replacement,
 no-OL controls, raw-OL comparison, and robustness checks.
 
+For the full empirical discovery record, including data scale, lead-lag
+definition, stability tests, timezone falsification, cross-asset consistency,
+and routing ablations, see:
+
+```text
+docs/KOL_ORIGINATOR_STRUCTURE_DISCOVERY.md
+```
+
 ## 8. Router Design As Structure Identification
 
 If:
