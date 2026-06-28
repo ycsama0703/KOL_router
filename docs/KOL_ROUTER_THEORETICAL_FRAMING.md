@@ -277,17 +277,65 @@ If:
 I(Y_i ; O_{k(i)} | X_i) > 0
 ```
 
-then a first-stage selector should expose `O_k` directly instead of requiring an
-LLM to rediscover the originator structure from raw prompt context on every
-event-day.
+then the empirical structure gives the agent a usable routing signal:
 
-The target conditional value function is:
+```text
+O_{k(i)} should enter the first-stage attention decision.
+```
+
+This is the key bridge from empirical discovery to model design. The conditional
+information statement does not by itself uniquely determine a functional form.
+It only says that a selector that ignores `O_k` is throwing away point-in-time
+information. Many models could use this signal:
+
+```text
+nonparametric ranking
+tree model
+neural scorer
+LLM prompt feature
+linear router
+```
+
+The paper chooses a lightweight linear router with role-context interactions as
+a deployment-oriented design choice, not as a mathematical consequence of
+mutual information. The choice is guided by four constraints of the agent
+setting.
+
+First, the selector must be point-in-time:
+
+```text
+s_i can only depend on information observable at origin time.
+```
+
+Second, the selector must be low latency:
+
+```text
+T_router(K) << T_LLM(K)
+```
+
+Third, the selector must be interpretable enough to separate the discovered KOL
+role from simpler confounds:
+
+```text
+originator role != follower scale
+originator role != posting frequency
+originator role != timezone
+```
+
+Fourth, the selector should expose the structure before expensive reasoning:
+
+```text
+raw KOL stream -> structural router -> shortlist -> downstream LLM/agent
+```
+
+Under these constraints, the modeling target is the conditional value of a
+candidate given origin-time context and the pre-estimated originator role:
 
 ```text
 m(I_i) = E[Y_i | X_i, O_{k(i)}]
 ```
 
-The OL-Origin router approximates this value with a lightweight linear score:
+The OL-Origin router uses a first-order approximation to this value:
 
 ```text
 s_i =
@@ -306,7 +354,34 @@ O_{k(i)} * visibility_i   = originator role under current audience scale
 O_{k(i)} * novelty_i      = originator role under semantic novelty
 ```
 
-The interaction terms are central. The model is not a global KOL leaderboard:
+This parameterization has three roles.
+
+The `beta' X_i` term gives the model a strong non-OL baseline. It prevents the
+originator role from being credited for ordinary context effects:
+
+```text
+visibility
+verification
+timing
+origin rank
+semantic novelty
+sentiment
+historical activity
+```
+
+The `gamma O_{k(i)}` term tests whether the discovered stable originator role
+adds information after those controls.
+
+The interaction terms test whether the role is conditional on the current
+origin-time situation:
+
+```text
+O_{k(i)} * visibility_i
+O_{k(i)} * novelty_i
+```
+
+These interactions are central because the model is not a global KOL
+leaderboard:
 
 ```text
 high O_k does not imply every post by k is important
@@ -320,7 +395,27 @@ who originated the frame
 + how visible and novel the frame is at origin time
 ```
 
-Thus the router is a structural attention allocator, not an alternative
+Thus the logical chain is:
+
+```text
+empirical discovery:
+  O_k has conditional information about Y_i
+
+modeling implication:
+  the first-stage selector should not ignore O_k
+
+parameterization choice:
+  use a low-latency linear approximation with role-context interactions
+
+validation:
+  test the choice against No-OL, OL-only, shuffled-OL, follower replacement,
+  raw-OL, text encoders, LLM scorers, and listwise routed LLM baselines
+```
+
+This distinction matters. The empirical discovery justifies including the
+originator role as a routing signal. The specific linear-plus-interaction form
+is justified by the deployment constraints and validated by the experiments.
+The router is therefore a structural attention allocator, not an alternative
 foundation model.
 
 ## 7. Why Routing Can Improve Downstream LLM Use
