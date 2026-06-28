@@ -1,106 +1,186 @@
-# Theoretical Framing: From Social-Media Inefficiency To KOL-Origin Routing
+# Theoretical Framing: From Inefficient Social-Media Attention To KOL Routing
 
-This note formalizes the logic behind the KOL Origin-Aware Narrative Router.
-The goal is not to prove from first principles that the empirical OL-Origin
-feature must work. The goal is to state a clean theoretical framework that
-explains why the observed KOL structure naturally implies a low-latency routing
-model, and which empirical conditions the experiments are designed to test.
+This note states the theoretical logic behind the KOL Origin-Aware Narrative
+Router. The goal is not to prove that the discovered originator feature must
+work from first principles. The goal is to make the paper's argument precise:
+large social-media streams create a first-stage attention-allocation problem;
+direct LLM consumption is a noisy and costly way to solve that problem; the
+observed KOL-origin structure provides a point-in-time signal that can be used
+as a cheaper and more stable routing layer before expensive reasoning.
 
-## 1. Agent Attention As A Budgeted Selection Problem
-
-For each event-day `e`, the agent observes a pool of social-media narrative
-origin candidates:
+The most important distinction is:
 
 ```text
-C_e = {i = 1, ..., K_e}
+available social-media data != usable agent information
 ```
 
-Each candidate `i` has an unobserved future value:
+The router is designed to turn a large candidate pool into a small, enriched
+set of narratives that deserve downstream memory, retrieval, LLM reasoning, or
+strategy research.
+
+## 1. Attention Allocation Problem
+
+For each event-day `e`, the agent observes a candidate pool:
+
+```text
+C_e = {1, ..., K_e}
+```
+
+Each candidate `i` is an originated social-media narrative frame. It has an
+unobserved future value:
 
 ```text
 Y_i = future follower-weighted reach of candidate i
 ```
 
-The agent cannot send every candidate to expensive downstream reasoning. It
-must choose a small subset:
+At decision time, the agent only has point-in-time information:
+
+```text
+I_i = information available before later diffusion is observed
+```
+
+The agent cannot send all `K_e` candidates to expensive downstream reasoning.
+It must select a small attention set:
 
 ```text
 A_e subset C_e,    |A_e| = r
 ```
 
-The ideal decision problem is:
+The ideal first-stage decision is:
 
 ```text
 max_A  E[ sum_{i in A_e} Y_i | I_e ] - lambda * Cost(A_e)
-subject to |A_e| = r
+subject to A_e subset C_e, |A_e| = r
 ```
 
-where `I_e` is the point-in-time information set available before later follower
-confirmation is observed.
+where `I_e = {I_i : i in C_e}` and `lambda` prices downstream reasoning cost.
+This makes the problem a budgeted attention-allocation problem, not a direct
+market-return prediction problem.
 
-This makes the task an attention-allocation problem rather than a direct return
-prediction problem. The router is valuable if it improves which social-media
-items enter memory, retrieval, LLM reasoning, or strategy research.
+The oracle set is:
 
-## 2. Why Full-Context LLM Selection Can Be Inefficient
+```text
+A_e^* = Top_r(C_e; Y)
+```
 
-A full-context LLM selector reads the entire candidate pool and chooses `r`
+and the empirical evaluation asks how much future reach a selector captures
+relative to this oracle:
+
+```text
+Capture(S)
+  = E[sum_{i in S(C_e)} Y_i]
+    / E[sum_{i in A_e^*} Y_i]
+```
+
+## 2. Full-Context LLM As A Noisy Listwise Selector
+
+A full-context LLM selector reads the whole candidate pool and chooses `r`
 items:
 
 ```text
 A_full = S_LLM(C_e)
 ```
 
-This selector must solve several subproblems at once:
+This asks one model call to solve several subproblems at once:
 
 ```text
 semantic parsing
 deduplication
 origin detection
 actor reliability inference
+cross-candidate comparison
 importance ranking
 ```
 
-We can represent its internal candidate-value estimate as:
+We model this as a noisy listwise selector. For each candidate:
 
 ```text
-Yhat_i^LLM(K) = Y_i + epsilon_i(K)
+tilde Y_i^LLM(K) = Y_i + epsilon_i(K)
 ```
 
-where `epsilon_i(K)` is selection noise induced by the complexity of reading and
-ranking a candidate pool of size `K`.
-
-The paper does not require the strong claim that more data always hurts. The
-weaker and more realistic condition is:
+and the LLM chooses:
 
 ```text
-LLM selector efficiency does not necessarily improve with K.
+S_LLM(C_e) = Top_r({tilde Y_i^LLM(K) : i in C_e})
 ```
 
-Equivalently, larger candidate pools can increase the complexity of the first
-selection step:
+Here `epsilon_i(K)` is not random noise in the LLM weights. It is effective
+selection noise induced by context length, number of candidates, distractors,
+formatting, position effects, and the difficulty of comparing many similar
+social-media narratives in one prompt.
+
+This is a random-utility abstraction: a selector behaves as if it ranks a latent
+utility plus an error term. The paper uses this abstraction because our task is
+listwise selection, not open-ended generation.
+
+## 3. Why More Candidates Need Not Improve LLM Selection
+
+The paper does not claim that more social-media data always makes an LLM worse.
+The weaker and more defensible claim is:
 
 ```text
-Var[epsilon_i(K)] may increase with K
+More candidates do not automatically become more usable information.
 ```
 
-or at least may fail to decrease enough to exploit the extra candidates. The
-measured object is the capture ratio:
+Formally, define the LLM's effective selection-noise variance:
 
 ```text
-Capture_full(K)
-  = E[sum_{i in S_LLM(C_e)} Y_i]
-    / E[sum_{i in Top_r(C_e; Y)} Y_i]
+Var[epsilon_i(K)] = sigma_LLM^2(K)
 ```
 
-where `Top_r(C_e; Y)` is the oracle top-`r` set under realized future reach.
+When the LLM compares two candidates `i` and `j`, with true gap:
 
-The key issue is therefore not whether the LLM has access to more text, but
-whether it converts the larger candidate pool into better selected candidates.
+```text
+Delta_ij = Y_i - Y_j > 0
+```
 
-## 3. Social Media As Structured Actor-Time-Frame Data
+the LLM ranks `j` above `i` when:
 
-A financial social-media observation is not only text. Each candidate can be
+```text
+tilde Y_j^LLM(K) > tilde Y_i^LLM(K)
+```
+
+Equivalently:
+
+```text
+epsilon_j(K) - epsilon_i(K) > Delta_ij
+```
+
+If the two error terms are approximately independent Gaussian errors with
+variance `sigma_LLM^2(K)`, then:
+
+```text
+P(LLM ranks j above i)
+  = 1 - Phi( Delta_ij / (sqrt(2) * sigma_LLM(K)) )
+```
+
+Therefore, if a larger candidate pool increases effective selection noise, or
+if it fails to reduce noise enough to exploit the additional candidates, the
+probability of selecting the truly better candidate does not necessarily
+improve.
+
+This gives the paper's key LLM-side theoretical condition:
+
+```text
+sigma_LLM(K) is not guaranteed to decrease with K.
+```
+
+This condition is consistent with long-context and multi-document LLM evidence:
+models can fail to robustly use information in long contexts, can be sensitive
+to where relevant information appears, and can find multi-document comparison
+hard even when total context length is controlled.
+
+In our setting, the relevant failure mode is not "the LLM sees too much text and
+therefore becomes worse." The relevant failure mode is:
+
+```text
+the LLM sees many plausible social-media candidates but does not reliably
+convert the larger candidate set into better first-stage attention allocation.
+```
+
+## 4. Social Media Has Actor-Time-Frame Structure
+
+A financial social-media candidate is not only a text string. It can be
 represented as:
 
 ```text
@@ -112,33 +192,50 @@ where:
 ```text
 text_i   = what is being said
 frame_i  = which semantic narrative the post belongs to
-time_i   = when it appears inside the event
+time_i   = when the narrative appears inside the event
 actor_i  = which KOL originated or amplified it
 ```
 
-The pre-popularity setting removes later diffusion and follower confirmation
-from the online information set. Thus the relevant question becomes:
+The pre-popularity setting removes later diffusion signals from the online
+information set. Thus the routing question becomes:
 
 ```text
-Which newly originated narrative frames should the agent attend to before
-popularity is observable?
+Which newly originated narrative frames should receive scarce agent attention
+before follower confirmation is observable?
 ```
 
-This reframes the modeling problem. The model should not only score text; it
-should exploit the structure of who originated a frame and when.
+This reframes the task. A text-only selector scores what is said. A KOL-aware
+router also uses who originated it, when it was originated, and under what
+origin-time context.
 
-## 4. Empirical Structure: Stable Originator Role
+## 5. Empirical Structure: Stable Originator Role
 
-Let `k(i)` be the KOL who originates candidate `i`. Define a KOL-level
-originator role:
+Let `k(i)` be the KOL associated with candidate `i`. Define a stable originator
+role:
 
 ```text
-O_k = residualized stable originator trait of KOL k
+O_k = residualized originator role of KOL k
 ```
 
-In the implementation, `O_k` is estimated from pre-validation history using
-event-order lead-lag behavior and then residualized against median UTC posting
-hour and hour squared.
+In the implementation, `O_k` is estimated only from pre-validation history using
+event-order lead-lag behavior, and then residualized against median UTC posting
+hour and hour squared. It is therefore a point-in-time, pre-estimated actor
+trait rather than an ex-post label from the validation/test period.
+
+Let `X_i` denote ordinary origin-time controls:
+
+```text
+X_i = {
+  follower visibility,
+  verified status,
+  origin rank,
+  elapsed event time,
+  semantic novelty,
+  sentiment,
+  historical activity,
+  other non-OL context controls
+}
+```
 
 The structural condition needed for the router is:
 
@@ -146,18 +243,17 @@ The structural condition needed for the router is:
 I(Y_i ; O_{k(i)} | X_i) > 0
 ```
 
-where `X_i` includes ordinary origin-time controls such as follower visibility,
-verified status, origin rank, elapsed time, semantic novelty, sentiment, and
-historical activity.
-
-In words:
+Equivalently:
 
 ```text
-After controlling for ordinary context, the stable originator role contains
-incremental information about future follower-weighted reach.
+E[Y_i | X_i, O_{k(i)}] != E[Y_i | X_i]
 ```
 
-The empirical validation also needs falsification conditions:
+In words, after controlling for ordinary origin-time context, the stable
+originator role still contains incremental information about future
+follower-weighted reach.
+
+The falsification tests are as important as the positive result:
 
 ```text
 O_k is not merely follower scale
@@ -168,28 +264,30 @@ O_k is not a bot/retweet artifact
 O_k is not an ex-post popularity label
 ```
 
-These are not assumed. They are tested through residualization, permutation,
-shuffling, follower-replacement, and robustness checks.
+The empirical design therefore uses residualization, shuffling, follower
+replacement, no-OL controls, raw-OL comparison, and robustness checks to test
+whether `O_k` is a real structural signal rather than a proxy for a simpler
+surface variable.
 
-## 5. Router Design Implied By The Structure
+## 6. Router Design Implied By The Structure
 
-If `O_k` contains conditional information about future reach, then the first
-selection stage should expose this structure directly instead of asking an LLM
-to infer it from raw context each time.
-
-For candidate `i`, define the point-in-time information set:
+If:
 
 ```text
-I_i = {
-  origin text and semantic novelty,
-  origin time and within-event rank,
-  originator identity k(i),
-  pre-estimated originator role O_{k(i)},
-  basic originator visibility and context
-}
+I(Y_i ; O_{k(i)} | X_i) > 0
 ```
 
-The OL-Origin router uses a linear score:
+then a first-stage selector should expose `O_k` directly instead of requiring an
+LLM to rediscover the originator structure from raw prompt context on every
+event-day.
+
+The target conditional value function is:
+
+```text
+m(I_i) = E[Y_i | X_i, O_{k(i)}]
+```
+
+The OL-Origin router approximates this value with a lightweight linear score:
 
 ```text
 s_i =
@@ -204,12 +302,11 @@ where:
 ```text
 X_i                       = non-OL origin-time controls
 O_{k(i)}                  = residualized originator role
-O_{k(i)} * visibility_i   = stable originator role under current audience scale
-O_{k(i)} * novelty_i      = stable originator role under semantic novelty
+O_{k(i)} * visibility_i   = originator role under current audience scale
+O_{k(i)} * novelty_i      = originator role under semantic novelty
 ```
 
-The interaction terms are conceptually important. The model is not a global KOL
-leaderboard:
+The interaction terms are central. The model is not a global KOL leaderboard:
 
 ```text
 high O_k does not imply every post by k is important
@@ -218,51 +315,83 @@ high O_k does not imply every post by k is important
 Instead, the useful object is conditional:
 
 ```text
-who originates + when it is originated + how novel/visible the originated frame is
+who originated the frame
++ when it was originated
++ how visible and novel the frame is at origin time
 ```
 
-## 6. Why Routing Can Improve Downstream LLM Use
+Thus the router is a structural attention allocator, not an alternative
+foundation model.
 
-The router selects a shortlist:
+## 7. Why Routing Can Improve Downstream LLM Use
+
+The router first selects a shortlist:
 
 ```text
-B_e = Top_b({s_i : i in C_e}),    b < K
+B_e = Top_b({s_i : i in C_e}),    r <= b < K
 ```
 
-The downstream LLM then reranks only the shortlist:
+The downstream LLM then performs listwise reranking only over the shortlist:
 
 ```text
 A_routed = S_LLM(B_e)
 ```
 
-Routing improves downstream LLM use under two conditions.
+Routing can improve LLM use through two mechanisms.
 
-First, the router enriches the shortlist:
+First, the shortlist is enriched:
 
 ```text
-P(i in Top_r(C_e; Y) | i in B_e)
+P(i in A_e^* | i in B_e)
   >
-P(i in Top_r(C_e; Y) | i in C_e)
+P(i in A_e^* | i in C_e)
 ```
 
-Second, the LLM has lower effective selection noise on the smaller, enriched
-candidate pool:
+Second, the LLM faces a smaller and less noisy listwise selection problem:
 
 ```text
-Var[epsilon_i(b)] < Var[epsilon_i(K)]
+sigma_LLM(b) < sigma_LLM(K)
 ```
 
-Under these conditions:
+Under the noisy-selector model, both effects reduce the probability that the
+LLM spends its final `r` selections on low-value candidates. In pairwise form,
+if routing raises the average value gap among candidates seen by the LLM from
+`Delta_K` to `Delta_b`, and reduces selection noise from `sigma_LLM(K)` to
+`sigma_LLM(b)`, then the pairwise ranking error changes from:
 
 ```text
-E[Capture_routed] > E[Capture_full]
+1 - Phi( Delta_K / (sqrt(2) * sigma_LLM(K)) )
 ```
 
-This statement should be read as a conditional theoretical implication. The
-main and small experiments test whether the enrichment and capture conditions
-hold in the observed KOL data.
+to:
 
-## 7. Latency And Component-Cost Logic
+```text
+1 - Phi( Delta_b / (sqrt(2) * sigma_LLM(b)) )
+```
+
+Routing helps when:
+
+```text
+Delta_b / sigma_LLM(b) > Delta_K / sigma_LLM(K)
+```
+
+This is the cleanest theoretical statement for the small experiment:
+
+```text
+the router should improve downstream LLM attention if it increases the
+signal-to-selection-noise ratio of the candidate set shown to the LLM.
+```
+
+Therefore:
+
+```text
+E[Capture(A_routed)] > E[Capture(A_full)]
+```
+
+is not assumed. It is the empirical implication tested by the listwise small
+experiment.
+
+## 8. Latency And Component-Cost Logic
 
 If the LLM itself performs first-stage selection over all `K` candidates, the
 selector cost is:
@@ -277,7 +406,7 @@ If OL-Origin performs first-stage selection, the selector cost is:
 Cost_OL_selector = T_OL(K)
 ```
 
-and the routed downstream call costs:
+and the total routed system cost is:
 
 ```text
 Cost_routed_total = T_OL(K) + T_LLM(b)
@@ -300,48 +429,150 @@ Thus the first-stage selector implemented by OL-Origin is orders of magnitude
 cheaper than asking the tested LLMs to perform the same first-stage selection
 directly.
 
-## 8. Full Logical Chain
+The important latency claim is component-level:
 
-The paper's logic can be summarized as:
+```text
+OL-Origin is cheap as a router.
+```
+
+It does not claim that every complete routed pipeline is always faster than
+every complete full-LLM pipeline, because total wall-clock time also depends on
+API backend, prompt construction, output decoding, batching, and rate limits.
+
+## 9. Testable Claims And Experiment Mapping
+
+The theory implies four empirical claims.
+
+Claim 1: Social-media routing is an attention-allocation task.
+
+```text
+Metric: oracle-normalized future reach capture
+Experiment: main early narrative alert benchmark
+```
+
+Claim 2: KOL originator role contains incremental information.
+
+```text
+Condition: I(Y_i ; O_{k(i)} | X_i) > 0
+Experiment: no-OL controls, shuffled OL, follower replacement, raw OL,
+            residualization checks
+```
+
+Claim 3: A structural router can enrich the candidate set shown to an LLM.
+
+```text
+Condition: P(i in A_e^* | i in B_e) > P(i in A_e^* | i in C_e)
+Experiment: listwise small experiment, routed LLM vs full LLM
+```
+
+Claim 4: The router is a low-latency first-stage component.
+
+```text
+Condition: T_OL(K) << T_LLM(K)
+Experiment: component latency analysis
+```
+
+These claims intentionally separate model quality from system cost. The paper's
+argument is strongest when the same structural component both improves capture
+and reduces first-stage selection latency.
+
+## 10. Full Logical Chain
+
+The paper's logic is:
 
 ```text
 Observation:
-  Large social-media streams are expensive and inefficient for direct LLM
-  consumption.
+  Large social-media streams are not automatically usable information for an
+  agent. Directly passing many candidates to an LLM often fails to convert the
+  larger pool into better first-stage attention allocation.
 
 Diagnosis:
-  Direct LLM consumption asks the model to solve first-stage routing before it
-  can solve downstream reasoning.
+  The LLM is being asked to solve a noisy listwise routing problem before it can
+  perform downstream reasoning.
 
-Representation:
-  Social-media observations should be represented as actor-time-frame data, not
-  only as raw text.
+Theoretical abstraction:
+  Full-context LLM selection can be modeled as noisy random-utility ranking:
+    tilde Y_i^LLM(K) = Y_i + epsilon_i(K)
+  where effective selection noise need not decrease with candidate-pool size.
 
 Structural discovery:
-  KOL streams contain a stable originator role O_k that is measurable before the
-  validation period and is not reducible to follower count, posting frequency,
-  timezone, or ex-post popularity.
+  Financial social media is actor-time-frame data. KOL streams contain a stable
+  originator role O_k that has conditional information about future reach after
+  controlling for ordinary origin-time context.
 
 Model implication:
-  Use O_k as a point-in-time low-latency selector over newly originated
-  semantic frames.
+  If I(Y_i ; O_{k(i)} | X_i) > 0, expose this structure directly through a
+  point-in-time selector rather than asking the LLM to rediscover it from raw
+  context.
 
 Model design:
-  Fit a lightweight OL-Origin router with origin-time controls, residualized
+  Fit a lightweight OL-Origin router using origin-time controls, residualized
   originator role, and role-context interactions.
 
-Experimental validation:
-  Main experiment tests early reach-alert quality.
-  Latency analysis tests component cost.
+Prediction:
+  Routing improves downstream LLM use when it raises the candidate-set
+  signal-to-selection-noise ratio:
+    Delta_b / sigma_LLM(b) > Delta_K / sigma_LLM(K)
+
+Validation:
+  Main experiment tests alert quality.
+  Latency analysis tests selector-component cost.
   Ablation tests whether the discovered originator structure is doing real work.
   Listwise small experiment tests whether routing improves downstream LLM
-  attention allocation in large candidate pools.
+  attention allocation under large candidate pools.
 ```
 
-The central theoretical claim is therefore:
+The central theoretical claim is:
 
 ```text
-The bottleneck is not the absence of social-media information, but the absence
-of a point-in-time structure that tells the agent which social-media information
-deserves expensive reasoning.
+The bottleneck is not a lack of social-media data. The bottleneck is the lack
+of a point-in-time structure that tells the agent which social-media items
+deserve expensive reasoning.
+```
+
+## 11. Literature Anchors
+
+This document uses three existing theoretical and empirical anchors.
+
+Random utility and noisy choice:
+
+```text
+Thurstone (1927), "A Law of Comparative Judgment"
+McFadden (1974), "Conditional Logit Analysis of Qualitative Choice Behavior"
+```
+
+These justify modeling a selector as ranking latent value plus an effective
+error term.
+
+Rational inattention and costly information processing:
+
+```text
+Sims (2003), "Implications of Rational Inattention"
+Mackowiak, Matejka, and Wiederholt (2021), "Rational Inattention: A Review"
+```
+
+These justify distinguishing available information from processed information.
+
+Long-context and multi-document LLM limitations:
+
+```text
+Liu et al. (2024), "Lost in the Middle: How Language Models Use Long Contexts"
+Levy et al. (2025), "More Documents, Same Length: Isolating the Challenge of
+Multiple Documents in RAG"
+```
+
+These support the assumption that larger contexts and larger document/candidate
+pools are not automatically converted into better model decisions.
+
+Reference links:
+
+```text
+Lost in the Middle:
+https://aclanthology.org/2024.tacl-1.9/
+
+More Documents, Same Length:
+https://aclanthology.org/2025.findings-emnlp.1064/
+
+Rational Inattention review:
+https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2570~a3979fbfa5.en.pdf
 ```
