@@ -319,6 +319,10 @@ KOL stream tells the agent what should be read deeply, rather than asking the
 LLM to discover that routing structure from an overloaded context window every
 time.
 
+For a more formal version of this argument, including the budgeted-selection
+objective, conditional-information condition, enrichment condition, and latency
+cost decomposition, see `docs/KOL_ROUTER_THEORETICAL_FRAMING.md`.
+
 ## 3. Method Definition
 
 The method can be defined as:
