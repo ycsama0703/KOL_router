@@ -298,8 +298,22 @@ linear router
 
 The paper chooses a lightweight linear router with role-context interactions as
 a deployment-oriented design choice, not as a mathematical consequence of
-mutual information. The choice is guided by four constraints of the agent
-setting.
+mutual information. This simplicity is part of the identification strategy.
+The paper is not claiming that a linear model is the most expressive possible
+selector. It is making a stronger and cleaner empirical claim:
+
+```text
+If a structure discovered from large-scale KOL data can improve routing through
+a simple ridge score, then the value is more likely to come from the discovered
+structure than from hidden model capacity.
+```
+
+In other words, the model is intentionally minimal. Neural scorers, transformer
+fine-tuning, and LLM-based selectors are useful baselines, but they are not the
+conceptual contribution. The conceptual contribution is the point-in-time
+originator structure and its use as an agent routing signal.
+
+The choice is guided by four constraints of the agent setting.
 
 First, the selector must be point-in-time:
 
@@ -335,7 +349,7 @@ candidate given origin-time context and the pre-estimated originator role:
 m(I_i) = E[Y_i | X_i, O_{k(i)}]
 ```
 
-The OL-Origin router uses a first-order approximation to this value:
+The OL-Origin router uses a first-order ridge approximation to this value:
 
 ```text
 s_i =
@@ -345,7 +359,19 @@ s_i =
   + delta_2 O_{k(i)} * novelty_i
 ```
 
+with coefficients estimated by the regularized linear objective:
+
+```text
+min_theta  sum_{i in train} (Y_i - theta' Z_i)^2 + lambda ||theta||_2^2
+```
+
 where:
+
+```text
+Z_i = [X_i, O_{k(i)}, O_{k(i)} * visibility_i, O_{k(i)} * novelty_i]
+```
+
+with:
 
 ```text
 X_i                       = non-OL origin-time controls
@@ -405,7 +431,8 @@ modeling implication:
   the first-stage selector should not ignore O_k
 
 parameterization choice:
-  use a low-latency linear approximation with role-context interactions
+  use the simplest regularized utility-index model that can expose O_k,
+  origin-time controls, and role-context interactions
 
 validation:
   test the choice against No-OL, OL-only, shuffled-OL, follower replacement,
@@ -414,7 +441,9 @@ validation:
 
 This distinction matters. The empirical discovery justifies including the
 originator role as a routing signal. The specific linear-plus-interaction form
-is justified by the deployment constraints and validated by the experiments.
+is justified by the deployment constraints, the standard utility-index view of
+selection, and the need to isolate structure from model capacity. The
+experiments then validate whether this minimal parameterization is sufficient.
 The router is therefore a structural attention allocator, not an alternative
 foundation model.
 
@@ -627,7 +656,7 @@ deserve expensive reasoning.
 
 ## 11. Literature Anchors
 
-This document uses three existing theoretical and empirical anchors.
+This document uses six existing theoretical and empirical anchors.
 
 Random utility and noisy choice:
 
@@ -637,7 +666,27 @@ McFadden (1974), "Conditional Logit Analysis of Qualitative Choice Behavior"
 ```
 
 These justify modeling a selector as ranking latent value plus an effective
-error term.
+error term. They also support the utility-index view behind a structured score
+such as `s_i = theta' Z_i`.
+
+Regularized linear scoring:
+
+```text
+Hoerl and Kennard (1970), "Ridge Regression: Biased Estimation for
+Nonorthogonal Problems"
+```
+
+This supports the use of a stable regularized linear estimator when the routing
+features include correlated origin-time controls and interaction terms.
+
+Learning to rank:
+
+```text
+Joachims (2002), "Optimizing Search Engines Using Clickthrough Data"
+```
+
+This supports treating first-stage routing as candidate ranking rather than as
+open-ended generation.
 
 Rational inattention and costly information processing:
 
@@ -647,6 +696,19 @@ Mackowiak, Matejka, and Wiederholt (2021), "Rational Inattention: A Review"
 ```
 
 These justify distinguishing available information from processed information.
+
+Interpretable and minimal models:
+
+```text
+Rudin (2019), "Stop Explaining Black Box Machine Learning Models for High
+Stakes Decisions and Use Interpretable Models Instead"
+Grinsztajn, Oyallon, and Varoquaux (2022), "Why do tree-based models still
+outperform deep learning on tabular data?"
+```
+
+These support the methodological choice not to make model capacity the paper's
+main contribution when the input is a structured tabular routing signal and
+interpretability, latency, and deployment constraints are central.
 
 Long-context and multi-document LLM limitations:
 
@@ -670,4 +732,19 @@ https://aclanthology.org/2025.findings-emnlp.1064/
 
 Rational Inattention review:
 https://www.ecb.europa.eu/pub/pdf/scpwps/ecb.wp2570~a3979fbfa5.en.pdf
+
+McFadden conditional logit:
+https://eml.berkeley.edu/reprints/mcfadden/zarembka.pdf
+
+Ridge regression:
+https://www.tandfonline.com/doi/abs/10.1080/00401706.1970.10488634
+
+Learning to rank:
+https://www.cs.cornell.edu/people/tj/publications/joachims_02c.pdf
+
+Interpretable models:
+https://www.nature.com/articles/s42256-019-0048-x
+
+Tabular deep learning comparison:
+https://arxiv.org/abs/2207.08815
 ```
