@@ -1,0 +1,15 @@
+{
+  "task": "phase85_deepseek_thr050",
+  "model": "deepseek/deepseek-v4-flash",
+  "events": 2176,
+  "symbols": 17,
+  "ndcg3": 0.6231996054232861,
+  "hit1": 0.3659645148930555,
+  "mass3": 0.7265269289605558,
+  "js": 0.41735376617813963,
+  "latency_ms_per_query": 6605.572954737421,
+  "prompt_tokens_per_query": 282.71108179419525,
+  "n_unique_items": 12417,
+  "n_scored": 12489,
+  "elapsed_sec": 899.0862255096436
+}

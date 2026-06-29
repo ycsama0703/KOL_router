@@ -1,0 +1,149 @@
+{
+  "task": "econometric_appendix_originator_role_incremental_test",
+  "setting": {
+    "threshold": 0.55,
+    "origin_window": "first10",
+    "target": "log_future_reach",
+    "baseline_features": [
+      "origin_logfoll",
+      "origin_verified",
+      "log_origin_rank",
+      "elapsed_hours",
+      "prior_frame_count",
+      "origin_stance",
+      "origin_stance_abs",
+      "novelty_global",
+      "novelty_event",
+      "hist_log_origin_count",
+      "hist_mean_log_adopt",
+      "hist_success_rate"
+    ],
+    "added_features": [
+      "origin_ol",
+      "ol_x_visibility",
+      "ol_x_novelty"
+    ],
+    "full_features": [
+      "origin_logfoll",
+      "origin_verified",
+      "log_origin_rank",
+      "elapsed_hours",
+      "prior_frame_count",
+      "origin_stance",
+      "origin_stance_abs",
+      "novelty_global",
+      "novelty_event",
+      "hist_log_origin_count",
+      "hist_mean_log_adopt",
+      "hist_success_rate",
+      "origin_ol",
+      "ol_x_visibility",
+      "ol_x_novelty"
+    ]
+  },
+  "panel": {
+    "n_rows": 12822,
+    "n_events_raw": 2868,
+    "n_train_rows": 6907,
+    "n_val_rows": 5915
+  },
+  "splits": [
+    {
+      "split": "train",
+      "n_rows": 6891,
+      "n_events": 1278,
+      "n_symbols": 13,
+      "baseline_no_ol": {
+        "r2_within": 0.09261793806103436,
+        "ssr": 124335.56379592844,
+        "n_features": 12
+      },
+      "full_origin": {
+        "r2_within": 0.10581048357157086,
+        "ssr": 122527.83290421247,
+        "n_features": 15,
+        "added_feature_coefficients": [
+          {
+            "feature": "origin_ol",
+            "coef_standardized": -6.858718122718145,
+            "cluster_se": 0.8315924443257989,
+            "t": -8.247691726298388,
+            "p": 3.9747610220145265e-16
+          },
+          {
+            "feature": "ol_x_visibility",
+            "coef_standardized": 6.667732365079649,
+            "cluster_se": 0.8403429536739545,
+            "t": 7.934537126691573,
+            "p": 4.587191811822849e-15
+          },
+          {
+            "feature": "ol_x_novelty",
+            "coef_standardized": 0.42007329303534896,
+            "cluster_se": 0.13492523370317297,
+            "t": 3.113378287411262,
+            "p": 0.0018906898650867408
+          }
+        ]
+      },
+      "incremental": {
+        "delta_r2_within": 0.013192545510536502,
+        "ssr_reduction_pct": 0.01453912972705855,
+        "wald_added_terms": {
+          "wald_chi2": 85.69481779389142,
+          "df": 3,
+          "p_value": 1.8407980568780924e-18
+        }
+      }
+    },
+    {
+      "split": "val",
+      "n_rows": 5818,
+      "n_events": 1477,
+      "n_symbols": 16,
+      "baseline_no_ol": {
+        "r2_within": 0.07778952122797655,
+        "ssr": 104126.15580230238,
+        "n_features": 12
+      },
+      "full_origin": {
+        "r2_within": 0.12553254734640906,
+        "ssr": 98735.52330515177,
+        "n_features": 15,
+        "added_feature_coefficients": [
+          {
+            "feature": "origin_ol",
+            "coef_standardized": -11.028117684591466,
+            "cluster_se": 0.9471453681536401,
+            "t": -11.64353229757077,
+            "p": 4.8662625977028806e-30
+          },
+          {
+            "feature": "ol_x_visibility",
+            "coef_standardized": 11.83497416163395,
+            "cluster_se": 0.9656339299635754,
+            "t": 12.256170578099276,
+            "p": 5.8663059867862996e-33
+          },
+          {
+            "feature": "ol_x_novelty",
+            "coef_standardized": -0.2686352288125076,
+            "cluster_se": 0.11659047790969171,
+            "t": -2.304092354957034,
+            "p": 0.021355776135039084
+          }
+        ]
+      },
+      "incremental": {
+        "delta_r2_within": 0.04774302611843251,
+        "ssr_reduction_pct": 0.05177020562811766,
+        "wald_added_terms": {
+          "wald_chi2": 185.38306389782505,
+          "df": 3,
+          "p_value": 6.0656628141782725e-40
+        }
+      }
+    }
+  ],
+  "elapsed_sec": 15.989774942398071
+}

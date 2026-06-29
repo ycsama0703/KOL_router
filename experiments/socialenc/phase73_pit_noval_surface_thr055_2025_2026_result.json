@@ -1,0 +1,385 @@
+{
+  "task": "pit_noval_surface_diagnostics_thr055_2025_2026",
+  "protocol": {
+    "train": [
+      "2022-06-01",
+      "2025-06-01"
+    ],
+    "validation": null,
+    "test": [
+      "2025-06-01",
+      "2026-06-01"
+    ],
+    "semantic_threshold": 0.55,
+    "origin_window": {
+      "name": "first10",
+      "max_rank": 10
+    },
+    "target": "log_future_reach"
+  },
+  "latest_by_symbol": {
+    "AAPL": "2026-06-22",
+    "MSFT": "2026-06-22",
+    "NVDA": "2026-06-22",
+    "TSLA": "2026-06-22",
+    "AMZN": "2026-06-22",
+    "META": "2026-06-22",
+    "GOOGL": "2026-06-22",
+    "AMD": "2026-06-22",
+    "MSTR": "2026-06-22",
+    "COIN": "2026-06-21",
+    "HOOD": "2026-06-22",
+    "PLTR": "2026-06-22",
+    "SPY": "2026-06-22",
+    "QQQ": "2026-06-22",
+    "BTC": "2026-06-22",
+    "ETH": "2026-06-22",
+    "SOL": "2026-06-22"
+  },
+  "panel_counts": {
+    "n_rows": 59802,
+    "n_train_rows": 45017,
+    "n_val_rows": 0,
+    "n_test_rows": 14785,
+    "n_events": 8602
+  },
+  "surface_model_selection": {
+    "symbol_onehot": {
+      "selected_alpha": 1000.0,
+      "selection": "fixed_no_validation"
+    },
+    "text_surface": {
+      "selected_alpha": 1000.0,
+      "selection": "fixed_no_validation"
+    },
+    "symbol_plus_surface": {
+      "selected_alpha": 1000.0,
+      "selection": "fixed_no_validation"
+    }
+  },
+  "structural_model_selection": {
+    "no_ol_strong": {
+      "selected_alpha": 1000.0,
+      "selection": "fixed_no_validation"
+    },
+    "ol_origin": {
+      "selected_alpha": 1000.0,
+      "selection": "fixed_no_validation"
+    }
+  },
+  "surface_means": {
+    "symbol_onehot": {
+      "n_events": 2028,
+      "n_symbols": 17,
+      "symbol_balanced": {
+        "ndcg3": 0.5872634376272963,
+        "hit1": 0.27680994200579134,
+        "mass3": 0.7223707913950852,
+        "js": 0.3606803288896661
+      },
+      "pooled": {
+        "ndcg3": 0.5787679884305065,
+        "hit1": 0.27071005917159763,
+        "mass3": 0.6774930902969137,
+        "js": 0.36448991475662645
+      }
+    },
+    "text_surface": {
+      "n_events": 2028,
+      "n_symbols": 17,
+      "symbol_balanced": {
+        "ndcg3": 0.5973566093734395,
+        "hit1": 0.3123835140630719,
+        "mass3": 0.7146244316372515,
+        "js": 0.33345997058935484
+      },
+      "pooled": {
+        "ndcg3": 0.5502657339864822,
+        "hit1": 0.27564102564102566,
+        "mass3": 0.650472955837113,
+        "js": 0.3459063867022588
+      }
+    },
+    "symbol_plus_surface": {
+      "n_events": 2028,
+      "n_symbols": 17,
+      "symbol_balanced": {
+        "ndcg3": 0.5954470314852608,
+        "hit1": 0.3082276059295707,
+        "mass3": 0.7096212830102143,
+        "js": 0.3329305212112004
+      },
+      "pooled": {
+        "ndcg3": 0.5593099416642386,
+        "hit1": 0.28057199211045364,
+        "mass3": 0.6567369068932272,
+        "js": 0.34191835141364335
+      }
+    }
+  },
+  "structural_means": {
+    "no_ol_strong": {
+      "n_events": 2028,
+      "n_symbols": 17,
+      "symbol_balanced": {
+        "ndcg3": 0.6893146089828286,
+        "hit1": 0.42098757084443095,
+        "mass3": 0.7885327901464383,
+        "js": 0.29326801646760664
+      },
+      "pooled": {
+        "ndcg3": 0.6843259575523076,
+        "hit1": 0.3757396449704142,
+        "mass3": 0.763244702374485,
+        "js": 0.292733047512614
+      }
+    },
+    "ol_origin": {
+      "n_events": 2028,
+      "n_symbols": 17,
+      "symbol_balanced": {
+        "ndcg3": 0.694532987242824,
+        "hit1": 0.4221540899619467,
+        "mass3": 0.7950696761868528,
+        "js": 0.2926638929238148
+      },
+      "pooled": {
+        "ndcg3": 0.6880300788779852,
+        "hit1": 0.3772189349112426,
+        "mass3": 0.7670775274215939,
+        "js": 0.29312217127506507
+      }
+    }
+  },
+  "comparisons": {
+    "symbol_onehot_vs_no_ol_strong": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.10205117135553236,
+          "ci05": -0.13269871545294662,
+          "ci95": -0.07345750599142821,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.1441776288386396,
+          "ci05": -0.1947132767077413,
+          "ci95": -0.09860573328788395,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.06616199875135312,
+          "ci05": -0.10286308478320315,
+          "ci95": -0.03079477904283289,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.06741231242205957,
+          "ci05": -0.09235369767370516,
+          "ci95": -0.04707111267723853,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      }
+    },
+    "text_surface_vs_no_ol_strong": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.091957999609389,
+          "ci05": -0.14844588246807225,
+          "ci95": -0.039821084819996945,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.10860405678135901,
+          "ci05": -0.18494038455873263,
+          "ci95": -0.036103867498935925,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.07390835850918677,
+          "ci05": -0.12656415299419999,
+          "ci95": -0.02385317065825227,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.04019195412174832,
+          "ci05": -0.07100307791431901,
+          "ci95": -0.010682960447965725,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      }
+    },
+    "symbol_plus_surface_vs_no_ol_strong": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.0938675774975678,
+          "ci05": -0.13819822050855818,
+          "ci95": -0.043217749425325074,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.11275996491486023,
+          "ci05": -0.17999242372732913,
+          "ci95": -0.047808972611074044,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.07891150713622395,
+          "ci05": -0.11589654039505526,
+          "ci95": -0.037749993741699885,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.039662504743593896,
+          "ci05": -0.06789379977836393,
+          "ci95": -0.014860721819207914,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      }
+    },
+    "ol_origin_vs_symbol_onehot": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.10726954961552766,
+          "ci05": 0.07380060206675644,
+          "ci95": 0.1411497405704759,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.14534414795615525,
+          "ci05": 0.09648072672514416,
+          "ci95": 0.19359430065297745,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.07269888479176752,
+          "ci05": 0.029691325063728752,
+          "ci95": 0.10903660230242974,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.06801643596585134,
+          "ci05": 0.04727689417538745,
+          "ci95": 0.09165185364671452,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      }
+    },
+    "ol_origin_vs_text_surface": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.09717637786938427,
+          "ci05": 0.038444717720724074,
+          "ci95": 0.1486054518489287,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.1097705758988747,
+          "ci05": 0.03957691647873059,
+          "ci95": 0.18439964057334124,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.08044524454960118,
+          "ci05": 0.036523191538387394,
+          "ci95": 0.1289709050465361,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.040796077665540095,
+          "ci05": 0.014162718696837391,
+          "ci95": 0.07079811646019132,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      }
+    },
+    "ol_origin_vs_symbol_plus_surface": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.09908595575756309,
+          "ci05": 0.05391186311198905,
+          "ci95": 0.14192708511392982,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.11392648403237593,
+          "ci05": 0.044243988451923844,
+          "ci95": 0.17764303287370267,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.08544839317663835,
+          "ci05": 0.04835545561841421,
+          "ci95": 0.12503048076138215,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.04026662828738567,
+          "ci05": 0.012777109628235694,
+          "ci95": 0.06406074592578323,
+          "n_symbols": 17,
+          "n_events": 2028
+        }
+      }
+    }
+  },
+  "elapsed_sec": 37.195992946624756
+}

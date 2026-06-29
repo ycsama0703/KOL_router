@@ -1,0 +1,233 @@
+{
+  "means": {
+    "A1_ridge_full": {
+      "ndcg3": 0.6893348705904109,
+      "hit1": 0.38763565570409264,
+      "mass3": 0.7935963842681383,
+      "js": 0.29851923690545673
+    },
+    "A2_xgb_pairwise_full": {
+      "ndcg3": 0.7818449209028122,
+      "hit1": 0.5165872665195429,
+      "mass3": 0.8546851556906329,
+      "js": 0.2647964820927353
+    },
+    "A3_lgbm_full": {
+      "ndcg3": 0.7832758249066062,
+      "hit1": 0.5173815562739119,
+      "mass3": 0.8627709391092054,
+      "js": 0.24166325324153756
+    },
+    "B1_lgbm_context": {
+      "ndcg3": 0.7811517194431755,
+      "hit1": 0.5142966628128596,
+      "mass3": 0.8574779893820093,
+      "js": 0.2367377246097357
+    },
+    "B2_lgbm_Okonly": {
+      "ndcg3": 0.545254312729124,
+      "hit1": 0.26905968842922207,
+      "mass3": 0.6599342487768319,
+      "js": 0.3342927253260148
+    },
+    "C1_lgbm_shuffOk": {
+      "ndcg3": 0.7774649460136634,
+      "hit1": 0.5187772132669761,
+      "mass3": 0.8525678109426409,
+      "js": 0.24459532786184746
+    }
+  },
+  "comparisons": {
+    "A3_lgbm_full_vs_A1_ridge_full": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.09394095431619534,
+          "ci05": 0.07730494435771891,
+          "ci95": 0.11034744091048582,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.12974590056981933,
+          "ci05": 0.10003763544496647,
+          "ci95": 0.15899390972298083,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.06917455484106709,
+          "ci05": 0.05631575814442792,
+          "ci95": 0.08203307365694656,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.056855983663919155,
+          "ci05": 0.04564474838777125,
+          "ci95": 0.06706428512093657,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      }
+    },
+    "A3_lgbm_full_vs_A2_xgb_pairwise_full": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.0014309040037942227,
+          "ci05": -0.004815943940728294,
+          "ci95": 0.008130015643458742,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.0007942897543689873,
+          "ci05": -0.012865682761458656,
+          "ci95": 0.014878497032899556,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.008085783418572582,
+          "ci05": 0.001177850794709725,
+          "ci95": 0.015709514005323198,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.023133228851197743,
+          "ci05": 0.020339481646546347,
+          "ci95": 0.025905784077416356,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      }
+    },
+    "A3_lgbm_full_vs_B1_lgbm_context": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.002124105463430907,
+          "ci05": -0.002064050067509741,
+          "ci95": 0.0063549376900384705,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.003084893461052353,
+          "ci05": -0.006320692854297831,
+          "ci95": 0.011972496852755494,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.005292949727196238,
+          "ci05": 0.0005000731501556337,
+          "ci95": 0.010463473212584756,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.004925528631801846,
+          "ci05": -0.0069153599032978855,
+          "ci95": -0.0029014378624156946,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      }
+    },
+    "A3_lgbm_full_vs_C1_lgbm_shuffOk": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.005810878892942851,
+          "ci05": 0.000845384783540568,
+          "ci95": 0.010929737273827437,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": -0.0013956569930640515,
+          "ci05": -0.01145683124428011,
+          "ci95": 0.008365000150245959,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.01020312816656459,
+          "ci05": 0.004431282128988038,
+          "ci95": 0.01665227078308292,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.002932074620309875,
+          "ci05": 0.0017522906813678338,
+          "ci95": 0.0041444209028926,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      }
+    },
+    "A3_lgbm_full_vs_B2_lgbm_Okonly": {
+      "ndcg3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.23802151217748235,
+          "ci05": 0.21933724143992595,
+          "ci95": 0.25559654704096146,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "hit1": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.24832186784468988,
+          "ci05": 0.22408837652927407,
+          "ci95": 0.27391766166297077,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "mass3": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.20283669033237353,
+          "ci05": 0.17802255160002806,
+          "ci95": 0.22425522371598713,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      },
+      "js": {
+        "symbol_balanced_bootstrap": {
+          "observed": 0.09262947208447722,
+          "ci05": 0.0863475509195689,
+          "ci95": 0.09932545892114672,
+          "n_symbols": 17,
+          "n_events": 9509
+        }
+      }
+    }
+  },
+  "elapsed_sec": 198.75676083564758
+}

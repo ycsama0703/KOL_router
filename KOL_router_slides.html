@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOL Origin-Aware Narrative Router</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stage-bg:#0f1418;
+  --slide-bg:#0f1418;
+  --ink:#e8edf0;
+  --muted:#8d98a1;
+  --faint:#5e6971;
+  --line:#28343d;
+  --grid:#1a232a;
+  --accent:#4ec5c0;
+  --amber:#e8b85c;
+  --good:#81c99f;
+  --bad:#e07a6a;
+  --font-body:'Space Grotesk','Noto Sans SC',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--stage-bg)}
+*{box-sizing:border-box}
+.deck-viewport{position:fixed;inset:0;overflow:hidden;background:var(--stage-bg)}
+.deck-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;background:var(--slide-bg)}
+.slide{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;visibility:hidden;opacity:0;pointer-events:none;background:var(--slide-bg);font-family:var(--font-body);color:var(--ink)}
+.slide.active,.slide.visible{visibility:visible;opacity:1;pointer-events:auto;z-index:1}
+.grid{position:absolute;inset:0;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:120px 120px;opacity:.45}
+.topbar{position:absolute;left:0;right:0;top:0;height:62px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 64px;font-family:var(--font-mono);font-size:15px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.tag{color:var(--accent)}
+.topbar .spacer{flex:1}
+.page{position:absolute;right:64px;top:84px;font-family:var(--font-mono);font-size:14px;color:var(--faint);letter-spacing:.08em}
+.page b{color:var(--muted)}
+.kicker{position:absolute;left:64px;top:118px;font-family:var(--font-mono);font-size:17px;color:var(--accent);letter-spacing:.22em;text-transform:uppercase}
+h1{position:absolute;left:64px;top:292px;margin:0;font-size:86px;line-height:1.12;font-weight:700;letter-spacing:0;max-width:1500px}
+h2{position:absolute;left:64px;top:168px;margin:0;font-size:60px;line-height:1.16;font-weight:700;letter-spacing:0;max-width:1550px}
+h2 .sub{font-weight:400;color:var(--muted);font-size:34px}
+.body{position:absolute;left:64px;right:64px;top:315px;bottom:80px}
+.lead{font-size:30px;line-height:1.5;font-weight:300;color:var(--ink);max-width:1540px}
+.lead b,.hl{color:var(--accent);font-weight:500}
+.muted{color:var(--muted)}
+.amber{color:var(--amber)}
+.mono{font-family:var(--font-mono)}
+.cols{display:grid;gap:28px}
+.cols.two{grid-template-columns:1fr 1fr}
+.cols.three{grid-template-columns:1fr 1fr 1fr}
+.card{border:1px solid var(--line);background:rgba(255,255,255,.018);padding:32px 36px;min-height:160px}
+.label{font-family:var(--font-mono);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.title{font-size:29px;font-weight:500;line-height:1.28;margin-bottom:12px;color:var(--ink)}
+.text{font-size:23px;line-height:1.48;font-weight:300;color:var(--muted)}
+.text b{color:var(--ink);font-weight:500}
+.formula{font-family:var(--font-mono);font-size:28px;line-height:1.58;border-left:3px solid var(--accent);background:rgba(78,197,192,.06);padding:28px 34px;color:var(--ink)}
+.formula .v{color:var(--accent)}
+.formula .a{color:var(--amber)}
+.stats{display:flex;gap:54px;flex-wrap:wrap}
+.stat{min-width:185px}
+.stat .n{font-family:var(--font-mono);font-size:48px;font-weight:500;color:var(--accent);line-height:1}
+.stat .l{font-family:var(--font-mono);font-size:14px;line-height:1.4;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:22px}
+th{font-family:var(--font-mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:right;padding:13px 14px;border-bottom:1px solid var(--line)}
+th:first-child{text-align:left}
+td{padding:15px 14px;border-bottom:1px solid var(--grid);text-align:right;font-variant-numeric:tabular-nums}
+td:first-child{text-align:left;color:var(--muted)}
+.compact-table{font-size:13px;line-height:1.15}
+.compact-table th{font-size:9px;padding:5px 6px}
+.compact-table td{padding:4px 6px}
+.compact-table td:first-child{color:var(--faint)}
+.compact-table td:nth-child(2){text-align:left;color:var(--ink)}
+tr.best td{color:var(--accent);font-weight:500}
+tr.best td:first-child{color:var(--accent)}
+.good{color:var(--good)}
+.bad{color:var(--bad)}
+.note{font-family:var(--font-mono);font-size:14px;line-height:1.5;color:var(--faint);letter-spacing:.04em;margin-top:18px}
+.bullets{list-style:none;margin:0;padding:0}
+.bullets li{position:relative;padding:15px 0 15px 32px;border-bottom:1px solid var(--grid);font-size:26px;line-height:1.45;font-weight:300;color:var(--ink)}
+.bullets li:before{content:"";position:absolute;left:0;top:33px;width:14px;height:1px;background:var(--accent)}
+.bullets b{font-weight:500;color:var(--ink)}
+.bullets .small{font-family:var(--font-mono);font-size:19px;color:var(--muted)}
+.thesis{border:1px solid var(--accent);background:rgba(78,197,192,.055);padding:32px 38px;font-size:31px;line-height:1.45;font-weight:500;color:var(--ink)}
+.strip{position:absolute;left:64px;right:64px;bottom:82px;border-top:1px solid var(--line);padding-top:28px}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.slide.visible .reveal{opacity:1;transform:none}
+.slide.visible .reveal:nth-child(1){transition-delay:.06s}
+.slide.visible .reveal:nth-child(2){transition-delay:.14s}
+.slide.visible .reveal:nth-child(3){transition-delay:.22s}
+.slide.visible .reveal:nth-child(4){transition-delay:.30s}
+.slide.visible .reveal:nth-child(5){transition-delay:.38s}
+.edit-hotzone{position:fixed;top:0;left:0;width:80px;height:80px;z-index:10000;cursor:pointer}
+.edit-toggle{position:fixed;top:24px;left:24px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--slide-bg);color:var(--muted);font-size:18px;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:10001}
+.edit-toggle.show,.edit-toggle.active{opacity:1;pointer-events:auto}
+.edit-toggle.active{color:var(--accent);border-color:var(--accent)}
+[contenteditable]:focus{outline:2px solid var(--accent);background:rgba(78,197,192,.07)}
+@media print{html,body{width:1920px;height:auto;overflow:visible;background:#fff}.deck-viewport{position:static;overflow:visible}.deck-stage{position:static;width:auto;height:auto;transform:none!important}.slide{position:relative;visibility:visible!important;opacity:1!important;display:block!important;width:1920px;height:1080px;break-after:page}.edit-toggle,.edit-hotzone{display:none!important}}
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+<section class="slide active">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>RESEARCH BRIEF · 2026-06</span></div>
+  <div class="page"><b>01</b> / 11</div>
+  <div class="kicker reveal">one sentence</div>
+  <h1 class="reveal">从社媒信息过载<br>到 KOL 起源路由</h1>
+  <div class="body" style="top:575px">
+    <div class="thesis reveal">我们发现：金融 KOL 流里存在稳定的 <span class="hl">originator structure</span>；用一个极轻量线性 router，就能在叙事扩散前告诉 agent 哪些内容值得进入昂贵推理。</div>
+  </div>
+  <div class="strip reveal">
+    <div class="stats">
+      <div class="stat"><div class="n">33.8M</div><div class="l">KOL tweets in archive</div></div>
+      <div class="stat"><div class="n">459K</div><div class="l">working-panel tweets</div></div>
+      <div class="stat"><div class="n">785</div><div class="l">validation events</div></div>
+      <div class="stat"><div class="n">0.003</div><div class="l">ms/query online router</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>01 · current problem</span></div>
+  <div class="page"><b>02</b> / 11</div>
+  <div class="kicker reveal">现状问题是什么</div>
+  <h2 class="reveal">Agent 不是缺社媒数据，<br>是不会高效选择早期信息</h2>
+  <div class="body">
+    <div class="cols three reveal">
+      <div class="card">
+        <div class="label">overload</div>
+        <div class="title">候选叙事太多</div>
+        <div class="text">一个 symbol-day 里会出现大量看起来合理的 KOL 叙事主题，不能全部进入 memory / RAG / LLM。</div>
+      </div>
+      <div class="card">
+        <div class="label">timing</div>
+        <div class="title">热度确认太晚</div>
+        <div class="text">等 follower、转发和二次传播出现后再判断，已经不是 early attention allocation。</div>
+      </div>
+      <div class="card">
+        <div class="label">llm bottleneck</div>
+        <div class="title">Full LLM 不等于会用</div>
+        <div class="text">LLM 看到更多候选，不一定能更好识别哪些早期叙事值得下游关注。</div>
+      </div>
+    </div>
+    <div class="thesis reveal" style="margin-top:34px">本文解决的是 first-stage routing：在叙事扩散前，决定哪些“由 KOL 首次提出的叙事主题”值得进入昂贵推理链路。</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>02 · discovery</span></div>
+  <div class="page"><b>03</b> / 11</div>
+  <div class="kicker reveal">我们发现了什么</div>
+  <h2 class="reveal">我们发现的是“叙事起源关系”，不是 KOL 标签</h2>
+  <div class="body">
+    <div class="thesis reveal" style="margin-bottom:32px">核心判断是：<span class="hl">这个新说法由这个历史角色的人在这个上下文中提出，是否值得进入下游推理</span>。真实可用的信号不是“某个 KOL 永远好/坏”，而是新叙事、发起者历史角色、当前上下文三者的组合。</div>
+    <div class="cols three reveal">
+      <div class="card">
+        <div class="label">what structure</div>
+        <div class="title">对象是“新叙事”，不是账号</div>
+        <div class="text">我们路由的是事件中刚出现的叙事候选：某个说法第一次被谁提出，之后是否可能被其他 KOL 接续。</div>
+      </div>
+      <div class="card">
+        <div class="label">why useful</div>
+        <div class="title">账号历史只是一个先验</div>
+        <div class="text">历史源头分数只回答“这个发起者过去是否常站在扩散链前端”；它不能单独决定当前候选是否重要。</div>
+      </div>
+      <div class="card">
+        <div class="label">how it solves problem</div>
+        <div class="title">真正信号来自组合</div>
+        <div class="text">只有把“谁提出”与当前叙事的新颖性、可见度、时点结合，才形成可用于 agent 的低延迟路由信号。</div>
+      </div>
+    </div>
+    <div class="formula reveal" style="margin-top:34px">
+      新说法 × 发起者历史角色 × 当前上下文 → 是否进入下游推理
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>03 · structure evidence</span></div>
+  <div class="page"><b>04</b> / 11</div>
+  <div class="kicker reveal">结构是否普遍存在</div>
+  <h2 class="reveal">不是个例：这个结构在大样本中稳定存在</h2>
+  <div class="body">
+    <div class="stats reveal" style="margin-bottom:34px">
+      <div class="stat"><div class="n">33.8M</div><div class="l">archive tweets</div></div>
+      <div class="stat"><div class="n">3,712</div><div class="l">KOL accounts</div></div>
+      <div class="stat"><div class="n">459K</div><div class="l">working-panel tweets</div></div>
+      <div class="stat"><div class="n">17</div><div class="l">symbols</div></div>
+      <div class="stat"><div class="n">12,822</div><div class="l">origin candidates</div></div>
+    </div>
+    <table class="reveal">
+      <tr><th>检验问题</th><th>结果</th><th>排除了什么解释</th></tr>
+      <tr><td>是否存在 lead-lag hierarchy</td><td>16/17 symbols，permutation p = 0.001</td><td>不是随机顺序噪声</td></tr>
+      <tr><td>是否只是 follower scale</td><td>历史源头分数 vs followers: ρ = -0.068，n = 641</td><td>不是大号效应</td></tr>
+      <tr><td>是否只是时区/作息</td><td>raw lead vs median hour ρ = -0.768；校正发帖时间后 corr≈0</td><td>不是谁醒得早</td></tr>
+      <tr><td>是否跨时间稳定</td><td>lag-1 residualized persistence ≈ +0.447</td><td>不是偶然幸运</td></tr>
+      <tr><td>是否身份驱动</td><td>identity +0.42~0.47 vs timezone null +0.02~0.09</td><td>不是时区近邻伪影</td></tr>
+      <tr><td>是否跨资产一致</td><td>cross-asset split ρ ≈ +0.500，p = 5e-19</td><td>不是单一标的现象</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>04 · method</span></div>
+  <div class="page"><b>05</b> / 11</div>
+  <div class="kicker reveal">有什么用</div>
+  <h2 class="reveal">把“历史源头分数”变成低延迟前端 router</h2>
+  <div class="body">
+    <div class="formula reveal" style="margin-bottom:28px">
+      s<sub>i</sub> = <span class="a">β′</span>X<sub>i</sub> + <span class="a">γ</span><span class="v">O</span><sub>k(i)</sub> + <span class="a">δ₁</span>(<span class="v">O</span>·visibility<sub>i</sub>) + <span class="a">δ₂</span>(<span class="v">O</span>·novelty<sub>i</sub>)
+    </div>
+    <ul class="bullets reveal">
+      <li><b>不是 KOL 排行榜</b>　<span class="small">历史上常当源头，不代表每条都重要；要和当前 visibility / novelty / timing 结合。</span></li>
+      <li><b>不是卖新 neural architecture</b>　<span class="small">故意用最小线性 ridge；如果简单模型有效，价值更可能来自数据结构。</span></li>
+      <li><b>适合 agent entry layer</b>　<span class="small">zero prompt tokens · no online text-model inference · point-in-time · near-zero latency。</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>05 · experiment design</span></div>
+  <div class="page"><b>06</b> / 11</div>
+  <div class="kicker reveal">实验怎么做 · Dataset</div>
+  <h2 class="reveal">主实验协议：只允许模型使用当时可见信息</h2>
+  <div class="body">
+    <div class="cols two reveal">
+      <div class="card">
+        <div class="label">PIT split: what models are allowed to know</div>
+        <div class="text">历史源头分数只用 2020 前历史估计<br>model train: 2020-01-01 to 2021-06-01<br>validation: 2021-06-01 to 2022-06-01<br>ranking eval: <b>785</b> events / <b>16</b> symbols</div>
+      </div>
+      <div class="card">
+        <div class="label">candidate set used in experiments</div>
+        <div class="text">semantic threshold = 0.55<br>origin window = first10<br>candidate = 事件中刚被某个 KOL 首次提出的叙事主题<br>events with at least two valid candidates enter ranking eval</div>
+      </div>
+      <div class="card">
+        <div class="label">label used for evaluation</div>
+        <div class="text">future follower-weighted Reach<br>后续加入同一叙事主题的 KOL followers 总量的 log 变换；label 不进入 online router。</div>
+      </div>
+      <div class="card">
+        <div class="label">online information only</div>
+        <div class="text">可用：最早提出者、原始文本、rank/time、visibility、novelty、历史源头分数<br>不可用：后续 follower 确认、完整扩散路径、事后热度。</div>
+      </div>
+    </div>
+    <div class="thesis reveal" style="margin-top:34px">大样本证明结构存在；PIT split 检验这个结构能否在真实在线场景中作为 router 使用。</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>05 · experiment design</span></div>
+  <div class="page"><b>07</b> / 11</div>
+  <div class="kicker reveal">实验怎么做 · Benchmarks & Metrics</div>
+  <h2 class="reveal">Benchmark 只分族；指标解释清楚</h2>
+  <div class="body">
+    <div class="cols two reveal">
+      <div class="card">
+        <div class="label">benchmark families</div>
+        <div class="text">Scale baselines<br>Non-OL context baselines<br>Surface-text baselines<br>Text encoder baselines<br>Local LLM baselines<br>Commercial API baselines</div>
+      </div>
+      <div class="card">
+        <div class="label">statistical test</div>
+        <div class="text">所有核心比较用 paired bootstrap。主表给点估计；文档中报告 symbol-balanced bootstrap CI 和 p-value。Delta 相对 No-OL Strong。</div>
+      </div>
+    </div>
+    <table class="reveal" style="margin-top:30px">
+      <tr><th>Metric</th><th>它回答的问题</th><th>方向</th></tr>
+      <tr><td>NDCG@3</td><td>Top 3 排序是否把未来 reach 更高的叙事候选排在前面，并按位置折损</td><td>higher better</td></tr>
+      <tr><td>Hit@1</td><td>第一名是否就是该事件里未来 reach 最高的 candidate</td><td>higher better</td></tr>
+      <tr><td>Mass@3</td><td>Top 3 捕获了该事件未来 reach 总量的多少比例</td><td>higher better</td></tr>
+      <tr><td>JS ↓</td><td>模型给出的注意力分布与真实未来 reach 分布有多接近</td><td>lower better</td></tr>
+      <tr><td>Latency</td><td>共享叙事聚类步骤之后，online scoring 阶段每个 query 的额外延迟</td><td>lower better</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>06 · main results</span></div>
+  <div class="page"><b>08</b> / 11</div>
+  <div class="kicker reveal">结果 1 · 主实验</div>
+  <h2 class="reveal">完整主实验结果：Reach Alert @ 0.55</h2>
+  <div class="body">
+    <table class="reveal compact-table">
+      <tr><th>Family</th><th>Method</th><th>Events</th><th>NDCG@3</th><th>Hit@1</th><th>Mass@3</th><th>JS↓</th><th>ΔNDCG</th><th>ΔHit</th><th>Input</th><th>ms/q</th></tr>
+      <tr><td>Scale</td><td>Follower</td><td>785</td><td>0.724</td><td>0.477</td><td>0.870</td><td>0.292</td><td>+0.012</td><td>+0.056</td><td>0.0</td><td>0.002</td></tr>
+      <tr><td></td><td>Visibility</td><td>785</td><td>0.723</td><td>0.477</td><td>0.870</td><td>0.292</td><td>+0.011</td><td>+0.056</td><td>0.0</td><td>0.002</td></tr>
+      <tr><td>Context</td><td>Rank/Time</td><td>785</td><td>0.678</td><td>0.372</td><td>0.872</td><td>0.320</td><td>-0.034</td><td>-0.049</td><td>0.0</td><td>0.002</td></tr>
+      <tr><td></td><td>Sentiment</td><td>785</td><td>0.687</td><td>0.423</td><td>0.841</td><td>0.314</td><td>-0.025</td><td>+0.002</td><td>0.0</td><td>0.002</td></tr>
+      <tr><td></td><td>Novelty</td><td>785</td><td>0.673</td><td>0.362</td><td>0.857</td><td>0.328</td><td>-0.039</td><td>-0.059</td><td>0.0</td><td>0.002</td></tr>
+      <tr><td></td><td>History</td><td>785</td><td>0.632</td><td>0.339</td><td>0.811</td><td>0.323</td><td>-0.079</td><td>-0.083</td><td>0.0</td><td>0.002</td></tr>
+      <tr><td></td><td>No-OL Strong</td><td>785</td><td>0.712</td><td>0.421</td><td>0.891</td><td>0.301</td><td>+0.000</td><td>+0.000</td><td>0.0</td><td>0.003</td></tr>
+      <tr><td>Surface</td><td>Symbol one-hot</td><td>785</td><td>0.678</td><td>0.372</td><td>0.872</td><td>0.319</td><td>-0.034</td><td>-0.049</td><td>0.0</td><td>0.001</td></tr>
+      <tr><td></td><td>Text surface</td><td>785</td><td>0.741</td><td>0.463</td><td>0.896</td><td>0.293</td><td>+0.029</td><td>+0.042</td><td>28.8</td><td>0.041</td></tr>
+      <tr><td></td><td>Symbol + surface</td><td>785</td><td>0.735</td><td>0.462</td><td>0.886</td><td>0.288</td><td>+0.023</td><td>+0.041</td><td>28.8</td><td>0.043</td></tr>
+      <tr><td>Encoder</td><td>BERT-origin text</td><td>785</td><td>0.745</td><td>0.440</td><td>0.901</td><td>0.298</td><td>+0.033</td><td>+0.019</td><td>51.6</td><td>0.645</td></tr>
+      <tr><td></td><td>FinBERT-origin text</td><td>785</td><td>0.742</td><td>0.447</td><td>0.896</td><td>0.295</td><td>+0.030</td><td>+0.026</td><td>51.6</td><td>0.534</td></tr>
+      <tr><td></td><td>Qwen3-4B-origin text</td><td>785</td><td>0.750</td><td>0.474</td><td>0.900</td><td>0.279</td><td>+0.038</td><td>+0.053</td><td>59.3</td><td>11.862</td></tr>
+      <tr><td></td><td>BGE-origin text</td><td>785</td><td>0.742</td><td>0.476</td><td>0.888</td><td>0.287</td><td>+0.030</td><td>+0.054</td><td>51.6</td><td>0.452</td></tr>
+      <tr><td></td><td>E5-Mistral-7B</td><td>785</td><td>0.684</td><td>0.385</td><td>0.863</td><td>0.379</td><td>-0.028</td><td>-0.037</td><td>65.2</td><td>25.994</td></tr>
+      <tr><td>Local LLM</td><td>Llama3.1-8B</td><td>785</td><td>0.619</td><td>0.291</td><td>0.827</td><td>0.474</td><td>-0.093</td><td>-0.131</td><td>309.7</td><td>172.487</td></tr>
+      <tr><td></td><td>Qwen2.5-7B</td><td>785</td><td>0.612</td><td>0.273</td><td>0.818</td><td>0.493</td><td>-0.100</td><td>-0.149</td><td>329.0</td><td>190.410</td></tr>
+      <tr><td>API</td><td>GPT Chat Latest</td><td>785</td><td>0.742</td><td>0.480</td><td>0.897</td><td>0.347</td><td>+0.030</td><td>+0.059</td><td>178.0</td><td>227.281</td></tr>
+      <tr><td></td><td>Claude Sonnet 4.5</td><td>785</td><td>0.733</td><td>0.442</td><td>0.897</td><td>0.343</td><td>+0.021</td><td>+0.021</td><td>197.3</td><td>496.733</td></tr>
+      <tr><td></td><td>Gemini 2.5 Flash</td><td>759</td><td>0.711</td><td>0.394</td><td>0.882</td><td>0.396</td><td>-0.001</td><td>-0.028</td><td>198.5</td><td>195.458</td></tr>
+      <tr><td></td><td>DeepSeek V4 Flash</td><td>753</td><td>0.707</td><td>0.410</td><td>0.885</td><td>0.394</td><td>-0.005</td><td>-0.011</td><td>182.2</td><td>600.658</td></tr>
+      <tr><td></td><td>Qwen3.7 Plus</td><td>785</td><td>0.718</td><td>0.477</td><td>0.863</td><td>0.367</td><td>+0.006</td><td>+0.056</td><td>199.8</td><td>751.179</td></tr>
+      <tr><td>Origin</td><td>OL Only</td><td>785</td><td>0.650</td><td>0.292</td><td>0.854</td><td>0.314</td><td>-0.062</td><td>-0.129</td><td>0.0</td><td>0.002</td></tr>
+      <tr class="best"><td></td><td><b>OL-Origin</b></td><td><b>785</b></td><td><b>0.755</b></td><td><b>0.493</b></td><td><b>0.901</b></td><td><b>0.263</b></td><td><b>+0.043</b></td><td><b>+0.072</b></td><td><b>0.0</b></td><td><b>0.003</b></td></tr>
+    </table>
+    <p class="note reveal">Events differ for some API rows because parse/coverage failures were excluded. Delta is relative to No-OL Strong.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>07 · ablation</span></div>
+  <div class="page"><b>09</b> / 11</div>
+  <div class="kicker reveal">结果 2 · 消融实验</div>
+  <h2 class="reveal">从简单 role 到 full router：每一步加了什么</h2>
+  <div class="body">
+    <table class="reveal">
+      <tr><th>Variant</th><th>这一行代表什么</th><th>NDCG@3</th><th>Hit@1</th><th>JS↓</th><th>ΔNDCG vs No-OL</th></tr>
+      <tr><td>OL Only</td><td>只用历史源头分数，不加当前事件上下文</td><td>0.650</td><td>0.292</td><td>0.314</td><td>-0.062</td></tr>
+      <tr><td>No-OL Strong</td><td>使用 rank/time/sentiment/novelty/history 等强上下文，但不使用历史源头分数</td><td>0.712</td><td>0.421</td><td>0.301</td><td>+0.000</td></tr>
+      <tr><td>Shuffled OL</td><td>保留源头分数分布，但打乱“哪个 KOL 拿到哪个分数”的对应关系</td><td>0.724</td><td>0.459</td><td>0.295</td><td>+0.012</td></tr>
+      <tr><td>Follower Replace</td><td>用 follower-scale analogues 替换 OL channel，检验是否只是大号效应</td><td>0.717</td><td>0.431</td><td>0.296</td><td>+0.005</td></tr>
+      <tr><td>Raw OL-Origin</td><td>使用未校正发帖时间的原始源头分数</td><td>0.749</td><td>0.489</td><td>0.268</td><td>+0.037</td></tr>
+      <tr class="best"><td><b>OL-Origin Full</b></td><td><b>No-OL controls + 校正后的历史源头分数 + 源头分数×visibility / novelty</b></td><td><b>0.755</b></td><td><b>0.493</b></td><td><b>0.263</b></td><td><b>+0.043</b></td></tr>
+    </table>
+    <div class="thesis reveal" style="margin-top:34px">消融逻辑：历史源头分数单独不够；它必须和当前事件上下文结合。打乱 KOL-分数对应关系或换成 follower 后，提升明显变弱。</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>08 · agent scenario</span></div>
+  <div class="page"><b>10</b> / 11</div>
+  <div class="kicker reveal">结果 3 · 小实验</div>
+  <h2 class="reveal">真实 agent 场景：先路由，再把短名单交给 LLM</h2>
+  <div class="body">
+    <div class="cols two reveal">
+      <div class="card">
+        <div class="label">setup</div>
+        <div class="text">每个 symbol-day 给出 K=30 个候选早期叙事。Full LLM 直接读全部 30 个；OL-Origin 先用本地 router 选 b=10 或 b=20，再交给同一个 LLM 做 listwise reranking。</div>
+      </div>
+      <div class="card">
+        <div class="label">what this tests</div>
+        <div class="text">指标是 fixed Kmax-oracle capture：在同一个 K=30 候选池里，最终选择捕获了 oracle 可达未来 reach 的多少。越高越好。</div>
+      </div>
+    </div>
+    <table class="reveal" style="margin-top:28px">
+      <tr><th>LLM backend</th><th>Full capture</th><th>OL b=10</th><th>OL b=20</th><th>OL best gain</th><th>Full selector</th><th>OL selector</th><th>Latency cut</th></tr>
+      <tr><td>DeepSeek V4 Flash</td><td>0.184</td><td>0.315</td><td>0.310</td><td>+71.2%</td><td>2.27 s</td><td>0.048 ms</td><td>47,292x</td></tr>
+      <tr><td>Gemini 2.5 Flash Lite</td><td>0.227</td><td>0.320</td><td>0.300</td><td>+41.0%</td><td>1.22 s</td><td>0.048 ms</td><td>25,417x</td></tr>
+      <tr><td>Claude Sonnet 4.6</td><td>0.279</td><td>0.382</td><td>0.350</td><td>+36.9%</td><td>7.09 s</td><td>0.048 ms</td><td>147,708x</td></tr>
+      <tr><td>GPT-5.4</td><td>0.308</td><td>0.364</td><td>0.369</td><td>+19.8%</td><td>2.28 s</td><td>0.048 ms</td><td>47,500x</td></tr>
+    </table>
+    <p class="note reveal">OL best gain = max(OL b=10, OL b=20) relative to Full capture. Selector latency is component-level: Full uses the LLM itself as selector; OL uses the local router before downstream LLM call.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="grid"></div>
+  <div class="topbar"><span class="tag">KOL ROUTER</span><span class="spacer"></span><span>09 · takeaway</span></div>
+  <div class="page"><b>11</b> / 11</div>
+  <div class="kicker reveal">给老师的四个回答</div>
+  <h2 class="reveal">结论：价值在 KOL 数据结构，不在模型容量</h2>
+  <div class="body">
+    <div class="cols two reveal">
+      <div class="card">
+        <div class="label">现状问题</div>
+        <div class="text">Agent 面对高频社媒时，瓶颈是 first-stage attention allocation：哪些内容值得进入昂贵推理？</div>
+      </div>
+      <div class="card">
+        <div class="label">我们发现</div>
+        <div class="text">KOL 流里有稳定、身份驱动、PIT 可用的历史源头分数，不是 follower / 时区 / 频率 / 新闻反应。</div>
+      </div>
+      <div class="card">
+        <div class="label">有什么用</div>
+        <div class="text">用历史源头分数做低延迟结构化 router，先决定哪些叙事值得进入 LLM / memory / RAG。</div>
+      </div>
+      <div class="card">
+        <div class="label">实验怎么做</div>
+        <div class="text">大样本 KOL panel，PIT split，强 benchmark families，ranking / calibration / latency metrics，主实验 + 消融 + listwise LLM routing。</div>
+      </div>
+    </div>
+    <div class="thesis reveal" style="margin-top:34px">如果大样本 KOL 结构用简单 ridge 就能有效路由，说明真正有价值的是结构本身，而不是隐藏模型容量。</div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="编辑模式">✎</button>
+
+<script>
+class SlidePresentation{
+  constructor(){
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.i=0;
+    this.stage=document.getElementById('deckStage');
+    this.scale();
+    window.addEventListener('resize',()=>this.scale());
+    this.keys();
+    this.wheel();
+    this.touch();
+    this.show(0);
+  }
+  scale(){
+    const f=Math.min(innerWidth/1920,innerHeight/1080);
+    const x=(innerWidth-1920*f)/2;
+    const y=(innerHeight-1080*f)/2;
+    this.stage.style.transform=`translate(${x}px,${y}px) scale(${f})`;
+  }
+  show(n){
+    this.i=Math.max(0,Math.min(n,this.slides.length-1));
+    this.slides.forEach((s,k)=>{
+      s.classList.toggle('active',k===this.i);
+      s.classList.toggle('visible',k===this.i);
+    });
+  }
+  next(){if(this.i<this.slides.length-1)this.show(this.i+1)}
+  prev(){if(this.i>0)this.show(this.i-1)}
+  keys(){
+    addEventListener('keydown',e=>{
+      if(e.target.getAttribute('contenteditable'))return;
+      if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();this.next()}
+      else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();this.prev()}
+      else if(e.key==='Home')this.show(0);
+      else if(e.key==='End')this.show(this.slides.length-1);
+    });
+  }
+  wheel(){
+    let t=0;
+    addEventListener('wheel',e=>{
+      t+=e.deltaY;
+      if(Math.abs(t)>70){e.deltaY>0?this.next():this.prev();t=0}
+    },{passive:true});
+  }
+  touch(){
+    let x0=0;
+    addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+    addEventListener('touchend',e=>{
+      const d=e.changedTouches[0].clientX-x0;
+      if(Math.abs(d)>55)d<0?this.next():this.prev();
+    },{passive:true});
+  }
+}
+const pres=new SlidePresentation();
+
+class Editor{
+  constructor(){
+    this.isActive=false;
+    this.toggle=document.getElementById('editToggle');
+    this.bind();
+  }
+  toggleEditMode(){
+    this.isActive=!this.isActive;
+    this.toggle.classList.toggle('active',this.isActive);
+    if(this.isActive){
+      document.querySelectorAll('h1,h2,.lead,.thesis,.card,.bullets li,.stat .n,.stat .l,.kicker,.page,.topbar,.formula,td,th,.note').forEach(el=>el.setAttribute('contenteditable','true'));
+    }else{
+      document.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+      this.save();
+    }
+  }
+  save(){
+    try{localStorage.setItem('kol_router_slides',document.documentElement.outerHTML)}catch(e){}
+  }
+  bind(){
+    this.toggle.addEventListener('click',()=>this.toggleEditMode());
+    const hz=document.querySelector('.edit-hotzone');
+    let to=null;
+    const show=()=>{clearTimeout(to);this.toggle.classList.add('show')};
+    const hide=()=>{to=setTimeout(()=>{if(!this.isActive)this.toggle.classList.remove('show')},400)};
+    hz.addEventListener('mouseenter',show);
+    hz.addEventListener('mouseleave',hide);
+    this.toggle.addEventListener('mouseenter',show);
+    this.toggle.addEventListener('mouseleave',hide);
+    hz.addEventListener('click',()=>this.toggleEditMode());
+    addEventListener('keydown',e=>{
+      if((e.key==='e'||e.key==='E')&&!e.target.getAttribute('contenteditable'))this.toggleEditMode();
+    });
+  }
+}
+new Editor();
+</script>
+</body>
+</html>
