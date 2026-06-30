@@ -96,8 +96,8 @@ narrative **before** `b`; the potential of account `a` is the **net-degree**
 
 **Claim of the paper.** This potential is a **point-in-time, zero-text *sufficient statistic*
 for ranking freshly-originated narratives by their future follower-weighted reach — before any
-popularity is observable.** Read with a cheap ranker and *no text*, it matches or beats text
-encoders and LLMs at our triage task, at ~0.05 ms and 0 tokens.
+popularity is observable.** Read with a cheap ranker (our **Lead-Lag Router**, LLR) and *no text*, it
+matches or beats text encoders and LLMs at our triage task, at ~0.05 ms and 0 tokens.
 
 The theory has exactly two jobs, one for each half of that claim:
 
@@ -236,13 +236,14 @@ network-only PIT features predict role-stability at AUC ≈ 0.89, with 74% six-m
 stationarity [Pena et al. 2025].
 
 **(R3) The listwise objective is NDCG-consistent.** Our ranker is LightGBM with objective
-**`rank_xendcg`** — the **XE-NDCG cross-entropy listwise loss** [Bruch et al. 2021], a
-Plackett–Luce/softmax-family objective (**not** LambdaMART; prior "LambdaMART" labels are a
-misnomer). Minimizing it is NDCG-consistent — convex NDCG-consistent surrogates exist as Bregman
-divergences against the normalized gain with √-rate regret transfer [Ravikumar, Tewari & Yang 2011],
-and softmax cross-entropy bounds log-NDCG [Bruch et al. 2019]. The convex-calibration impossibility
-of [Calauzènes et al. 2012] is for MAP/ERR, **not** NDCG — we deliberately target NDCG. Because the
-loss we actually minimize is XE-NDCG, this consistency attaches *directly* to our model.
+**`rank_xendcg`** — a **listwise cross-entropy loss** [Bruch et al. 2021] in the
+Plackett–Luce/softmax family (**not** LambdaMART; prior "LambdaMART" labels are a misnomer).
+Minimizing it is NDCG-consistent — convex NDCG-consistent surrogates exist as Bregman divergences
+against the normalized gain with √-rate regret transfer [Ravikumar, Tewari & Yang 2011], and softmax
+cross-entropy bounds log-NDCG [Bruch et al. 2019]. The convex-calibration impossibility of
+[Calauzènes et al. 2012] is for MAP/ERR, **not** NDCG — we deliberately target NDCG. Because the loss
+we actually minimize is this listwise cross-entropy objective, the consistency attaches *directly* to
+our model.
 
 ---
 
@@ -259,7 +260,7 @@ loss we actually minimize is XE-NDCG, this consistency attaches *directly* to ou
 | Triage works *before* popularity is observable | B (precedence ⇒ expected reach at origination) |
 | `O_k` residualized > raw `O_k` | R1 (FWL deconfounding) |
 | PIT train-past / test-next-year holds across rolling windows | R2 (influence-role autocorrelation) |
-| Listwise > pointwise (+0.094); ranker plateaus across GBDT/XGB/NN | R3 (XE-NDCG NDCG-consistency) |
+| Listwise > pointwise (+0.094); ranker plateaus across GBDT/XGB/NN | R3 (listwise cross-entropy NDCG-consistency) |
 | Per-frame reach noisy; we win on *ranking*, not point prediction | B caveat (rank lift, not point pred) |
 
 ---
@@ -282,7 +283,7 @@ arXiv:1706.03762, Table 1 `O(n²d)`); Kaplan et al. 2020 (*Scaling Laws*, arXiv:
 (WWW/ECML); Yamada, Tsugawa, Yoshida 2025 (arXiv:2512.17166); Pena et al. 2025 (PLoS ONE).
 **Rigor appendix.** Frisch–Waugh 1933 / Lovell 1963; Robinson 1988; Chernozhukov et al. 2018
 (arXiv:1608.00060); Ravikumar, Tewari, Yang 2011 (AISTATS); Bruch et al. 2019 (ICTIR) & 2021
-(XE-NDCG, WWW); Calauzènes, Usunier, Gallinari 2012 (NIPS).
+(`rank_xendcg` cross-entropy LTR, WWW); Calauzènes, Usunier, Gallinari 2012 (NIPS).
 
 ---
 
