@@ -2,6 +2,30 @@
   "rows": [
     {
       "family": "Local LLM",
+      "method": "Gemma3-12B",
+      "model": "gemma3:12b",
+      "events": 2176,
+      "symbols": 17,
+      "ndcg3": 0.6211505183309264,
+      "hit1": 0.32230986183317983,
+      "mass3": 0.7365824178171875,
+      "js": 0.43359334496964347,
+      "n_scored": 12489
+    },
+    {
+      "family": "Local LLM",
+      "method": "Qwen2.5-7B",
+      "model": "qwen2.5:7b-instruct",
+      "events": 2176,
+      "symbols": 17,
+      "ndcg3": 0.5540625021938999,
+      "hit1": 0.25705616467066006,
+      "mass3": 0.6839553156101036,
+      "js": 0.48334297519603736,
+      "n_scored": 12489
+    },
+    {
+      "family": "Local LLM",
       "method": "Llama3.1-8B",
       "model": "llama3.1:8b",
       "events": 2176,
@@ -10,20 +34,8 @@
       "hit1": 0.23797406771936658,
       "mass3": 0.6653376991175545,
       "js": 0.48986573702526615,
-      "n_scored": 12488
-    },
-    {
-      "family": "Local LLM",
-      "method": "Qwen2.5-7B",
-      "model": "qwen2.5:7b-instruct",
-      "events": 2174,
-      "symbols": 17,
-      "ndcg3": 0.5547551450872951,
-      "hit1": 0.25728919489247426,
-      "mass3": 0.684757989708233,
-      "js": 0.4831792766959212,
-      "n_scored": 12452
+      "n_scored": 12489
     }
   ],
-  "elapsed_sec": 2505.2397549152374
+  "elapsed_sec": 103.82019519805908
 }
