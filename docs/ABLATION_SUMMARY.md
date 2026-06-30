@@ -58,6 +58,15 @@
 | **真图 vs 打乱图 (主证据)** | **+0.0112** | **90% 且 95% 显著** | 增量来自真实 lead-lag 拓扑, 非模型容量 |
 | 真 O_k vs 打乱 O_k (标量层佐证) | +0.0058 | pooled 90% 显著 (单窗不显著) | 标量身份也是真信号, 效应更小 |
 
+### 第三部分补充: vs 先验账号信号 (撞车防御, pooled 控制对照)
+| 对比 | ΔNDCG@3 | 显著 | 含义 |
+|---|---:|---|---|
+| ours {ctx+O_k+g_net} vs {context} | +0.0072 | 90% 显著 (Hit +0.0135 也显著) | 我们的结构在 context 之上加分 |
+| {context+Romero-IP} vs {context} | -0.0021 | 跨0 | 通用图影响力(Romero) 零增量, 同 PageRank/HITS |
+| ours vs {context+Romero-IP} | +0.0092 | 90% 显著 (Hit +0.0147) | 显著优于 Romero-增强模型 |
+| Yamada-src / Zhou-track | (= hist_mean_log_adopt / hist_success_rate) | — | 已在 context 里, 被吸收 |
+读法: 先验账号信号要么已被 context 吸收 (Yamada/Zhou = 历史特征), 要么对 context 零增量 (Romero, 同 PageRank/HITS); 只有去混淆 lead-lag 结构 O_k+g_net 提供显著增量. 这正面回掉 你不就是重做 Yamada/Romero 吗 的撞车质疑.
+
 ---
 
 ## 总结 (一条逻辑线)
@@ -66,4 +75,4 @@
 3. 真实性: 真图显著胜打乱图 (+0.011, 95% 显著), 打乱图甚至低于不用图 — 增量来自真实 origination 网络拓扑.
 4. 取舍: 残差化/手搓交互/网络层级中心性/花哨排序器 全可弃. 最终极简: context + O_k + g_net 喂 LambdaMART.
 
-复现: 排序器=phase93/94; 结构编码=phase92/97/98/100; 图特征归因=phase100; 真图vs打乱图=phase103; O_k身份=phase92/93; 单窗对照=phase95/99/102.
+复现: 先验信号对照=phase104; 排序器=phase93/94; 结构编码=phase92/97/98/100; 图特征归因=phase100; 真图vs打乱图=phase103; O_k身份=phase92/93; 单窗对照=phase95/99/102.
