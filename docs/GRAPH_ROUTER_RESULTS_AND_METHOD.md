@@ -35,6 +35,8 @@ KOL originator 结构信号强到 **线性+零文本即超 SOTA**;它是**真实
 | Text Encoder | Qwen3-Embedding-4B | 2176 | 0.729 | 0.444 | 0.819 | 0.285 | 11.86 | 59.3 |
 | Text Encoder | FinBERT | 2176 | 0.722 | 0.448 | 0.807 | 0.280 | 0.53 | 51.6 |
 | Text Encoder | E5-Mistral-7B | 2176 | 0.696 | 0.424 | 0.788 | 0.313 | 25.99 | 65.2 |
+| Prior-art method | CasMS-style (text+node2vec, gen-stage) | 2176 | 0.695 | 0.429 | 0.794 | 0.271 | ~12 | 59 |
+| Prior-art method | node2vec graph-position only | 2176 | 0.494 | 0.208 | 0.629 | 0.324 | ~0.5 | 0 |
 | Commercial LLM | DeepSeek V4 Flash (full, pointwise) | 2176 | 0.623 | 0.366 | 0.727 | 0.417 | 2688 | 206 |
 | Local LLM | Qwen2.5-7B (full, pointwise) | 2174 | 0.555 | 0.257 | 0.685 | 0.483 | ~190 | ~330 |
 | Local LLM | Llama3.1-8B (full, pointwise) | 2176 | 0.534 | 0.238 | 0.665 | 0.490 | ~172 | ~310 |
@@ -109,6 +111,7 @@ LambdaMART(LightGBM, rank_xendcg, listwise), event 作 query group, 标签=reach
 - phase98/99 — 图结构 pooled / 主窗主表
 - phase100 — 95% CI + 图特征归因(g_net 驱动)
 - phase103 — 真图 vs 打乱图(结构真实性主证据)
+- phase105 — CasMS 尽力版 baseline (text+node2vec gen-stage); ours 0.813 vs CasMS 0.695 (+0.118)
 - phase104 — 先验账号信号基线(Romero/Yamada/Zhou)standalone + 控制对照
 - phase92/93/95/102 — 消融(排序器/特征轴, pooled/单窗)
 - phase94 — 神经 LTR vs GBDT(平台)

@@ -37,7 +37,7 @@ The **only** prior method that predicts popularity at the **message-generation (
 3. **Different unit/target** — single-message *retweet count*; we use a **narrative frame** with **follower-weighted reach**.
 4. **Cost claim** — CasMS adds text; we claim and show structure-without-text beats encoders/LLMs.
 
-**Action:** cite prominently; run a generation-stage CasMS-style baseline (best-effort: text encoder + structure graph-position) and foreground the four deltas. (No public code; not yet benchmarked.)
+**Benchmarked (phase105, best-effort).** We adapted CasMS's two zero-observation inputs — message embedding (Qwen3-4B) + originator node2vec graph-position (PIT co-occurrence graph; no follow graph available) — into the same listwise LambdaMART on our frame-reach task. Result (main window 25.6-26.6): **CasMS-style 0.695 NDCG / 0.429 Hit**, *below* text-only (Qwen 0.719; node2vec dilutes) and far below **our 0.813 (+0.118 NDCG, +0.123 Hit)**. Node2vec graph-position alone is weak (0.494). Caveat: not the full CasMS arch (no GCN / personalized-retweet module / follow graph), but its winning ingredient is text (benchmarked: Qwen 0.719, we beat) and its graph signal is shown weak (0.494) — so a fuller CasMS cannot escape that both of its zero-obs input families lose to our deconfounded lead-lag structure. (No public code.)
 
 ## 2. Empirically tested prior-art account signals (phase104) — and beaten
 
