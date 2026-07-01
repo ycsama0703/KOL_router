@@ -11,15 +11,28 @@ Current paper = the **Lead-Lag Router (LLR)** graph version. Docs: `../../docs/`
 
 ## A. Graph-version paper (current) — reproduction set
 
-**Main table / structure (graph):**
-- `phase98_graph_struct.py`, `phase99_graph_single_2566.py` — graph structure pooled / single window
+**Main table build:**
+- `phase84_maintable_thr050_stage1.py` — main table construction (thr=0.50, first10, reach)
+- `phase85_deepseek_thr050.py` — DeepSeek full-LLM rows
+- `phase86_localllm_thr050.py` — local LLM rows (Gemma3-12B / Qwen2.5-7B / Llama3.1-8B)
+
+**Graph structure + pooled ablation:**
+- `phase92_pooled_bootstrap_BA.py` — pooled bootstrap; structure encoding + O_k identity ablation
+- `phase93_ablation_redesign_core.py` — ablation core (listwise vs pointwise, context, ranker)
+- `phase94_neural_ltr_thr050.py` — ranker ablation: neural LTR variant
+- `phase97_pooled_ablation_relational.py` — pooled ablation: relational encoding
+- `phase98_graph_struct.py` — graph structure pooled (g_net, PageRank, HITS)
 - `phase100_graph_consolidate.py` — 95% CI + g_net feature attribution
 - `phase103_graph_shuffle_control.py` — real vs shuffled graph (structure-reality main evidence)
 - `phase104_priorart_baselines.py` — Romero / Yamada / Zhou prior-art (+ Romero IP), controlled
 - `phase105_casms_baseline.py` — best-effort CasMS (text + node2vec) baseline
-- `phase93_ablation_redesign_core.py`, `phase97_pooled_ablation_relational.py` — ablations
-- `phase84_*` (main table build), `phase85_deepseek_thr050.py` / `phase86_localllm_thr050.py` — full-LLM rows
-  (phase86 = Gemma3-12B / Qwen2.5-7B / Llama3.1-8B local pointwise)
+
+**Single-window verification:**
+- `phase95_ablation_single_2566.py` — ablation single window (2025H2–2026H1)
+- `phase96_relational_perf_2566.py` — relational encoding single window
+- `phase99_graph_single_2566.py` — graph structure single window
+- `phase101_graph_adopt.py` — adoption-side graph single window
+- `phase102_ablation_single_recent.py` — ablation single window (most recent)
 
 **Application layer (§4 of GRAPH_ROUTER_RESULTS_AND_METHOD.md):**
 - `phase51_graph_listwise_dilution.py` — LLM-triage routing (LLR shortlister → DeepSeek), capture/dilution + router latency
