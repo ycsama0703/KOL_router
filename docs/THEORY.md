@@ -40,11 +40,13 @@ Reliable retrieval is only guaranteed within the capacity budget (their Thm 3) `
 c^{(d-1)/4}`. The **per-step mechanism** is softmax dilution: for logits bounded by `Δ=\lVert q\rVert
 \lVert k\rVert`, the weights obey [Mudarisov 2025, arXiv:2508.17821, Cor. 1]
 
-$$\frac1K e^{-2\Delta/T}\;\le\;\alpha_i\;\le\;\frac1K e^{2\Delta/T},\qquad H(\alpha)\le\log K,\tag{4}$$
+$$\frac1K e^{-2\Delta/T}\;\le\;\alpha_i\;\le\;\frac1K e^{2\Delta/T},\tag{4}$$
 
-so per-candidate attention mass is `O(1/K)` and the entropy ceiling `\log K` caps how sharply a head
-can target the one good item — holding `K` selection mass constant requires growing logits like
-`\log K`.
+so with a **bounded logit range** the per-candidate attention mass is at most `O(1/K)`: holding
+constant mass on a single target as `K` grows forces the logit separation `Δ` to grow like `\log K`.
+(We do *not* invoke the maximum-entropy bound `H(α)≤\log K` here — it caps average spread, not peak
+sharpness, since a one-hot `α` has entropy 0; the operative limit is the bounded-logit mass bound
+above.)
 
 *Empirical confirmation (real LLMs, not just the bound).* "Lost in the middle": multi-document QA
 accuracy is U-shaped in position and **drops by >20%** as the context lengthens, with the 20-/30-document
@@ -61,14 +63,20 @@ predictor. The `(K-1)` prefactor is worst-case; the operative driver is the `Δ_
 
 ### P2 — Compute/latency scales (super)linearly with `K` (rigorous)
 
-Encoding a `K`-candidate pool costs, **per transformer layer**, self-attention `O(K^2 d)` and the
-position-wise FFN `O(K d^2)` [Vaswani et al. 2017, Table 1: self-attention complexity `O(n^2\!\cdot d)`],
-and the per-token forward FLOPs are `C\approx 2N_{\text{params}} + 2\,n_{\text{layer}} n_{\text{ctx}}
-d_{\text{model}}` with the context term linear in `n_{\text{ctx}}=K` *per token* [Kaplan et al. 2020,
-Eq. 2.2] — summed over the `K` tokens the attention contribution is again `\Theta(K^2)`, and KV-cache
-memory is `O(Kd)` per layer. Hence a per-decision LLM cost
+The complexity variable is the **token length `n`**, not the candidate count `K`. If each candidate
+contributes on average `\bar L` tokens, a `K`-candidate pool is a context of
 
-$$\tau_{\text{LLM}}(K)=\Theta\!\big(K^2 d + K d^2\big).\tag{5}$$
+$$n(K)\approx K\bar L .\tag{5a}$$
+
+Per transformer layer, self-attention costs `O(n^2 d)` and the position-wise FFN `O(n d^2)` [Vaswani
+et al. 2017, Table 1: self-attention complexity `O(n^2\!\cdot d)`], and the per-token forward FLOPs are
+`C\approx 2N_{\text{params}} + 2\,n_{\text{layer}} n_{\text{ctx}} d_{\text{model}}` with the context
+term linear in `n_{\text{ctx}}=n` [Kaplan et al. 2020, Eq. 2.2]; KV-cache memory is `O(nd)` per layer.
+Substituting `n≈K\bar L`, the per-decision LLM cost is
+
+$$\tau_{\text{LLM}}(K)=\Theta\!\big(n^2 d + n d^2\big)=\Theta\!\big((K\bar L)^2 d + K\bar L\, d^2\big),\tag{5}$$
+
+i.e. **quadratic in `K` for fixed average candidate length `\bar L`** (and quadratic in `n` in general).
 
 *Throughput consequence.* With freshly-originated frames arriving at rate `λ`, an **LLM-only** triage
 is backlog-stable only if `λ\,\tau_{\text{LLM}}\le 1`; at firehose volume `λ\,\tau_{\text{LLM}}\gg 1`.
@@ -153,9 +161,18 @@ consistent ranking is the potential solving the **Laplacian normal equation**
 
 $$\Delta_0\,s=-\operatorname{div}Y,\qquad \operatorname{div}(Y)(a)=\sum_b Y_{ab}=g_{\text{net}}(a).\tag{8}$$
 
-Its right-hand side is **exactly** the net-degree (7). On a complete, uniformly-weighted graph the
-potential *equals* the net-degree (their eq. 29) — recovering **Borda count** and the **Massey
-least-squares rating**.
+whose right-hand side is **exactly** the net-degree (7), with minimum-norm solution
+`s^{*}=-\Delta_0^{\dagger}\operatorname{div}Y`. On a complete, uniformly-weighted graph this collapses
+(their eq. 29) to
+
+$$s^{*}_a=-\tfrac1n\,\operatorname{div}(Y)(a)=-\tfrac1n\,g_{\text{net}}(a),\tag{8a}$$
+
+i.e. **the Hodge potential is proportional to net-degree (up to the `-1/n` orientation-scale) and
+therefore induces the same leadership ranking** — we score leaders by `g_{\text{net}}=-n\,s^{*}`
+(leaders first). This recovers **Borda count** and the **Massey least-squares rating**. *(The negative
+sign is the standard HodgeRank convention `\operatorname{div}=-\delta_0^{*}`, under which
+`\Delta_0 s=-\operatorname{div}Y` is the least-squares normal equation of `\min_s\lVert\operatorname{grad}s-Y\rVert^2`;
+the ranking we use, `g_{\text{net}}`, is invariant to it.)*
 
 **A.2 — Direct optimality (the load-bearing statement, no completeness needed).** Independently of
 the Hodge geometry, ranking by the **row-sum `g_net` is risk-optimal among all
@@ -210,7 +227,7 @@ Follower-weighting (not event-count weighting) needs a marked Hawkes kernel [SEI
 
 **B in one line.**
 
-$$\mathbb E[\text{reach}\mid\text{originator }k]\ \approx\ \underbrace{(\text{origination magnitude})}_{\text{marked size}}\times\underbrace{\big(\text{amplification}\uparrow\text{ in }k\text{'s upstream precedence}\big)}_{\text{via (1)–(8): }g_{\text{net}}}.\tag{9}$$
+$$\mathbb E[\text{reach}\mid\text{originator }k]\ \approx\ \underbrace{(\text{origination magnitude})}_{\text{marked size}}\times\underbrace{\big(\text{amplification}\uparrow\text{ in }k\text{'s upstream precedence}\big)}_{\text{via (6)–(8) / Result A: }g_{\text{net}}}.\tag{9}$$
 
 Ranking by `g_net`/`O_k` is therefore *expected* to order narratives by future reach — a hypothesis
 our experiments confirm.
