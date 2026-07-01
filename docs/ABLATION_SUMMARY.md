@@ -1,6 +1,6 @@
 # 消融总表 — Graph Router
 
-最终模型: **LambdaMART (listwise GBDT) on { context + O_k + g_net }**.
+最终模型: **Lead-Lag Router (LLR)** = listwise GBDT (LightGBM `rank_xendcg`, listwise 交叉熵目标, 非 LambdaMART) on { context + O_k + g_net }.
 口径: thr=0.50, first10, reach. 显著性: pooled 5 个滚动半年窗 (21.6-22.6 .. 25.6-26.6), 9509 事件, symbol-balanced bootstrap B=4000, 默认 90% CI (注明处为 95%). 指标 ΔNDCG@3.
 
 各配置 pooled NDCG@3 (参考): 完整 0.788 | ctx+O_k 0.783 | context 0.781 | 打乱图 0.775 | ridge 0.689 | 仅O_k 0.545.
@@ -9,7 +9,7 @@
 
 ## 故事线 (逐步搭建, 每步显著)
 
-**起点**: context-only 的 LambdaMART (便宜的强基线).
+**起点**: context-only 的 listwise GBDT (便宜的强基线).
 
 1. **排序目标是地基** — listwise 换 pointwise ridge: **-0.094*** [+0.077,+0.110]. 能排得好首先靠 listwise.
    补: 即便只用线性读出, 这个结构底座 (无文本) 在主表上已打败全部 BERT 家族编码器与 full LLM (见主表). 排序算法是锦上添花.
@@ -30,7 +30,7 @@
    | 打乱图 vs context | -0.0062 [-0.0114,-0.0010] | -0.006 | 打乱图反而低于 context (有害) |
    读法: 两边都加 5 列图特征, 唯一区别是拓扑真假; 真图显著胜打乱图 +0.011, 而打乱图低于不用图 — 彻底排除 多加几列让树蹭出来 的质疑. 这是 结构真实 的最硬证据.
 
-**终点**: LambdaMART( context + O_k + g_net ).
+**终点**: Lead-Lag Router (LLR) = listwise GBDT( context + O_k + g_net ).
 
 ---
 
@@ -73,6 +73,6 @@
 1. 引擎: listwise GBDT 贡献最大 (+0.094 vs ridge); 且即便线性读出, 结构底座 (无文本) 已胜全部文本 SOTA (主表).
 2. 结构: 在 context 之上再加增量, 仅当编码成图净度数 g_net 时有效 (标量不够/关系有害/PageRank-HITS 无效).
 3. 真实性: 真图显著胜打乱图 (+0.011, 95% 显著), 打乱图甚至低于不用图 — 增量来自真实 origination 网络拓扑.
-4. 取舍: 残差化/手搓交互/网络层级中心性/花哨排序器 全可弃. 最终极简: context + O_k + g_net 喂 LambdaMART.
+4. 取舍: 残差化/手搓交互/网络层级中心性/花哨排序器 全可弃. 最终极简: context + O_k + g_net 喂 listwise GBDT (Lead-Lag Router).
 
 复现: 先验信号对照=phase104; 排序器=phase93/94; 结构编码=phase92/97/98/100; 图特征归因=phase100; 真图vs打乱图=phase103; O_k身份=phase92/93; 单窗对照=phase95/99/102.

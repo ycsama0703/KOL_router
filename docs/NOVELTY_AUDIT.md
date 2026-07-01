@@ -6,7 +6,7 @@
 
 - **C1 (discovery).** In financial KOL (Twitter/X cashtag) streams there is a stable, identity-specific **lead-lag originator structure** — certain accounts systematically *originate* narratives before others *adopt/repeat* them — measurable point-in-time (PIT) from pre-period history.
 - **C2 (encoding).** A **deconfounded scalar trait O_k** (per-account net-lead over events, residualized against posting-hour/timezone) **+ a lead-lag directed-graph net-degree g_net** (out − in).
-- **C3 (router).** A lightweight model (linear ridge / GBDT LambdaMART) over this structure **ranks freshly-originated narrative frames by future follower-weighted reach, before any popularity is observable, using zero text.**
+- **C3 (router).** A lightweight model (linear ridge / listwise cross-entropy GBDT, the Lead-Lag Router) over this structure **ranks freshly-originated narrative frames by future follower-weighted reach, before any popularity is observable, using zero text.**
 - **C4 (result).** Structure (no text) matches/beats SOTA text encoders and full LLMs at orders-of-magnitude lower latency/cost.
 - **C5 (application).** Early breakout / event prediction (flag high-reach narratives before popularity).
 
@@ -37,11 +37,11 @@ The **only** prior method that predicts popularity at the **message-generation (
 3. **Different unit/target** — single-message *retweet count*; we use a **narrative frame** with **follower-weighted reach**.
 4. **Cost claim** — CasMS adds text; we claim and show structure-without-text beats encoders/LLMs.
 
-**Benchmarked (phase105, best-effort).** We adapted CasMS's two zero-observation inputs — message embedding (Qwen3-4B) + originator node2vec graph-position (PIT co-occurrence graph; no follow graph available) — into the same listwise LambdaMART on our frame-reach task. Result (main window 25.6-26.6): **CasMS-style 0.695 NDCG / 0.429 Hit**, *below* text-only (Qwen 0.719; node2vec dilutes) and far below **our 0.813 (+0.118 NDCG, +0.123 Hit)**. Node2vec graph-position alone is weak (0.494). Caveat: not the full CasMS arch (no GCN / personalized-retweet module / follow graph), but its winning ingredient is text (benchmarked: Qwen 0.719, we beat) and its graph signal is shown weak (0.494) — so a fuller CasMS cannot escape that both of its zero-obs input families lose to our deconfounded lead-lag structure. (No public code.)
+**Benchmarked (phase105, best-effort).** We adapted CasMS's two zero-observation inputs — message embedding (Qwen3-4B) + originator node2vec graph-position (PIT co-occurrence graph; no follow graph available) — into the same listwise cross-entropy GBDT on our frame-reach task. Result (main window 25.6-26.6): **CasMS-style 0.695 NDCG / 0.429 Hit**, *below* text-only (Qwen 0.719; node2vec dilutes) and far below **our 0.813 (+0.118 NDCG, +0.123 Hit)**. Node2vec graph-position alone is weak (0.494). Caveat: not the full CasMS arch (no GCN / personalized-retweet module / follow graph), but its winning ingredient is text (benchmarked: Qwen 0.719, we beat) and its graph signal is shown weak (0.494) — so a fuller CasMS cannot escape that both of its zero-obs input families lose to our deconfounded lead-lag structure. (No public code.)
 
 ## 2. Empirically tested prior-art account signals (phase104) — and beaten
 
-We re-implemented the three prior-art account signals and compared under an identical LambdaMART (pooled 2021–2026, 9509 events):
+We re-implemented the three prior-art account signals and compared under an identical listwise cross-entropy GBDT (pooled 2021–2026, 9509 events):
 
 - **Romero IP-influence** (directed-graph influence fixed point on our lead-lag graph): **adds nothing over context** (ΔNDCG −0.0021, ns) — same as generic PageRank/HITS centrality.
 - **Yamada source-spreader** ≈ our `hist_mean_log_adopt`; **Zhou track-record** ≈ our `hist_success_rate` — both are **already in the context baseline** (subsumed).
