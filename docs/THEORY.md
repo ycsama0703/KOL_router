@@ -243,8 +243,12 @@ These three under-write the estimator but are not the headline.
 in median UTC posting-hour**. By Frisch–Waugh–Lovell [1933/1963] this is *numerically* the
 posting-hour-partialled net-lead (orthogonal to the hour basis); under a Robinson partially-linear /
 double-ML model [Robinson 1988; Chernozhukov et al. 2018] it *identifies* the structural lead net of
-timezone **if** posting-hour is the sole confounder and is correctly modeled. *Caveat:* FWL is
-algebraic not causal, and hour-of-day is circular — report a sin/cos (cyclical) robustness check.
+timezone **if** posting-hour is the sole confounder and is correctly modeled. **This is a
+*control*, not a performance feature:** empirically raw ≈ residualized `O_k` (ablation difference
+`~+0.001`, ns), which is exactly the point — it shows the lead signal is **not** a posting-hour /
+timezone artifact (rebutting the "leaders just post at active hours" objection). We therefore keep
+residualization for rigor and make **no claim** that it improves ranking. *Caveat:* FWL is algebraic
+not causal, and hour-of-day is circular — report a sin/cos (cyclical) robustness check.
 
 **(R2) The potential is point-in-time stable enough to apply forward.** We estimate the trait on
 pre-cutoff history and rank the next period; this needs influence-role autocorrelation, which holds
@@ -276,7 +280,6 @@ our model.
 | **Real vs shuffled graph: +0.011 NDCG, 95% sig** | A.3 (shuffle breaks identity↔potential) |
 | Zero-text structure ranks reach ≥ text encoders / LLMs, at ~0.05 ms | A.2 (cheap row-sum is the right statistic) + B |
 | Triage works *before* popularity is observable | B (precedence ⇒ expected reach at origination) |
-| `O_k` residualized > raw `O_k` | R1 (FWL deconfounding) |
 | PIT train-past / test-next-year holds across rolling windows | R2 (influence-role autocorrelation) |
 | Listwise > pointwise (+0.094); ranker plateaus across GBDT/XGB/NN | R3 (listwise cross-entropy NDCG-consistency) |
 | Per-frame reach noisy; we win on *ranking*, not point prediction | B caveat (rank lift, not point pred) |

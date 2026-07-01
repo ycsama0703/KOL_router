@@ -50,7 +50,7 @@
 | 排序器 | ridge / GBDT / XGBoost / 神经 | ridge -0.094; GBDT 约等于 XGBoost 约等于 神经 (~0.81 平台) | GBDT |
 | 结构编码 | 标量 / 关系 / 图 | +0.002(ns) / -0.002(失败) / +0.005(90%显著) | 图 |
 | 哪个图特征 | g_net / PageRank / HITS | g_net +0.005; PageRank -0.003; HITS -0.005 | g_net, 弃 PageRank/HITS |
-| 残差化 O_k | 残差化 / raw | 差异 ~+0.001 (ns) | 不必残差化 |
+| 残差化 O_k | 残差化 / raw | 差异 ~+0.001 (ns) | 不涨点; 残差化≈原始 → O_k 非时区假象, 作抗混淆控制保留(不作 claim) |
 
 ### 第三部分: 真实性检验 (结构信号是不是真的)
 | 控制实验 | ΔNDCG@3 | 显著 | 含义 |
@@ -73,6 +73,6 @@
 1. 引擎: listwise GBDT 贡献最大 (+0.094 vs ridge); 且即便线性读出, 结构底座 (无文本) 已胜全部文本 SOTA (主表).
 2. 结构: 在 context 之上再加增量, 仅当编码成图净度数 g_net 时有效 (标量不够/关系有害/PageRank-HITS 无效).
 3. 真实性: 真图显著胜打乱图 (+0.011, 95% 显著), 打乱图甚至低于不用图 — 增量来自真实 origination 网络拓扑.
-4. 取舍: 残差化/手搓交互/网络层级中心性/花哨排序器 全可弃. 最终极简: context + O_k + g_net 喂 listwise GBDT (Lead-Lag Router).
+4. 取舍: 手搓交互/网络层级中心性/花哨排序器 全可弃; 残差化不涨点(ns)但作为**抗时区混淆的控制**保留(不作性能 claim). 最终极简: context + O_k + g_net 喂 listwise GBDT (Lead-Lag Router).
 
 复现: 先验信号对照=phase104; 排序器=phase93/94; 结构编码=phase92/97/98/100; 图特征归因=phase100; 真图vs打乱图=phase103; O_k身份=phase92/93; 单窗对照=phase95/99/102.
