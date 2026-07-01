@@ -161,18 +161,19 @@ consistent ranking is the potential solving the **Laplacian normal equation**
 
 $$\Delta_0\,s=-\operatorname{div}Y,\qquad \operatorname{div}(Y)(a)=\sum_b Y_{ab}=g_{\text{net}}(a).\tag{8}$$
 
-whose right-hand side is **exactly** the net-degree (7), with minimum-norm solution
+where `\operatorname{div}(Y)(a)=\sum_b Y_{ab}=g_{\text{net}}(a)` is the row-sum. Under this standard
+HodgeRank orientation (`\operatorname{div}=-\delta_0^{*}`, so `\Delta_0 s=-\operatorname{div}Y` is the
+normal equation of `\min_s\lVert\operatorname{grad}s-Y\rVert^2`), the **right-hand side of the normal
+equation is the *negative* of the paper's positive leader score**, and the minimum-norm solution is
 `s^{*}=-\Delta_0^{\dagger}\operatorname{div}Y`. On a complete, uniformly-weighted graph this collapses
 (their eq. 29) to
 
 $$s^{*}_a=-\tfrac1n\,\operatorname{div}(Y)(a)=-\tfrac1n\,g_{\text{net}}(a),\tag{8a}$$
 
-i.e. **the Hodge potential is proportional to net-degree (up to the `-1/n` orientation-scale) and
-therefore induces the same leadership ranking** — we score leaders by `g_{\text{net}}=-n\,s^{*}`
-(leaders first). This recovers **Borda count** and the **Massey least-squares rating**. *(The negative
-sign is the standard HodgeRank convention `\operatorname{div}=-\delta_0^{*}`, under which
-`\Delta_0 s=-\operatorname{div}Y` is the least-squares normal equation of `\min_s\lVert\operatorname{grad}s-Y\rVert^2`;
-the ranking we use, `g_{\text{net}}`, is invariant to it.)*
+so the Hodge potential ranks leaders in the **reverse** direction. We therefore use the sign-flipped
+leadership score `g_{\text{net}}=-n\,s^{*}`: **ranking by `g_{\text{net}}` is equivalent to ranking by
+`-s^{*}` (not by `s^{*}`)**, recovering the **Borda / Massey** row-sum ranking up to orientation and
+scale.
 
 **A.2 — Direct optimality (the load-bearing statement, no completeness needed).** Independently of
 the Hodge geometry, ranking by the **row-sum `g_net` is risk-optimal among all
