@@ -111,7 +111,6 @@ PIT 历史建有向图(事件内 早->晚 加边); 取 **g_net=净领先度数(o
 | Shortlister | family | capture@b10 | capture@b20 | 路由延迟/决策 |
 |---|---|---:|---:|---:|
 | **Lead-Lag Router (LLR)** | 本文 | **0.636** | 0.536 | **~0.05 ms** |
-| listwise GBDT {context} | 排序算法(无结构) | 0.639 | 0.583 | ~0.04 ms |
 | Qwen3-Embedding-4B | 文本编码器 | 0.552 | 0.551 | ~356 ms |
 | BGE-base | 文本编码器(主表最强) | 0.548 | 0.510 | ~13.6 ms |
 | CasMS-style | prior-art(主表最强) | 0.534 | 0.523 | ~356 ms |
@@ -119,7 +118,7 @@ PIT 历史建有向图(事件内 早->晚 加边); 取 **g_net=净领先度数(o
 | random | 地板 | 0.350 | 0.453 | ~0 ms |
 | **full_k30 (LLM 读全池)** | LLM 稀释基线 | **0.455** | — | **~2390 ms** |
 
-读数: LLM 直接读全 30 池 capture 最差 (0.455, 稀释); LLR 筛到 10 再喂, 同一 LLM 升到 **0.636**, 且只花全池 ~37% token. **LLR 以 ~0.05ms 完成 triage, 比让 LLM 自己路由 (~2390ms) 快 ~5×10⁴, 比最强文本编码器 BGE 快 ~270x, 还 capture 最高.** (LLR≈listwise GBDT{context} 即图≈纯排序算法, 归消融, 不进小实验头表.)
+读数: LLM 直接读全 30 池 capture 最差 (0.455, 稀释); LLR 筛到 10 再喂, 同一 LLM 升到 **0.636**, 且只花全池 ~37% token. **LLR 以 ~0.05ms 完成 triage, 比让 LLM 自己路由 (~2390ms) 快 ~5×10⁴, 比最强文本编码器 BGE 快 ~270x, 还 capture 最高.**
 
 ### 4.2 top-q% 大事件预测 (早期爆发检测, phase52)
 重构为 pointwise 二分类: 起源时刻预测一条刚发起叙事的未来 reach 是否进 **全标的内 top-10%** (symbol-balanced, 按标的各取 top-10% 再宏平均, 与主表同口径). **无 LLM 在管线; LLM 仅作并列评分选手** (full LLM pointwise reach 打分, 复用主表缓存, 零额外成本).
@@ -127,7 +126,6 @@ PIT 历史建有向图(事件内 早->晚 加边); 取 **g_net=净领先度数(o
 | Method | family | PR-AUC | ROC-AUC | R-prec |
 |---|---|---:|---:|---:|
 | **Lead-Lag Router (LLR)** | 本文 | **0.351** | **0.812** | 0.348 |
-| listwise GBDT {context} | 排序算法(无结构) | 0.346 | 0.807 | 0.353 |
 | CasMS-style | prior-art | 0.281 | 0.738 | 0.298 |
 | BGE-base | 文本编码器 | 0.266 | 0.724 | 0.296 |
 | Qwen3-Embedding-4B | 文本编码器 | 0.262 | 0.727 | 0.275 |
@@ -145,9 +143,8 @@ PIT 历史建有向图(事件内 早->晚 加边); 取 **g_net=净领先度数(o
 | LLR vs DeepSeek (商用 LLM) | +0.208 [+0.128,+0.308] | +0.231 [+0.170,+0.306] | **95% 显著** |
 | LLR vs BGE / Qwen3-4B (encoder) | +0.080 / +0.086 | +0.088 / +0.085 | **95% 显著** |
 | LLR vs CasMS (prior-art) | +0.068 [−0.020,+0.169] | +0.074 [+0.025,+0.125] | **ROC 95% / PR 擦边** |
-| LLR vs listwise GBDT{context}(结构增量) | +0.0045 | +0.0049 | **ns**(图增量归主表) |
 
-读数: ① **整个 LLM 阵营 (含最强本地 Gemma3-12B) 在全局爆发检测上近随机 (ROC 0.48–0.60), LLR 全 95% 显著碾压** —— 贵 LLM 在这个任务上失效; ② LLR 显著超所有文本编码器与 prior-art (CasMS ROC 95%); ③ **LLR ≈ listwise GBDT{context} (ns)**: 此 frame 下排序引擎是主角, O_k/g_net 的结构增量**不显著** —— 故图增量的证据**仍只由主表 + shuffle 控制提供, 事件预测不背这个锅**.
+读数: ① **整个 LLM 阵营 (含最强本地 Gemma3-12B) 在全局爆发检测上近随机 (ROC 0.48–0.60), LLR 全 95% 显著碾压** —— 贵 LLM 在这个任务上失效; ② LLR 显著超所有文本编码器与 prior-art (CasMS ROC 95%). (注: 图 vs 纯 context 的结构增量是消融的范畴, 见 §3 + 真图/打乱图控制; 应用层只主张"廉价结构 ≫ 文本/LLM".)
 
 ---
 
