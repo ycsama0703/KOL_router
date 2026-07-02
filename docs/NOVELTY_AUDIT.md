@@ -24,7 +24,7 @@
 | Weng et al. 2013 | virality + community | C3, C4 | Adjacent — cite & distinguish (non-finance, needs early adopters) |
 | Cha et al. 2010 | influence stability | C1 (stability) | Primitive (also == our follower baseline) |
 | Petrovic et al. 2010 (FSD) | first-story detection | frame detection | Primitive — cite/reuse |
-| FrED / Qin et al. 2017-18 | event/frame detection | frame clustering | Primitive — cite/reuse |
+| FrED / Qin et al. 2017-18 | event/frame detection (SVO) | none | NOT used — we do MiniLM-embedding cosine clustering, not SVO parsing; do not cite as our primitive |
 | Rakowski 2021 / Hentschel 2014 / Li 2025 | financial social media | none | No collision |
 
 ## 1. Live competitor (must benchmark): CasMS (IJCAI 2024)
@@ -65,7 +65,7 @@ We re-implemented the three prior-art account signals and compared under an iden
 ## 4. Primitives — cite/reuse, no collision
 
 - **Petrovic et al. 2010 (Streaming First Story Detection)** — the fresh-frame / first-story novelty-detection primitive (our MiniLM clustering plays this role). Also reports "#users > volume" — supportive intuition for reach.
-- **FrED / Qin et al. 2017-18** — frame (subject-verb-object) representation + frame clustering; our per-event frame construction primitive.
+- **FrED / Qin et al. 2017-18** — SVO (subject-verb-object) semantic-frame representation + frame clustering. **We do NOT use this**: code (phase5/phase7) confirms our frame construction is MiniLM-embedding online cosine clustering (L2-normalised centroids), with no SVO / dependency / semantic-frame parsing. Listed only to disclaim collision; not cited as our primitive.
 - **Cha et al. 2010 (Million-Follower Fallacy)** — foundational evidence that identity-specific influence is **stable across topics/time** (supports C1 stability); also == our follower-count baseline.
 - **Romero et al. 2011** — directed-retweet-graph influence predicts content reach; the structural-influence-predicts-reach precedent (we beat its IP score empirically, see §2).
 
@@ -86,4 +86,4 @@ The specific combination — **zero-observation × zero-text × lead-lag origina
 Full PDFs of **Rakowski 2021, Li 2025 (DSS), Weng 2013 (Nature), DeepHawkes 2017** were 403-blocked; their characterizations rest on abstracts + cross-corroboration (CasMS related-work, GitHub data specs, institutional summaries). The conclusions (no originator lead-lag trait; observation-window dependence) are robust but a library full-text pass on the DSS paper (to confirm its "social network controls" contain no account lead-lag term) would be belt-and-suspenders.
 
 ## Must-cite shortlist (for related work)
-Yamada 2025; Zhou 2025; CasMS 2024; Stokowiec 2017; Romero 2011; Cha 2010; DeepCas 2017 / DeepHawkes 2017; Weng 2013; Petrovic 2010; Qin/FrED 2017-18; Rakowski 2021; Hentschel 2014.
+Yamada 2025; Zhou 2025; CasMS 2024; Stokowiec 2017; Romero 2011; Cha 2010; DeepCas 2017 / DeepHawkes 2017; Weng 2013; Petrovic 2010; Rakowski 2021; Hentschel 2014. (FrED/Qin 2017-18 disclaimed — not used; see above.)
