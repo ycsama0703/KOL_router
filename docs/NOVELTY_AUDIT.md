@@ -5,7 +5,7 @@
 ## Our claims (collision targets)
 
 - **C1 (discovery).** In financial KOL (Twitter/X cashtag) streams there is a stable, identity-specific **lead-lag originator structure** — certain accounts systematically *originate* narratives before others *adopt/repeat* them — measurable point-in-time (PIT) from pre-period history.
-- **C2 (encoding).** A **deconfounded scalar trait O_k** (per-account net-lead over events, residualized against posting-hour/timezone) **+ a lead-lag directed-graph net-degree g_net** (out − in).
+- **C2 (encoding).** A **deconfounded scalar trait O_k** (per-account net-lead over events, residualized against posting-hour/timezone) **+ a lead-lag directed-graph net-lead rate g_net_rate = (out − in)/(out + in)** (activity-normalized net-degree; the raw net-degree is volume-confounded, the rate de-confounds it — same motivation as Precursors&Laggards 2010's posting-rate correction).
 - **C3 (router).** A lightweight model (linear ridge / listwise cross-entropy GBDT, the Lead-Lag Router) over this structure **ranks freshly-originated narrative frames by future follower-weighted reach, before any popularity is observable, using zero text.**
 - **C4 (result).** Structure (no text) matches/beats SOTA text encoders and full LLMs at orders-of-magnitude lower latency/cost.
 - **C5 (application).** Early breakout / event prediction (flag high-reach narratives before popularity).
@@ -45,7 +45,7 @@ We re-implemented the three prior-art account signals and compared under an iden
 
 - **Romero IP-influence** (directed-graph influence fixed point on our lead-lag graph): **adds nothing over context** (ΔNDCG −0.0021, ns) — same as generic PageRank/HITS centrality.
 - **Yamada source-spreader** ≈ our `hist_mean_log_adopt`; **Zhou track-record** ≈ our `hist_success_rate` — both are **already in the context baseline** (subsumed).
-- **Our {context + O_k + g_net}** adds **+0.0072 NDCG / +0.0135 Hit over context (90% sig)** and **+0.0092 over context+Romero (sig)**.
+- **Our {context + O_k + g_net_rate}** adds **+0.0106 NDCG / +0.0214 Hit over context (95% sig)**; the net-lead rate strictly beats the raw net-degree (+0.0069, 95%) and remains > context+Romero.
 
 **Net:** prior-art account signals are either subsumed by context (Yamada/Zhou) or add nothing (Romero, like PageRank/HITS); **only the deconfounded lead-lag originator structure provides a significant increment.** This is the empirical rebuttal to "you re-did Yamada/Romero."
 
@@ -54,7 +54,7 @@ We re-implemented the three prior-art account signals and compared under an iden
 **Yamada et al. 2025 — closest on C1/C2.** Source-spreader vs broker split, stable per-account influence, zero-text GBT. Distinguish: (i) target is **account persistence** (top-10% for 6 months), not **fresh-frame future reach**; (ii) their origination = **self-amplification** (retweets received), ours = **pairwise lead-lag posting-time** order; (iii) **no deconfounding**; (iv) non-finance.
 - **Internal check (load-bearing):** our O_k is computed from within-event **posting order** (rank by timestamp; net_lead = k+1−2·rank in `compute_oltrait`), i.e., genuine lead-lag **timing**, NOT retweets-received. This is what keeps us off Yamada. The paper must state this explicitly; if O_k were amplification counts, C1/C2 would collide.
 
-**Zhou et al. 2025 — closest in finance.** Identifies experts by **track-record accuracy** → predicts **stock returns**; motivates a cheap non-LLM pipeline but **hedges** ("complements, not competes") and runs **no structure-vs-LLM head-to-head**. Distinguish: trait = origination (not accuracy); target = reach (not returns); graph = account lead-lag (not stock-stock); and **we run the head-to-head LLM benchmark they avoided** (done: DeepSeek/encoders, full coverage).
+**Zhou et al. 2025 (arXiv:2504.10078) — closest in finance.** A dynamic **expert-tracing** algorithm keyed on **prediction consistency** (true *and* inverse experts) → predicts **stock trend/return**; runs **no structure-vs-LLM head-to-head**. (NB: it makes no "complements-not-competes-with-LLMs" claim — that earlier quote was unsupported and removed.) Distinguish: trait = origination *timing* (not prediction consistency); target = narrative reach (not returns); graph = account lead-lag (not stock-stock); and **we run the head-to-head LLM benchmark** (DeepSeek/encoders/local LLMs, full coverage).
 
 **Stokowiec et al. 2017 — content-only popularity foil.** Title-only BiLSTM, claims **deep text > shallow text**; our C4 (structure no-text > text) is the direct counter-thesis. Cite as the school we overturn.
 
@@ -73,13 +73,13 @@ We re-implemented the three prior-art account signals and compared under an iden
 
 | Overlap | Paper | Defense |
 |---|---|---|
-| C1/C2 framing | Yamada 2025 | lead-lag *timing* (not amplification) + net-degree + posting-hour residualization; fresh-frame reach target (not account persistence); finance. Empirically beats source-spreader (§2). |
+| C1/C2 framing | Yamada 2025 | lead-lag *timing* (not amplification) + net-lead rate (activity-normalized) + posting-hour residualization; fresh-frame reach target (not account persistence); finance. Empirically beats source-spreader (§2). |
 | C3/C5 task slot | CasMS 2024 | zero-text; originator (not adopter-propensity); frame-reach (not message retweet count); deconfounding. Benchmark it. |
 | C4 + finance-account | Zhou 2025 | origination (not accuracy); reach (not returns); we run the LLM head-to-head they avoided. |
 
 ## Bottom line
 
-The specific combination — **zero-observation × zero-text × lead-lag originator structure (O_k, g_net) × posting-hour deconfounding × finance cashtag × follower-weighted frame-reach** — is **not occupied** by any prior work. Novelty survives. It lives in a narrow gap immediately adjacent to **CasMS** (benchmark it) and **Yamada** (distinguish on timing/deconfound/target), and is **empirically the only account signal that adds over a strong context baseline already containing prior-art traits** (phase104).
+The specific combination — **zero-observation × zero-text × lead-lag originator structure (O_k, g_net_rate) × posting-hour deconfounding × finance cashtag × follower-weighted frame-reach** — is **not occupied** by any prior work. Novelty survives. It lives in a narrow gap immediately adjacent to **CasMS** (benchmark it) and **Yamada** (distinguish on timing/deconfound/target), and is **empirically the only account signal that adds over a strong context baseline already containing prior-art traits** (phase104).
 
 ## Coverage gaps (honesty)
 
