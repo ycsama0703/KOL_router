@@ -1,7 +1,7 @@
 # Introduction & Related Work — Draft (weaving in experimental results)
 
-> **Working title:** *Lead-Lag Origination Structure for Prioritizing Financial KOL Narratives*
-> (Structure-forward — we sell the **structure**, not the model. "Prioritizing" over "Ranking": the title states the *purpose* (deciding which narratives deserve scarce downstream attention/budget), not the mechanism — "ranking" reads as a bare sort algorithm. Deliberately no "content-free"/"zero-text": the no-text-beats-LLM point lands harder as a demonstrated reveal in the abstract + §4 results than as a titular claim that risks reading as overhype. Model = **Lead-Lag Router (LLR)**. Task-specificity variants held in reserve: "…at Origination" / "…by Follower-Weighted Reach".)
+> **Working title:** *Lead-Lag Origination for Prioritizing Financial KOL Narratives*
+> (Dropped "Structure" from "Lead-Lag Origination Structure" — fits one line (kills the orphan "Narratives"), and "Lead-Lag Origination" still names the structural discovery; the *structure/graph* framing is carried heavily in the abstract + §2–§3. Kept "Origination" — do NOT trim to "Lead-Lag …" alone: in finance "lead-lag" defaults to price/return lead-lag; "Origination" disambiguates to *narrative* origination. "Prioritizing" over "Ranking": states the *purpose* (which narratives deserve scarce downstream attention/budget), not the mechanism. Deliberately no "content-free"/"zero-text": lands harder as a demonstrated reveal in the abstract + §4 than as a titular claim that risks overhype. Model = **Lead-Lag Router (LLR)**.)
 
 > Draft prose for the paper's opening. Numbers are from the thr=0.50 main window (NDCG@3) and the pooled 2021-2026 ablation. Tune tone/venue later. Citations as [Author Year]; replace with bib keys.
 
