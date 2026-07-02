@@ -99,8 +99,12 @@ score must beat: be **more accurate** than letting the LLM sift everything, at *
 
 We introduce the **lead-lag origination potential**: for a set of accounts (KOLs), build a
 directed *temporal-precedence* graph in which an edge `a→b` records how often `a` posts a
-narrative **before** `b`; the potential of account `a` is the **net-degree**
-`g_net(a) = out-deg(a) − in-deg(a)` of that graph (and `O_k`, its within-event scalar form).
+narrative **before** `b`. The unnormalized potential of account `a` is the **net-degree**
+`g_net(a) = out-deg(a) − in-deg(a)` (the divergence of the precedence flow; §2). Because raw
+net-degree scales with an account's posting volume `out+in`, the **deployed** feature is its
+**activity-normalized form — the net-lead rate** `g_net_rate(a) = (out−in)/(out+in)` (the
+divergence under the degree-normalized graph Laplacian; §A.1b) — together with `O_k`, its
+within-event scalar form.
 
 **Claim of the paper.** This potential is a **point-in-time, zero-text *sufficient statistic*
 for ranking freshly-originated narratives by their future follower-weighted reach — before any
@@ -111,7 +115,7 @@ The theory has exactly two jobs, one for each half of that claim:
 
 | Application claim | Theory result |
 |---|---|
-| *Why cheap structure suffices — no text, no eigensolve* | **Result A:** net-degree **is** the lead-lag potential, the sufficient structural ranking statistic (and PageRank/HITS are not). |
+| *Why cheap structure suffices — no text, no eigensolve* | **Result A:** net-degree **is** the lead-lag potential (deployed as its activity-normalized net-lead rate), the sufficient structural ranking statistic (and PageRank/HITS are not). |
 | *Why it predicts reach **at origination** (triage before popularity)* | **Result B:** an originator's precedence position sets the expected reach of the narrative it seeds. |
 
 Everything else (deconfounding, point-in-time stability, ranking-loss consistency) is supporting
@@ -138,7 +142,7 @@ unit:
 
 So classical influence is the literature we **depart from**, not a predecessor that subsumes us.
 (This is also why we do not collide with Yamada's source-spreader, whose score is *retweets
-received*: `O_k`/`g_net` are **posting-time precedence**, never amplification counts.) The
+received*: `O_k`/`g_net_rate` are **posting-time precedence**, never amplification counts.) The
 novelty is the *combination*: a **temporal-precedence potential**, deployed as a **zero-text,
 point-in-time triage signal** that ranks **narratives at origination** by future reach.
 
@@ -175,6 +179,25 @@ leadership score `g_{\text{net}}=-n\,s^{*}`: **ranking by `g_{\text{net}}` is eq
 `-s^{*}` (not by `s^{*}`)**, recovering the **Borda / Massey** row-sum ranking up to orientation and
 scale.
 
+**A.1b — Activity normalization: from net-degree to net-lead rate (the deployed feature).** The raw
+row-sum `g_net = div Y` is confounded with node activity: a high-volume account accrues more
+precedence edges in *both* directions, so `|g_net|` grows with `out+in` even absent any genuine
+leadership asymmetry. We therefore deploy the **degree-normalized** divergence — the **net-lead
+rate**
+
+$$g_{\text{net\_rate}}(a)=\frac{\operatorname{div}(Y)(a)}{\deg^{out}(a)+\deg^{in}(a)}=\frac{\text{out}-\text{in}}{\text{out}+\text{in}}\in[-1,1],$$
+
+which is the potential source term under the **random-walk / degree-normalized graph Laplacian**
+`\mathcal L_{\mathrm{rw}}=D^{-1}\Delta_0` (equivalently a David-score / win-rate normalization of the
+Bradley–Terry row-sum). This trades the exact complete-graph optimality of A.2 for **volume
+de-confounding**, and it is the same correction Precursors & Laggards [Menezes et al. 2010] apply to
+raw precedence counts. It is not cosmetic: empirically the rate is **orthogonal to volume**
+(Spearman `ρ(g_net_rate, out+in)=+0.010` vs. `ρ(g_net, out+in)=−0.21`), and — controlling for an
+explicit activity feature — raw `g_net` adds nothing over context while the rate adds a significant
+increment and **strictly beats raw net-degree** (`+0.0069` NDCG, 95%). Crucially the *qualitative*
+Result-A conclusions are unchanged: `g_net_rate` is still a **divergence/gradient** quantity, not an
+eigenvector-centrality one, so A.3 (PageRank/HITS are the wrong operator) still holds.
+
 **A.2 — Direct optimality (the load-bearing statement, no completeness needed).** Independently of
 the Hodge geometry, ranking by the **row-sum `g_net` is risk-optimal among all
 permutation-invariant ranking procedures, for all reasonable losses, under a Bradley–Terry /
@@ -189,8 +212,8 @@ estimator of the precedence potential** `s = −Δ₀⁺ div Y`. (We do not clai
 direction; we claim the quantity they compute is not the potential.) Hence, once `g_net` is
 present, **PageRank/HITS add nothing** — our `g_pr`, `g_hub` null increments. And the **shuffle
 control** (permuting which identity carries which graph feature) breaks the *identity↔potential*
-correspondence, collapsing the gain — our real-vs-shuffled `+0.011` NDCG (95%): the signal is the
-genuine potential, not model capacity or the marginal `g_net` distribution.
+correspondence, collapsing the gain — our real-vs-shuffled `+0.017` NDCG (95%): the signal is the
+genuine potential, not model capacity or the marginal degree distribution.
 
 **Honest scope.** Our graph is incomplete and weighted, so strictly `g_net = div Y` (the RHS); the
 exact potential is the Laplacian-smoothed solve `−Δ₀⁺ div Y` — `g_net` is its leading term (a
@@ -230,7 +253,7 @@ Follower-weighting (not event-count weighting) needs a marked Hawkes kernel [SEI
 
 $$\mathbb E[\text{reach}\mid\text{originator }k]\ \approx\ \underbrace{(\text{origination magnitude})}_{\text{marked size}}\times\underbrace{\big(\text{amplification}\uparrow\text{ in }k\text{'s upstream precedence}\big)}_{\text{via (6)–(8) / Result A: }g_{\text{net}}}.\tag{9}$$
 
-Ranking by `g_net`/`O_k` is therefore *expected* to order narratives by future reach — a hypothesis
+Ranking by `g_net_rate`/`O_k` is therefore *expected* to order narratives by future reach — a hypothesis
 our experiments confirm.
 
 ---
@@ -275,9 +298,9 @@ our model.
 |---|---|
 | **LLM reach-capture is *worst* on the full 30-pool (`full_k30` 0.455); a cheap shortlist lifts the same LLM to ~0.64** | §0 P1 (listwise dilution / lost-in-the-middle) |
 | **LLM routing ~2390 ms / ~5.8k tok vs structure ~0.05 ms / 0 tok** | §0 P2 (LLM cost scales with volume) |
-| `g_net` adds a significant increment; scalar-only / relational encodings do not | A.1–A.2 (net-degree = sufficient potential) |
-| **PageRank/HITS add ≈ 0 over `g_net`** | A.3 (eigenvector centrality ≠ potential) |
-| **Real vs shuffled graph: +0.011 NDCG, 95% sig** | A.3 (shuffle breaks identity↔potential) |
+| `g_net_rate` adds a significant increment; scalar-only / relational encodings do not, and **raw net-degree does not** (volume-confounded) | A.1–A.1b (net-degree = potential; deployed as activity-normalized rate) |
+| **PageRank/HITS add ≈ 0 over `g_net_rate`** | A.3 (eigenvector centrality ≠ potential) |
+| **Real vs shuffled graph: +0.017 NDCG, 95% sig** | A.3 (shuffle breaks identity↔potential) |
 | Zero-text structure ranks reach ≥ text encoders / LLMs, at ~0.05 ms | A.2 (cheap row-sum is the right statistic) + B |
 | Triage works *before* popularity is observable | B (precedence ⇒ expected reach at origination) |
 | PIT train-past / test-next-year holds across rolling windows | R2 (influence-role autocorrelation) |
